@@ -1,0 +1,23 @@
+<div class="row col-xl-12 col-md-12 col-sm-12">
+  <div class="col-xl-12 col-md-12 col-sm-12">
+    <div style="margin:auto;">
+      <h6>Product Information</h6>
+    </div>
+  </div>
+  <div>
+    <div class="col-lg-9 col-xl-6">
+      <div class="kt-avatar kt-avatar--outline" id="kt_apps_user_add_avatar">
+        <div style="padding-bottom:9px">Product Image</div>
+        <div class="kt-avatar__holder"
+          style="background-image:url(http://devafoodmart.com/static/images/food_default.png)"><img height="115"
+            width="115" *ngIf="localUrl" [src]="localUrl" alt="a"></div>
+          <label class="kt-avatar__upload" data-toggle="kt-tooltip" title="" matTooltipPosition="right"
+          matTooltip="Click to Select Image" data-original-title="Change avatar">
+          <i class="fa fa-pen"></i>
+          <input type="file" name="profile_avatar" accept=".png, .jpg, .jpeg" (change)="showPreviewImage($event)">
+        </label>
+      </div>
+    </div>
+  </div>
+  <div></div>
+</div>
