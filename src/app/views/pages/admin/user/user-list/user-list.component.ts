@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../../../../services/user.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 // import { isLoggedIn } from 'src/app/core/auth';
 
 @Component({
@@ -16,12 +17,22 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class UserListComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
+  userGroup: FormGroup;
+  userType = [
+    {value: 'admin', viewValue: 'Admin'},
+    {value: 'carrier', viewValue: 'Carrier'}
+  ];
+  userStatus = [
+    {value: 'active', viewValue: 'Active'},
+    {value: 'suspended', viewValue: 'Suspended'}
+  ];
   displayedColumns: any = ['id', 'username', 'firstname', 'lastname',
     'status', 'user_type', 'action'];
   dataSource: MatTableDataSource<BaseModel>;
   deviceInfo = null;
   pages: any;
   seemoreinfo: boolean = false;
+  newuser:boolean = false;
   //user-information
   name: any = ""; username: any = ""; lastname: any = ""; middlename: any = ""; mobile: any = "";
   email: any = ""; status: any = ""; user_type: any = ""; order_made: any = ""; product_favorite: any = "";
@@ -29,13 +40,49 @@ export class UserListComponent implements OnInit {
   isMobile: boolean = this.deviceService.isMobile();
   constructor(private userService: UserService, private modalService: NgbModal,
     private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,
-    private deviceService: DeviceDetectorService) {
+    private deviceService: DeviceDetectorService,private fb: FormBuilder) {
 
   }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit() {
+    this.userGroup = this.fb.group({
+      username: ['', Validators.compose([
+				Validators.required
+			])
+			],
+      firstname: ['', Validators.compose([
+				Validators.required
+			])
+      ],
+      lastname: ['', Validators.compose([
+        Validators.required
+			])
+      ],
+      middlename: ['', Validators.compose([
+				Validators.required,
+			])
+      ],
+      mobile: ['', Validators.compose([
+        Validators.required,
+			])
+      ],
+      email: ['', Validators.compose([
+				Validators.required,
+			])
+      ],
+      user_type: [null, Validators.compose([
+				Validators.required
+			
+			])
+      ],
+      user_status: [null, Validators.compose([
+				Validators.required
+				
+			])
+			],
+    });
     this.fetchdata();
     if (this.isMobile) {
       this.pages = 5;
@@ -120,5 +167,45 @@ export class UserListComponent implements OnInit {
   }
   closeInfo(){
     this.seemoreinfo = false;
+  }
+  addUser(){
+    this.seemoreinfo = false;
+    this.newuser = true;
+  }
+  submit() {
+		const controls = this.userGroup.controls;
+
+		// check form
+		if (this.userGroup.invalid) {
+			Object.keys(controls).forEach(controlName =>
+				controls[controlName].markAsTouched()
+			);
+			return;
+    }
+    this.blockUI.start('Loading'); // Start blocking
+    this.userService.addUser(controls,controls.username.value).subscribe((response) => {
+    this.toastr.info(response.message);
+    },
+      err => {
+        this.blockUI.stop();
+      },
+      () => {
+        this.userService.fetchAll().subscribe(
+          user => {
+            this.dataSource = new MatTableDataSource<BaseModel>(user.data);
+            console.log(user.data);
+            this.dataSource.paginator = this.paginator;
+
+          },
+          err => {
+            this.blockUI.stop();
+          },
+          () => {
+            // this.blockUI.stop();
+          }
+        );
+        this.blockUI.stop();
+      }
+    );
   }
 }

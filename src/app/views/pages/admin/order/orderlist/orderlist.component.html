@@ -30,9 +30,9 @@
             </mat-cell>
           </ng-container>
           <ng-container matColumnDef="date">
-            <mat-header-cell *matHeaderCellDef> DATE </mat-header-cell>
+            <mat-header-cell *matHeaderCellDef>ORDER DATE </mat-header-cell>
             <mat-cell *matCellDef="let data">
-              {{data.date.date | date: 'dd-MM-yyyy'}}
+              {{data.date.date | date: 'MMMM-dd-yyyy'}}
             </mat-cell>
           </ng-container>
           <ng-container matColumnDef="items">
@@ -58,7 +58,7 @@
           <ng-container matColumnDef="deliveryDatetime">
             <mat-header-cell *matHeaderCellDef> DATE REQUESTED </mat-header-cell>
             <mat-cell *matCellDef="let data">
-              {{data.delivery_datetime.date | date: 'dd-MM-yyyy (H:mm)'}}
+              {{data.delivery_datetime.date | date: 'MMMM-dd-yyyy (H:mm)'}}
             </mat-cell>
           </ng-container>
           <ng-container matColumnDef="status">

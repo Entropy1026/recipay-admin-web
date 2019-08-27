@@ -26,7 +26,87 @@
     </kt-portlet-body>
   </kt-portlet>
 </div>
-
+<!-- add new user -->
+<div *ngIf="newuser">
+  <kt-portlet>
+      <kt-portlet-header [title]="'new user'"></kt-portlet-header>
+      <kt-portlet-body>
+            <form [formGroup]="userGroup">
+              <div class ='form-group row col-xl-12 col-md-12 col-s-12'>
+             <div class="col-xl-6 col-md-6 col-s-6">
+                <mat-form-field>
+                    <mat-label>Username</mat-label>
+                    <input matInput type="text" placeholder="Username" formControlName="username"/>
+                    <mat-error *ngIf="userGroup.controls['username'].touched && userGroup.controls['username'].errors?.required">
+                      <strong>Username is required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field>
+                      <mat-label>Firstname</mat-label>
+                      <input matInput type="text" placeholder="Firstname" formControlName="firstname"/>
+                      <mat-error *ngIf="userGroup.controls['firstname'].touched && userGroup.controls['firstname'].errors?.required">
+                        <strong>Firstname is required</strong>
+                      </mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Lastname</mat-label>
+                        <input matInput type="text" placeholder="Lastname" formControlName="lastname"/>
+                        <mat-error *ngIf="userGroup.controls['lastname'].touched && userGroup.controls['lastname'].errors?.required">
+                          <strong>Lastname is required</strong>
+                        </mat-error>
+                      </mat-form-field>
+                      <mat-form-field>
+                          <mat-label>Middlename</mat-label>
+                          <input matInput type="text" placeholder="Middlename" formControlName="middlename"/>
+                          <mat-error *ngIf="userGroup.controls['middlename'].touched && userGroup.controls['middlename'].errors?.required">
+                            <strong>Middlename is required</strong>
+                          </mat-error>
+                        </mat-form-field>
+             </div>
+             <div class="col-xl-6 col-md-6 col-s-6">
+                <mat-form-field>
+                    <mat-label>Mobile</mat-label>
+                    <input matInput type="text" placeholder="Mobile" formControlName="mobile"/>
+                    <mat-error *ngIf="userGroup.controls['mobile'].touched && userGroup.controls['mobile'].errors?.required">
+                      <strong>Mobile is required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field>
+                      <mat-label>Email</mat-label>
+                      <input matInput type="text" placeholder="Email" formControlName="email" [email]=true/>
+                      <mat-error *ngIf="userGroup.controls['email'].touched && userGroup.controls['email'].errors?.required">
+                        <strong>email is required</strong>
+                      </mat-error>
+                  </mat-form-field>
+                <mat-form-field>
+                    <mat-select placeholder="Type" formControlName="user_type">
+                      <mat-option *ngFor="let item of userType" [value]="item.value">
+                        {{item.viewValue}}  
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="userGroup.controls['user_type'].touched && userGroup.controls['user_type'].errors?.required">
+                        <strong>user type is required</strong></mat-error>
+                  </mat-form-field>
+                  <mat-form-field>
+                      <mat-select placeholder="Status" formControlName="user_status">
+                        <mat-option *ngFor="let item of userStatus" [value]="item.value">
+                          {{item.viewValue}}  
+                        </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="userGroup.controls['user_status'].touched && userGroup.controls['user_status'].errors?.required">
+                          <strong> Status is required</strong></mat-error>
+                    </mat-form-field>
+              </div>
+            </div>
+            </form>
+            <hr>
+            <div class = "row">
+              <div><button mat-button (click)="closeAdd()"><label class="btn btn-label-danger">Close</label></button></div>
+              <div><button mat-button (click)="submit()"><label class="btn btn-label-success">Submit</label></button></div>
+            </div>
+      </kt-portlet-body>
+  </kt-portlet>
+</div>
 <div class="col-xl-12">
   <kt-portlet [class]="'kt-portlet--height-fluid'">
     <kt-portlet-body>
@@ -35,7 +115,7 @@
       </mat-form-field>
       <div class="row">
         <div class="col-6 d-flex justify-content-start">
-          <button class="btn btn-success btn-sm" type="button" (click)="open(setDefaultSettings)"><i
+          <button class="btn btn-success btn-sm" type="button" (click)="addUser()"><i
               class="flaticon flaticon-add mr-1"></i>Add User</button>
         </div>
         <div class="col-6 d-flex justify-content-end">

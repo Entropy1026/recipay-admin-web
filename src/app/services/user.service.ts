@@ -3,6 +3,7 @@ import { ApiService } from '../domain/api.service';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { BaseModel } from '../model/base-model';
+import { stringify } from '@angular/compiler/src/util';
 
 @Injectable()
 export class UserService {
@@ -24,6 +25,22 @@ export class UserService {
             action: data
         };
         return this._api.post('open/users/adminUpdateStatus', params)
+            .pipe(catchError((err) => this._api.handleError(err)));
+    }
+    
+    public addUser(data:any,username:string) {
+        
+        let params = {
+            username: username,
+            firstname: data.firstname.value ,
+            middlename: data.middlename.value ,
+            lastname: data.lastname.value ,
+            mobile: data.mobile.value ,
+            email: data.email.value ,
+            user_status: data.user_status.value ,
+            user_type: data.user_type.value ,
+        };
+        return this._api.post('open/users/addforAdmin', params)
             .pipe(catchError((err) => this._api.handleError(err)));
     }
 

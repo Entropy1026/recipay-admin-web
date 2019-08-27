@@ -10,8 +10,8 @@ import { LayoutConfigService } from '../../../../core/_base/layout';
 export class SubheaderComponent implements OnInit {
 	// Public properties
 	// subheader layout
-	layout: string;
-
+	layout:string= 'subheader-v3';
+   
 	/**
 	 * Component constructor
 	 *
@@ -29,5 +29,6 @@ export class SubheaderComponent implements OnInit {
 	 */
 	ngOnInit(): void {
 		this.layout = this.layoutConfigService.getConfig('subheader.layout');
+		this.layout= 'subheader-v3';
 	}
 }
