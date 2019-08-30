@@ -8,6 +8,11 @@ import { CoreModule } from '../../../../core/core.module';
 import { PartialsModule } from '../../../partials/partials.module'
 import { SharedModule } from '../../shared/shared.module';
 import { MenuActionComponent } from './menulist/menu-action/menu-action.component'
+import { MenuService } from '../../../../services/menu.service';
+import { ConfirmDialogService } from '../../shared/confirm-dialog/confirm-dialog.service';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
   {
@@ -24,12 +29,15 @@ const routes: Routes = [
 @NgModule({
   declarations: [MenuComponent, MenulistComponent, MenuActionComponent] ,
   imports: [
-    PartialsModule,
-		CoreModule,
     CommonModule,
     SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
+    PartialsModule,
+    CoreModule,
+    NgbModule,
     RouterModule.forChild(routes)
   ],
-  providers:[ToastrService]
+  providers:[ToastrService,MenuService,ConfirmDialogService,DeviceDetectorService]
 })
 export class MenuModule { }

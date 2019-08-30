@@ -1,13 +1,17 @@
-<kt-portlet>
-   <kt-portlet-header [title]="'Menu & Recipe'"></kt-portlet-header>
+<div class="col-xl-12">
+  <kt-portlet [class]="'kt-portlet--height-fluid'">
     <kt-portlet-body>
+        <mat-form-field>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Menu here ..">
+      </mat-form-field>
       <div class="row">
         <div class="col-6 d-flex justify-content-start">
+          <button class="btn btn-success btn-sm" type="button" (click)="addMenu()"><i
+              class="flaticon flaticon-refresh mr-1"></i>Add Menu</button>
         </div>
         <div class="col-6 d-flex justify-content-end">
-          <button class="btn btn-success btn-sm" type="button" (click)="addClick()"> <i class="fa fa-plus mr-1"></i>
-            New Menu
-          </button>
+          <!-- <button class="btn btn-success btn-sm" type="button" (click)="launchNew()"> <i class="fa fa-plus mr-1"></i>
+            Profile</button> -->
         </div>
       </div>
 
@@ -16,44 +20,41 @@
 
         <mat-table [dataSource]="dataSource" matSort>
           <!-- Name Column -->
+          <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+              {{data.id}}
+            </mat-cell>
+          </ng-container>
           <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef> Image </mat-header-cell>
-            <mat-cell *matCellDef="let companyList">
-              <span class="mobile-label">Image: </span>
-              {{product.image}}
+            <mat-header-cell *matHeaderCellDef> NAME </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+              {{data.name}}
             </mat-cell>
           </ng-container>
-          <!-- Code Column -->
-          <ng-container matColumnDef="code">
-            <mat-header-cell *matHeaderCellDef> Price </mat-header-cell>
-            <mat-cell *matCellDef="let companyList">
-              <span class="mobile-label">Price: </span>
-              {{product.price}}
+          <ng-container matColumnDef="description">
+            <mat-header-cell *matHeaderCellDef>DESCRIPTION </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+              {{data.description}}
             </mat-cell>
           </ng-container>
-          <!-- Sync ID Column -->
-          <ng-container matColumnDef="syncid">
-            <mat-header-cell *matHeaderCellDef>Base Pax </mat-header-cell>
-            <mat-cell *matCellDef="let companyList">
-              <span class="mobile-label">Base Pax: </span>
-              {{product.pax}}
+          <ng-container matColumnDef="types">
+            <mat-header-cell *matHeaderCellDef> TYPES AVAILABLE </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+              {{data.count}} Types Available 
             </mat-cell>
           </ng-container>
-          <!-- Notification Column -->
+          
           <!-- Action Column -->
           <ng-container matColumnDef="action">
             <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
-            <mat-cell *matCellDef="let companyList">
-              <span class="mobile-label">Actions: </span>
+            <mat-cell *matCellDef="let data">
               <div class="justify-content-center">
                 <button mat-icon-button color="primary">
-                  <mat-icon matTooltip="Edit Product">Edit</mat-icon>
+                  <mat-icon matTooltip="Edit | Update ">edit</mat-icon>
                 </button>
                 <button mat-icon-button color="warn">
-                  <mat-icon matTooltip="Delete Product">Delete</mat-icon>
-                </button>
-                <button mat-icon-button class="gray-icon">
-                  <mat-icon matTooltip="Disable Product">Disable</mat-icon>
+                  <mat-icon matTooltip="Delete Menu">delete</mat-icon>
                 </button>
               </div>
             </mat-cell>
@@ -72,5 +73,27 @@
       </div>
 
 
-    </kt-portlet-body>  
-</kt-portlet>
+    </kt-portlet-body>
+  </kt-portlet>
+</div>
+
+<!-- Modal Set Default Settings Form -->
+<div class="kt-section">
+  <div class="kt-section__content">
+    <ng-template #setDefaultSettings let-c="close" let-d="dismiss">
+      <div class="modal-header">
+        <h4 class="modal-title">Confirmation</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to proceed?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" type="button" (click)="c('Close click')">Yes</button>
+        <button class="btn btn-secondary" type="button" (click)="c('Close click')">No</button>
+      </div>
+    </ng-template>
+  </div>
+</div>

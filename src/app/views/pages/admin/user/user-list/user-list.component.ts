@@ -172,6 +172,9 @@ export class UserListComponent implements OnInit {
     this.seemoreinfo = false;
     this.newuser = true;
   }
+  closeAdd() {
+    this.newuser = false;
+  }
   submit() {
 		const controls = this.userGroup.controls;
 

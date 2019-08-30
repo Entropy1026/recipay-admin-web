@@ -7,26 +7,26 @@ import { ToastrService } from 'ngx-toastr';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { InventoryService } from '../../../../../services/inventory.service';
-// import { isLoggedIn } from 'src/app/core/auth';
+import { ReviewService } from '../../../../../services/review.service';
+
 @Component({
-  selector: 'kt-inventory-list',
-  templateUrl: './inventory-list.component.html',
-  styleUrls: ['./inventory-list.component.scss']
+  selector: 'kt-review-list',
+  templateUrl: './review-list.component.html',
+  styleUrls: ['./review-list.component.scss']
 })
-export class InventoryListComponent implements OnInit {
+export class ReviewListComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
-  displayedColumns: any = ['id','name','pax','price','sold','totalamount','type','action'];
+  displayedColumns: any = ['id','user','product','rating','comment','date','action'];
   dataSource: MatTableDataSource<BaseModel>;
   deviceInfo = null;
   pages: any;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  constructor(private inventoryService: InventoryService, private modalService: NgbModal,
+  constructor(private reviewService: ReviewService, private modalService: NgbModal,
     private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,
     private deviceService: DeviceDetectorService,private fb: FormBuilder) {
 
   }
-  
+
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
@@ -36,12 +36,12 @@ export class InventoryListComponent implements OnInit {
   }
   fetchdata() {
     this.blockUI.start('Loading'); // Start blocking
-    this.inventoryService.fetchAll().subscribe(
-      inv => {
-        this.dataSource = new MatTableDataSource<BaseModel>(inv.data);
-        console.log(inv.data);
+    this.reviewService.fetchAll().subscribe(
+      reviews => {
+        this.dataSource = new MatTableDataSource<BaseModel>(reviews.data);
+        console.log(reviews.data);
         this.dataSource.paginator = this.paginator;
-        this.toastr.info(inv.message);
+        this.toastr.info(reviews.message);
       },
       err => {
         this.blockUI.stop();
@@ -51,4 +51,5 @@ export class InventoryListComponent implements OnInit {
       }
     );
   }
+
 }

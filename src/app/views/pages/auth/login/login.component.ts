@@ -17,8 +17,8 @@ import { AuthNoticeService, AuthService, Login } from '../../../../core/auth';
  * ! Just example => Should be removed in development
  */
 const DEMO_PARAMS = {
-	EMAIL: 'user@demo.com',
-	PASSWORD: 'admin123'
+	EMAIL: 'admin@demo.com',
+	PASSWORD: 'demo'
 };
 
 @Component({
