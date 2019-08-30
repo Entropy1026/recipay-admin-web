@@ -30,6 +30,10 @@ const routes: Routes = [
 				loadChildren: 'app/views/pages/admin/inventory/inventory.module#InventoryModule'
 			},
 			{
+				path: 'review',
+				loadChildren: 'app/views/pages/admin/review/review.module#ReviewModule'
+			},
+			{
 				path: 'user',
 				loadChildren: 'app/views/pages/admin/user/user.module#UserModule'
 			},
