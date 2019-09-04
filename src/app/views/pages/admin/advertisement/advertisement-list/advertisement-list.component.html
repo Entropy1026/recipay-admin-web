@@ -1,3 +1,108 @@
-<p>
-  advertisement-list works!
-</p>
+<div class="col-xl-12">
+  <kt-portlet [class]="'kt-portlet--height-fluid'">
+    <kt-portlet-body>
+      <div class="row">
+        <div class="col-6 d-flex justify-content-start">
+          <button class="btn btn-success btn-sm" type="button" (click)="open(setDefaultSettings)"><i
+              class="flaticon flaticon-refresh mr-1"></i>Refresh</button>
+        </div>
+        <div class="col-6 d-flex justify-content-end">
+          <!-- <button class="btn btn-success btn-sm" type="button" (click)="launchNew()"> <i class="fa fa-plus mr-1"></i>
+            Profile</button> -->
+        </div>
+      </div>
+
+      <div perfectScrollbar [ngStyle]="{'position': 'relative'}"
+        class="mat-table__wrapper mat-table__wrapper--dashboard">
+
+        <mat-table [dataSource]="dataSource" matSort>
+          <!-- Name Column -->
+          <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+              {{data.id}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> NAME </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+              {{data.name}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="desc">
+            <mat-header-cell *matHeaderCellDef> DESCRIPTION </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+              {{data.description}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="subbed">
+            <mat-header-cell *matHeaderCellDef> DATE-ADDED </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+              {{data.subbed.date | date: 'MMMM-dd-yyyy'}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef> STATUS </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+              {{data.status}}
+            </mat-cell>
+          </ng-container>
+          
+          
+          <!-- Action Column -->
+          <ng-container matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+              <div class="justify-content-center">
+                <button mat-icon-button color="primary">
+                  <mat-icon matTooltip="Edit | Update">edit</mat-icon>
+                </button>
+                <button mat-icon-button color="primary"  *ngIf="data.status == 'suspended'">
+                  <mat-icon matTooltip="Cancel this Suspension">panorama_fish_eye</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" *ngIf="data.status == 'active'">
+                    <mat-icon matTooltip="Suspend this Ads">block</mat-icon>
+                  </button>
+                <button mat-icon-button color="warn">
+                  <mat-icon matTooltip="Delete">delete</mat-icon>
+                </button>
+              </div>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+        </mat-table>
+
+      </div>
+      <div *ngIf="!dataSource" class="row col-xl-12 justify-content-center mt-3">No records found</div>
+      <div class="mat-table__bottom mat-table__bottom--padding">
+        <mat-paginator [pageSize]="pages" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons>
+        </mat-paginator>
+      </div>
+
+
+    </kt-portlet-body>
+  </kt-portlet>
+</div>
+
+<!-- Modal Set Default Settings Form -->
+<div class="kt-section">
+  <div class="kt-section__content">
+    <ng-template #setDefaultSettings let-c="close" let-d="dismiss">
+      <div class="modal-header">
+        <h4 class="modal-title">Confirmation</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to proceed?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" type="button" (click)="c('Close click')">Yes</button>
+        <button class="btn btn-secondary" type="button" (click)="c('Close click')">No</button>
+      </div>
+    </ng-template>
+  </div>
+</div>

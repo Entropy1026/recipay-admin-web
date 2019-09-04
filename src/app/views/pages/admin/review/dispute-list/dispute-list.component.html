@@ -1,11 +1,14 @@
 <div class="col-xl-12">
   <kt-portlet [class]="'kt-portlet--height-fluid'">
     <kt-portlet-body>
+        <mat-form-field>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Reviews here ..">
+      </mat-form-field>
       <div class="row">
-        <div class="col-6 d-flex justify-content-start">
-          <button class="btn btn-success btn-sm" type="button" (click)="open(setDefaultSettings)"><i
-              class="flaticon flaticon-refresh mr-1"></i>Refresh</button>
-        </div>
+        <!-- <div class="col-6 d-flex justify-content-start">
+          <button class="btn btn-success btn-sm" type="button" (click)="addMenu()"><i
+              class="flaticon flaticon-refresh mr-1"></i>Add Menu</button>
+        </div> -->
         <div class="col-6 d-flex justify-content-end">
           <!-- <button class="btn btn-success btn-sm" type="button" (click)="launchNew()"> <i class="fa fa-plus mr-1"></i>
             Profile</button> -->
@@ -23,56 +26,24 @@
               {{data.id}}
             </mat-cell>
           </ng-container>
-          <ng-container matColumnDef="user">
+          <ng-container matColumnDef="from">
             <mat-header-cell *matHeaderCellDef> USER </mat-header-cell>
             <mat-cell *matCellDef="let data">
-              {{data.user}}
+              {{data.from}}
             </mat-cell>
           </ng-container>
-          <ng-container matColumnDef="date">
-            <mat-header-cell *matHeaderCellDef>ORDER DATE </mat-header-cell>
+          <ng-container matColumnDef="message">
+            <mat-header-cell *matHeaderCellDef> MESSAGE </mat-header-cell>
             <mat-cell *matCellDef="let data">
-              {{data.date.date | date: 'MMMM-dd-yyyy'}}
+              {{data.message}} 
             </mat-cell>
           </ng-container>
-          <ng-container matColumnDef="items">
-            <mat-header-cell *matHeaderCellDef> ITEMS </mat-header-cell>
-            <mat-cell *matCellDef="let data">
-              <label class="btn btn-label-danger">check</label>
-            </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="billingInfo">
-            <mat-header-cell *matHeaderCellDef> BILLING-INFO </mat-header-cell>
-            <mat-cell *matCellDef="let data">
-             {{data.billinginfo[0].Address}}
-             {{data.billinginfo[0].City}}
-              <!-- {{data.payment_type}} -->
-            </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="paymentType">
-            <mat-header-cell *matHeaderCellDef> PAYMENT-TYPE </mat-header-cell>
-            <mat-cell *matCellDef="let data">
-              {{data.payment[0].method}}
-            </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="amount">
-            <mat-header-cell *matHeaderCellDef> AMOUNT </mat-header-cell>
-            <mat-cell *matCellDef="let data">
-              {{data.payment[0].amount}}
-            </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="deliveryDatetime">
-            <mat-header-cell *matHeaderCellDef> DATE REQUESTED </mat-header-cell>
-            <mat-cell *matCellDef="let data">
-              {{data.delivery_datetime.date | date: 'MMMM-dd-yyyy (H:mm)'}}
-            </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="status">
-            <mat-header-cell *matHeaderCellDef> STATUS </mat-header-cell>
-            <mat-cell *matCellDef="let data">
-              {{data.status}}
-            </mat-cell>
-          </ng-container>
+            <ng-container matColumnDef="date">
+                <mat-header-cell *matHeaderCellDef> DATE </mat-header-cell>
+                <mat-cell *matCellDef="let data">
+                  {{data.date.date | date : 'MMMM-dd-yyyy'}}
+                </mat-cell>
+              </ng-container>
           
           <!-- Action Column -->
           <ng-container matColumnDef="action">
@@ -80,10 +51,14 @@
             <mat-cell *matCellDef="let data">
               <div class="justify-content-center">
                 <button mat-icon-button color="primary">
-                  <mat-icon matTooltip="Complete & Prepair">restaurant</mat-icon>
+                  <mat-icon matTooltip="Reply">send</mat-icon>
                 </button>
+              </div>
+            </mat-cell>
+            <mat-cell *matCellDef="let data">
+              <div class="justify-content-center">
                 <button mat-icon-button color="warn">
-                  <mat-icon matTooltip="Cancel this Transaction">restaurant_menu</mat-icon>
+                  <mat-icon matTooltip="Delete">delete</mat-icon>
                 </button>
               </div>
             </mat-cell>

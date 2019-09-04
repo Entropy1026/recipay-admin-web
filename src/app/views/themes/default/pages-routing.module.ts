@@ -43,6 +43,10 @@ const routes: Routes = [
 				loadChildren: 'app/views/pages/admin/advertisement/advertisement.module#AdvertisementModule'
 			},
 			{
+				path: 'report',
+				loadChildren: 'app/views/pages/admin/report/report.module#ReportModule'
+			},
+			{
 				path: 'order',
 				loadChildren: 'app/views/pages/admin/order/order.module#OrderModule'
 			},

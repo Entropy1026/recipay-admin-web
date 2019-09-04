@@ -3,6 +3,14 @@ import { CommonModule } from '@angular/common';
 import { AdvertisementComponent } from './advertisement.component';
 import { AdvertisementListComponent } from './advertisement-list/advertisement-list.component';
 import { Routes, RouterModule } from '@angular/router';
+import { AdvertisementService } from '../../../../services/advertisement.service';
+import { ToastrService } from 'ngx-toastr';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CoreModule } from '../../../../core/core.module';
+import { PartialsModule } from '../../../partials/partials.module';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { SharedModule } from '../../shared/shared.module';
 
 const routes: Routes = [
   {
@@ -15,7 +23,14 @@ const routes: Routes = [
   declarations: [AdvertisementComponent, AdvertisementListComponent],
   imports: [
     CommonModule,
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
+    PartialsModule,
+    CoreModule,
+    NgbModule,
     RouterModule.forChild(routes)
-  ]
+  ],
+  providers: [ AdvertisementService , ToastrService ,DeviceDetectorService]
 })
 export class AdvertisementModule { }

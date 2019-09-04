@@ -19,7 +19,7 @@ export class PageConfig {
 		},
 		'inventory': { 
 			'list': {
-				page: { title: 'List of Inventory', desc: 'List of inventories' },
+				page: { title: 'List of Inventory', desc: '' },
 			}
 		},
 		'user': { 
@@ -27,14 +27,22 @@ export class PageConfig {
 				page: { title: 'List of User', desc: '' },
 			}
 		},
+		'report': { 
+			'list': {
+				page: { title: 'List of report', desc: '' },
+			}
+		},
 		'review': { 
 			'list': {
 				page: { title: 'List of Review', desc: '' },
+			},
+			'dispute': {
+				page: { title: 'List of Dispute', desc: '' },
 			}
 		},
 		'advertisement': { 
 			'list': {
-				page: { title: 'list of advertisement', desc: 'List of advertisement' },
+				page: { title: 'list of advertisement', desc: '' },
 			}
 		},
 		ngbootstrap: {

@@ -12,15 +12,23 @@ import { PartialsModule } from '../../../partials/partials.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
 import { ReviewComponent } from './review.component';
+import { DisputeListComponent } from './dispute-list/dispute-list.component';
+import { DisputeService } from '../../../../services/dispute.service';
 const routes: Routes = [
   {
     path: '', component: ReviewListComponent, children: [{
       path: 'list', component: ReviewListComponent,
-    }],  
+    }],
+      
+  },{
+    path: '', component: DisputeListComponent, children: [{
+      path: 'dispute', component: DisputeListComponent,
+    }],
+      
   }
 ];
 @NgModule({
-  declarations: [ReviewListComponent, ReviewComponent],
+  declarations: [ReviewListComponent, ReviewComponent, DisputeListComponent],
   imports: [
     CommonModule,
     SharedModule,
@@ -31,6 +39,6 @@ const routes: Routes = [
     NgbModule,
     RouterModule.forChild(routes)
   ],
-  providers:[ToastrService,ReviewService,ConfirmDialogService,DeviceDetectorService]
+  providers:[ToastrService,ReviewService,DisputeService,ConfirmDialogService,DeviceDetectorService]
 })
 export class ReviewModule { }

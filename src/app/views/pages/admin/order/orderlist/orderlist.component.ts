@@ -16,7 +16,7 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui';
 })
 export class OrderlistComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
-  displayedColumns: any = ['id','user','date', 'items', 'billingInfo', 'paymentType', 'deliveryDatetime', 'status', 'action'];
+  displayedColumns: any = ['id','user','date', 'items', 'billingInfo', 'paymentType', 'amount','deliveryDatetime', 'status', 'action'];
   dataSource: MatTableDataSource<BaseModel>;
   deviceInfo = null;
   pages:any;

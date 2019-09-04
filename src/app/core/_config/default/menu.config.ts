@@ -33,14 +33,14 @@ export class MenuConfig {
 		aside: {
 			self: {},
 			items: [
-				{
-					title: 'Dashboard',
-					root: true,
-					icon: 'flaticon2-architecture-and-city',
-					page: 'dashboard',
-					translate: 'MENU.DASHBOARD',
-					bullet: 'dot',
-				},
+				// {
+				// 	title: 'Dashboard',
+				// 	root: true,
+				// 	icon: 'flaticon2-architecture-and-city',
+				// 	page: 'dashboard',
+				// 	translate: 'MENU.DASHBOARD',
+				// 	bullet: 'dot',
+				// },
 				{
 					title: 'Order',
 					root: true,
@@ -78,6 +78,18 @@ export class MenuConfig {
 					] 
 				},
 				{
+					title: 'Report',
+					root: true,
+					bullet: 'dot',
+					icon: 'la la-eye',
+					submenu: [
+						{
+							title: 'List',
+							page: 'report/list'
+						}
+					] 
+				},
+				{
 					title: 'User',
 					root: true,
 					bullet: 'dot',
@@ -98,6 +110,10 @@ export class MenuConfig {
 						{
 							title: 'List',
 							page: 'review/list'
+						},
+						{
+							title: 'Dispute',
+							page: 'review/dispute'
 						}
 					] 
 				},
