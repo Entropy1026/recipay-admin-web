@@ -1,10 +1,56 @@
+<div *ngIf="addAds">
+  <kt-portlet>
+    <kt-portlet-header [title]="'advertisement'"></kt-portlet-header>
+    <kt-portlet-body>
+      <form [formGroup]="adsGroup">
+        <div class="row col-xl-12 col-md-12 col-s-12">
+          <div class=" col-lg-12 col-md-12 col-sm-12">
+            <mat-form-field class="col-12">
+              <mat-label>Name</mat-label>
+              <input matInput type="text" placeholder="Name" formControlName="name" />
+              <mat-error *ngIf="adsGroup.controls['name'].touched && adsGroup.controls['name'].errors?.required">
+                <strong>Name is required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class=" col-lg-12 col-md-12 col-sm-12">
+            <mat-form-field class="col-12">
+              <mat-label>Description</mat-label>
+              <input matInput type="text" placeholder="Description" formControlName="description" />
+              <mat-error
+                *ngIf="adsGroup.controls['description'].touched && adsGroup.controls['description'].errors?.required">
+                <strong>Description is required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class=" col-lg-12 col-md-12 col-sm-12">
+            <mat-form-field class="col-12">
+              <mat-label>Fileurl</mat-label>
+              <input matInput type="text" placeholder="File Url" formControlName="fileurl" />
+              <mat-error *ngIf="adsGroup.controls['fileurl'].touched && adsGroup.controls['fileurl'].errors?.required">
+                <strong>Fileurl is required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+      <hr>
+      <div class="row">
+        <div><button mat-button (click)="close()"><label class="btn btn-label-danger">Close</label></button></div>
+        <div><button mat-button (click)="submit()"><label class="btn btn-label-success">Submit</label></button></div>
+      </div>
+    </kt-portlet-body>
+  </kt-portlet>
+
+</div>
+
 <div class="col-xl-12">
   <kt-portlet [class]="'kt-portlet--height-fluid'">
     <kt-portlet-body>
       <div class="row">
         <div class="col-6 d-flex justify-content-start">
-          <button class="btn btn-success btn-sm" type="button" (click)="open(setDefaultSettings)"><i
-              class="flaticon flaticon-refresh mr-1"></i>Refresh</button>
+          <button class="btn btn-success btn-sm" type="button" (click)="open()"><i
+              class="flaticon flaticon-refresh mr-1"></i>Add Ads</button>
         </div>
         <div class="col-6 d-flex justify-content-end">
           <!-- <button class="btn btn-success btn-sm" type="button" (click)="launchNew()"> <i class="fa fa-plus mr-1"></i>
@@ -47,23 +93,23 @@
               {{data.status}}
             </mat-cell>
           </ng-container>
-          
-          
+
+
           <!-- Action Column -->
           <ng-container matColumnDef="action">
             <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
             <mat-cell *matCellDef="let data">
               <div class="justify-content-center">
-                <button mat-icon-button color="primary">
+                <button mat-icon-button color="primary" (click)="updateInfo(data)">
                   <mat-icon matTooltip="Edit | Update">edit</mat-icon>
                 </button>
-                <button mat-icon-button color="primary"  *ngIf="data.status == 'suspended'">
+                <button mat-icon-button color="primary" (click)="status(data.id,'active')" *ngIf="data.status == 'suspended'">
                   <mat-icon matTooltip="Cancel this Suspension">panorama_fish_eye</mat-icon>
                 </button>
-                <button mat-icon-button color="warn" *ngIf="data.status == 'active'">
-                    <mat-icon matTooltip="Suspend this Ads">block</mat-icon>
-                  </button>
-                <button mat-icon-button color="warn">
+                <button mat-icon-button color="warn" (click)="status(data.id,'suspended')"*ngIf="data.status == 'active'">
+                  <mat-icon matTooltip="Suspend this Ads">block</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="delete(data.id)">
                   <mat-icon matTooltip="Delete">delete</mat-icon>
                 </button>
               </div>

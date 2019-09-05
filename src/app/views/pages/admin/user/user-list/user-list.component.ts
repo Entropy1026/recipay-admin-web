@@ -19,7 +19,7 @@ export class UserListComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
   userGroup: FormGroup;
   userType = [
-    {value: 'admin', viewValue: 'Admin'},
+    {value: 'stockman', viewValue: 'stockman'},
     {value: 'carrier', viewValue: 'Carrier'}
   ];
   userStatus = [
