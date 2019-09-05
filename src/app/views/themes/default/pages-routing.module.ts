@@ -14,8 +14,8 @@ const routes: Routes = [
 		canActivate: [AuthGuard],
 		children: [
 			{
-				path: 'dashboard',
-				loadChildren: 'app/views/pages/dashboard/dashboard.module#DashboardModule'
+				path: 'order',
+				loadChildren: 'app/views/pages/admin/order/order.module#OrderModule'
 			},
 			{
 				path: 'builder',
@@ -47,10 +47,6 @@ const routes: Routes = [
 				loadChildren: 'app/views/pages/admin/report/report.module#ReportModule'
 			},
 			{
-				path: 'order',
-				loadChildren: 'app/views/pages/admin/order/order.module#OrderModule'
-			},
-			{
 				path: 'error/403',
 				component: ErrorPageComponent,
 				data: {
@@ -61,8 +57,8 @@ const routes: Routes = [
 				}
 			},
 			{path: 'error/:type', component: ErrorPageComponent},
-			{path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-			{path: '**', redirectTo: 'dashboard', pathMatch: 'full'}
+			{path: '', redirectTo: 'order/list', pathMatch: 'full'},
+			{path: '**', redirectTo: 'order/list', pathMatch: 'full'}
 		]
 	},
 ];

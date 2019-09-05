@@ -4,5 +4,5 @@ export const environment = {
     production: false,
     apiUrl: "https://staging-recipay-admin-api.herokuapp.com/public",
     loginUrl: "http://localhost:8080",
-    baseUrl: "http://localhost:4200/default/"
+    baseUrl: "http://localhost:4200/recipay/"
 };
