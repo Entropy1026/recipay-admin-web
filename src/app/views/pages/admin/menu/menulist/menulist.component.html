@@ -23,9 +23,11 @@
                   </div>
               </form>
               <hr>
-              <div class="row">
-                <div><button mat-button (click)="close()"><label class="btn btn-label-danger">Close</label></button></div>
-                <div><button mat-button (click)="submit()"><label class="btn btn-label-success">Submit</label></button></div>
+              <div class="row d-flex justify-content-between">
+                <div></div>
+                <div class="ml-5">
+                    <button mat-button (click)="close()"><label class="btn btn-label-danger">Close</label></button>
+                  <button mat-button (click)="submit()"><label class="btn btn-label-success">Submit</label></button></div>
               </div>
         </kt-portlet-body>
     </kt-portlet>

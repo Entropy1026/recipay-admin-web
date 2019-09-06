@@ -12,6 +12,7 @@ import { CoreModule } from '../../../../core/core.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { OrderPreparationComponent } from './order-preparation/order-preparation.component';
+import { OrderDeliveriesComponent } from './order-deliveries/order-deliveries.component';
 
 const routes: Routes = [
   {
@@ -26,9 +27,15 @@ const routes: Routes = [
     }],
       
   }
+  ,{
+    path: 'on-deliveries', component: OrderDeliveriesComponent, children: [{
+      path: 'on-deliveries', component: OrderDeliveriesComponent,
+    }],
+      
+  }
 ];
 @NgModule({
-  declarations: [OrderComponent, OrderlistComponent, OrderPreparationComponent],
+  declarations: [OrderComponent, OrderlistComponent, OrderPreparationComponent, OrderDeliveriesComponent],
   imports: [
     CommonModule,
     SharedModule,

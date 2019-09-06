@@ -18,6 +18,7 @@ import { InlineSVGModule } from 'ng-inline-svg';
 import { environment } from '../environments/environment';
 // Hammer JS
 import 'hammerjs';
+
 // NGX Permissions
 import { NgxPermissionsModule } from 'ngx-permissions';
 // NGRX

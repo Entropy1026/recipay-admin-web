@@ -14,6 +14,10 @@ export class PageConfig {
 			'preparation': {
 				page: { title: 'Orders for preparation', desc: '' },
 			}
+			,
+			'on-deliveries': {
+				page: { title: 'Orders for delivery', desc: '' },
+			}
 		},
 		'menu': { 
 			'list': {

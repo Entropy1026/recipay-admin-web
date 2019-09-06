@@ -65,7 +65,7 @@ export class DisputeListComponent implements OnInit {
   this.respond=true;
   this.id = id;
   this.user = user;
-  this.toastr.info(id);
+  // this.toastr.info(id);
   
   }
    delete(id:any){

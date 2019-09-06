@@ -4,6 +4,8 @@ import { BaseModel } from '../../../../../model/base-model';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { from } from 'rxjs';
+// import { map } from 'rxjs/operators';
 // import { ConfirmDialogService } from '../../../shared/confirm-dialog/confirm-dialog.service';
 import { ToastrService } from 'ngx-toastr';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -20,10 +22,14 @@ export class OrderPreparationComponent implements OnInit {
   dataSource: MatTableDataSource<BaseModel>;
   deviceInfo = null;
   dataItem = [];
+  deliveryGroup : FormGroup;
   assignCarrier = false;
   pages:any;
+  id = 0;
+  items = "";
+  carrier = [];
   isMobile:boolean = this.deviceService.isMobile();
-  constructor(private detectRef:ChangeDetectorRef, private orderService: OrderService, private modalService: NgbModal, private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,private deviceService: DeviceDetectorService) {
+  constructor(private fb : FormBuilder , private detectRef:ChangeDetectorRef, private orderService: OrderService, private modalService: NgbModal, private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,private deviceService: DeviceDetectorService) {
   }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -31,7 +37,31 @@ export class OrderPreparationComponent implements OnInit {
   refresh(){
    this.fetchall();
   }
+  getCarrier(){
+    this.carrier = [];
+    this.blockUI.start('Loading'); // Start blocking
+    this.orderService.getcarriers().subscribe(carriers => {
+        carriers.data.map((carrier) => {
+          let data = { value: carrier.id, viewValue: carrier.name }
+          console.log
+          this.carrier.push(data);
+        });
+      },
+      err => {
+        this.blockUI.stop();
+      },
+      () => {
+        this.blockUI.stop();
+      }
+    );
+  }
   ngOnInit() {
+    this.deliveryGroup = this.fb.group({
+      carrier_name: ['', Validators.compose([
+				Validators.required
+			])
+			]
+    });
     this.fetchall();
     if(this.isMobile){
       this.pages=5;
@@ -41,8 +71,16 @@ export class OrderPreparationComponent implements OnInit {
     }
   }
   open(data:any){
+    window.location.hash = '#topElement';
     this.assignCarrier=true;
-    this.dataItem = data.item;
+    this.id = data.id;
+    this.items = "";
+    // data1 = data;
+    // this.dataItem = data.item;
+    data.items.forEach(element => {
+      this.items =this.items.concat(element.qty + " PAX " + element.name+" PHP: " +element.price +"\n");
+    });
+    console.log(this.dataItem);  
     this.detectRef.detectChanges();
   }
   close(){
@@ -89,9 +127,47 @@ export class OrderPreparationComponent implements OnInit {
       },
       () => {
         this.blockUI.stop();
+        this.getCarrier();
       }
     );
   }
+  assign(){
 
+    const controls = this.deliveryGroup.controls;
+    this.toastr.info(""+this.id+controls.carrier_name.value);
+    // check form
+    if (this.deliveryGroup.invalid) {
+      Object.keys(controls).forEach(controlName =>
+        controls[controlName].markAsTouched()
+      );
+      return;
+    }
+    this.blockUI.start('Loading'); // Start blocking
+    this.orderService.setcarriers(this.id,controls.carrier_name.value).subscribe((response) => {
+    this.toastr.info(response.message);
+    },
+      err => {
+        this.blockUI.stop();
+      },
+      () => {
+        this.orderService.fetchAll2().subscribe(
+          ads => {
+            this.dataSource = new MatTableDataSource<BaseModel>(ads.data);
+            console.log(ads.data);
+            this.dataSource.paginator = this.paginator;
+  
+          },
+          err => {
+            this.blockUI.stop();
+          },
+          () => {
+            // this.blockUI.stop();
+          }
+        );
+        this.blockUI.stop();
+        this.id = 0;
+      }
+    );
+  }
 
 }

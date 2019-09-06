@@ -55,6 +55,11 @@ export class MenuConfig {
 							title: 'Preparation',
 							page: 'order/preparation'
 						}
+						,
+						{
+							title: 'Delivery',
+							page: 'order/on-deliveries'
+						}
 
 					] 
 				},

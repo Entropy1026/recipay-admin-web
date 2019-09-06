@@ -19,7 +19,7 @@ export class UserListComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
   userGroup: FormGroup;
   userType = [
-    {value: 'stockman', viewValue: 'stockman'},
+    {value: 'stockman', viewValue: 'Stockman'},
     {value: 'carrier', viewValue: 'Carrier'}
   ];
   userStatus = [
@@ -198,6 +198,7 @@ export class UserListComponent implements OnInit {
             this.dataSource = new MatTableDataSource<BaseModel>(user.data);
             console.log(user.data);
             this.dataSource.paginator = this.paginator;
+            this.newuser = false;
 
           },
           err => {
@@ -208,6 +209,7 @@ export class UserListComponent implements OnInit {
           }
         );
         this.blockUI.stop();
+  
       }
     );
   }

@@ -3,33 +3,37 @@
     <kt-portlet-header [title]="'info'"></kt-portlet-header>
     <kt-portlet-body>
       <form [formGroup]="deliveryGroup">
-        <div class="row col-xl-12 col-md-12 col-s-12">
+        <div class="row col-xl-12 col-md-12 col-s-12" #topElement>
           <div class=" col-lg-6 col-md-6 col-sm-6">
 
             <b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
               Orders Item</b>
-            <!-- <li *ngFor="let item of dataItem; [value]="item.value">
-              {{i}}{{item.name}}
-            </li> -->
+            <div *ngIf="dataItem" style="white-space: pre;min-height:50px;">
+              {{items}}
+            </div>
+
 
           </div>
           <div class=" col-lg-6 col-md-6 col-sm-6">
             <mat-form-field>
-                          <mat-select placeholder="Status" formControlName="carrier_name">
-                            <mat-option *ngFor="let item of userStatus" [value]="item.value">
-                              {{item.viewValue}}  
-                            </mat-option>
-                          </mat-select>
-                          <mat-error *ngIf="deliveryGroup.controls['user_status'].touched && deliveryGroup.controls['user_status'].errors?.required">
-                              <strong> Status is required</strong></mat-error>
-                        </mat-form-field>
+              <mat-select placeholder="Select Carrier to Deliver" formControlName="carrier_name">
+                <mat-option *ngFor="let item of carrier" [value]="item.value">
+                  {{item.viewValue}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="deliveryGroup.controls['carrier_name'].touched && 
+                          deliveryGroup.controls['carrier_name'].errors?.required">
+                <strong> Carrier is required</strong></mat-error>
+            </mat-form-field>
           </div>
         </div>
       </form>
       <hr>
-      <div class="row">
-        <div><button mat-button (click)="close()"><label class="btn btn-label-danger">Close</label></button></div>
-        <div><button mat-button (click)="assign()"><label class="btn btn-label-success">Assign</label></button></div>
+      <div class="row d-flex justify-content-between">
+        <div class=""></div>
+        <div class="ml-5">
+          <button mat-button (click)="close()"><label class="btn btn-label-danger">Close</label></button>
+          <button mat-button (click)="assign()"><label class="btn btn-label-success">Assign</label></button></div>
       </div>
     </kt-portlet-body>
   </kt-portlet>

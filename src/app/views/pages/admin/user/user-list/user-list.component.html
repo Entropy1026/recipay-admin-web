@@ -21,7 +21,10 @@
       </div>
       <div>
         <hr>
-        <div><button mat-icon-button (click)="closeInfo()"><label class="btn btn-label-primary">Close</label></button></div>
+        <div class="d-flex justify-content-between">
+         <div></div> 
+        <div class="ml-5 mr-1"><button mat-icon-button (click)="closeInfo()"><label class="btn btn-label-primary">Close</label></button></div>
+       </div>
       </div>
     </kt-portlet-body>
   </kt-portlet>
@@ -100,9 +103,11 @@
             </div>
             </form>
             <hr>
-            <div class = "row">
-              <div><button mat-button (click)="closeAdd()"><label class="btn btn-label-danger">Close</label></button></div>
-              <div><button mat-button (click)="submit()"><label class="btn btn-label-success">Submit</label></button></div>
+            <div class = "row d-flex justify-content-between">
+              <div></div>
+              <div class="ml-5">
+                  <button mat-button (click)="closeAdd()"><label class="btn btn-label-danger">Close</label></button>
+                <button mat-button (click)="submit()"><label class="btn btn-label-success">Submit</label></button></div>
             </div>
       </kt-portlet-body>
   </kt-portlet>
