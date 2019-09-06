@@ -11,6 +11,7 @@ import { PartialsModule } from '../../../partials/partials.module';
 import { CoreModule } from '../../../../core/core.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { OrderPreparationComponent } from './order-preparation/order-preparation.component';
 
 const routes: Routes = [
   {
@@ -19,9 +20,15 @@ const routes: Routes = [
     }
   ]
   }
+  ,{
+    path: 'preparation', component: OrderPreparationComponent, children: [{
+      path: 'preparation', component: OrderPreparationComponent,
+    }],
+      
+  }
 ];
 @NgModule({
-  declarations: [OrderComponent, OrderlistComponent],
+  declarations: [OrderComponent, OrderlistComponent, OrderPreparationComponent],
   imports: [
     CommonModule,
     SharedModule,

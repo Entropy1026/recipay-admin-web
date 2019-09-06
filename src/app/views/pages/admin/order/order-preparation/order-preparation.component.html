@@ -1,3 +1,39 @@
+<div *ngIf="assignCarrier">
+  <kt-portlet>
+    <kt-portlet-header [title]="'info'"></kt-portlet-header>
+    <kt-portlet-body>
+      <form [formGroup]="deliveryGroup">
+        <div class="row col-xl-12 col-md-12 col-s-12">
+          <div class=" col-lg-6 col-md-6 col-sm-6">
+
+            <b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+              Orders Item</b>
+            <!-- <li *ngFor="let item of dataItem; [value]="item.value">
+              {{i}}{{item.name}}
+            </li> -->
+
+          </div>
+          <div class=" col-lg-6 col-md-6 col-sm-6">
+            <mat-form-field>
+                          <mat-select placeholder="Status" formControlName="carrier_name">
+                            <mat-option *ngFor="let item of userStatus" [value]="item.value">
+                              {{item.viewValue}}  
+                            </mat-option>
+                          </mat-select>
+                          <mat-error *ngIf="deliveryGroup.controls['user_status'].touched && deliveryGroup.controls['user_status'].errors?.required">
+                              <strong> Status is required</strong></mat-error>
+                        </mat-form-field>
+          </div>
+        </div>
+      </form>
+      <hr>
+      <div class="row">
+        <div><button mat-button (click)="close()"><label class="btn btn-label-danger">Close</label></button></div>
+        <div><button mat-button (click)="assign()"><label class="btn btn-label-success">Assign</label></button></div>
+      </div>
+    </kt-portlet-body>
+  </kt-portlet>
+</div>
 <div class="col-xl-12">
   <kt-portlet [class]="'kt-portlet--height-fluid'">
     <kt-portlet-body>
@@ -8,7 +44,7 @@
         </div>
         <div class="col-6 d-flex justify-content-end">
           <!-- <button class="btn btn-success btn-sm" type="button" (click)="launchNew()"> <i class="fa fa-plus mr-1"></i>
-            Profile</button> -->
+              Profile</button> -->
         </div>
       </div>
 
@@ -36,16 +72,16 @@
             </mat-cell>
           </ng-container>
           <!-- <ng-container matColumnDef="items">
-            <mat-header-cell *matHeaderCellDef> ITEMS </mat-header-cell>
-            <mat-cell *matCellDef="let data">
-              <label class="btn btn-label-danger">check</label>
-            </mat-cell>
-          </ng-container> -->
+              <mat-header-cell *matHeaderCellDef> ITEMS </mat-header-cell>
+              <mat-cell *matCellDef="let data">
+                <label class="btn btn-label-danger">check</label>
+              </mat-cell>
+            </ng-container> -->
           <ng-container matColumnDef="billingInfo">
             <mat-header-cell *matHeaderCellDef> BILLING-INFO </mat-header-cell>
             <mat-cell *matCellDef="let data">
-             {{data.billinginfo[0].Address}}
-             {{data.billinginfo[0].City}}
+              {{data.billinginfo[0].Address}}
+              {{data.billinginfo[0].City}}
               <!-- {{data.payment_type}} -->
             </mat-cell>
           </ng-container>
@@ -73,17 +109,14 @@
               {{data.status}}
             </mat-cell>
           </ng-container>
-          
+
           <!-- Action Column -->
           <ng-container matColumnDef="action">
             <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
             <mat-cell *matCellDef="let data">
               <div class="justify-content-center">
-                <button mat-icon-button color="primary" (click)="update(data.id)">
-                  <mat-icon matTooltip="Complete & Prepair">restaurant</mat-icon>
-                </button>
-                <button mat-icon-button color="warn" (click)="cancel(data.id)">
-                  <mat-icon matTooltip="Cancel this Transaction">restaurant_menu</mat-icon>
+                <button mat-icon-button color="primary" (click)="open(data)">
+                  <mat-icon matTooltip="Show Info & Assign Deliverer">directions_bike</mat-icon>
                 </button>
               </div>
             </mat-cell>
