@@ -10,6 +10,9 @@ export class PageConfig {
 		'order': { 
 			'list': {
 				page: { title: 'Orders waiting confirmation', desc: '' },
+			},
+			'preparation': {
+				page: { title: 'Orders for preparation', desc: '' },
 			}
 		},
 		'menu': { 

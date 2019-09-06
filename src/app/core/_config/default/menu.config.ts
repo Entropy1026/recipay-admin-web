@@ -50,7 +50,12 @@ export class MenuConfig {
 						{
 							title: 'List',
 							page: 'order/list'
+						},
+						{
+							title: 'Preparation',
+							page: 'order/preparation'
 						}
+
 					] 
 				},
 				{

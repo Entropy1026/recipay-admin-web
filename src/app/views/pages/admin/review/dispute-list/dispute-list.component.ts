@@ -19,6 +19,10 @@ export class DisputeListComponent implements OnInit {
     displayedColumns: any = ['id','from','message','date','action'];
     dataSource: MatTableDataSource<BaseModel>;
     deviceInfo = null;
+    respond = false;
+    id = 0;
+    user ="";
+    disGroup: FormGroup;
     pages: any;
     @ViewChild(MatPaginator) paginator: MatPaginator;
     constructor(private disService: DisputeService, private modalService: NgbModal,
@@ -32,6 +36,12 @@ export class DisputeListComponent implements OnInit {
     }
   
     ngOnInit() {
+      this.disGroup = this.fb.group({
+        message: ['Thankyou for your dispute report we will review this report and come back to you asap.', Validators.compose([
+          Validators.required
+        ])
+        ]
+      });
       this.fetchdata();
     }
     fetchdata() {
@@ -51,7 +61,79 @@ export class DisputeListComponent implements OnInit {
         }
       );
     }
+  reply(id:any , user:any){
+  this.respond=true;
+  this.id = id;
+  this.user = user;
+  this.toastr.info(id);
   
+  }
+   delete(id:any){
+      this.blockUI.start('Loading'); // Start blocking
+      this.disService.delete(id).subscribe(
+        dispute => {
+          this.toastr.info(dispute.message);
+        },
+        err => {
+          this.blockUI.stop();
+        },
+        () => {
+          this.disService.fetchAll().subscribe(
+            dispute => {
+              this.dataSource = new MatTableDataSource<BaseModel>(dispute.data);
+              // console.log(dispute.data);
+              this.dataSource.paginator = this.paginator;
+              // this.toastr.info(dispute.message);
+            },
+            err => {
+              this.blockUI.stop();
+            },
+            () => {
+              this.blockUI.stop();
+            }
+          );
+        }
+      );
+   }
+   submit(){
+    const controls = this.disGroup.controls;
+
+    // check form
+    if (this.disGroup.invalid) {
+      Object.keys(controls).forEach(controlName =>
+        controls[controlName].markAsTouched()
+      );
+      return;
+    }
+    this.blockUI.start('Loading'); // Start blocking
+    this.disService.sendresponse(this.id,this.user,controls).subscribe((response) => {
+    this.toastr.info(response.message);
+    },
+      err => {
+        this.blockUI.stop();
+      },
+      () => {
+        this.disService.fetchAll().subscribe(
+          ads => {
+            this.dataSource = new MatTableDataSource<BaseModel>(ads.data);
+            console.log(ads.data);
+            this.dataSource.paginator = this.paginator;
+  
+          },
+          err => {
+            this.blockUI.stop();
+          },
+          () => {
+            // this.blockUI.stop();
+          }
+        );
+        this.blockUI.stop();
+        this.id = null;
+        this.user = null;
+        this.respond = false;
+      }
+    );
+   }
   }
   
 

@@ -1,3 +1,36 @@
+<div *ngIf="addMenu">
+    <kt-portlet>
+      <kt-portlet-header [title]="'add/edit menu'"></kt-portlet-header>
+        <kt-portlet-body>
+            <form [formGroup]="menuGroup">
+                <div class="row col-xl-12 col-md-12 col-s-12">
+                  <div class=" col-lg-12 col-md-12 col-sm-12">
+                      <mat-form-field class="col-12">
+                          <mat-label>Name</mat-label>
+                          <input matInput type="text" placeholder="Name" formControlName="name" />
+                          <mat-error *ngIf="menuGroup.controls['name'].touched && menuGroup.controls['name'].errors?.required">
+                            <strong>Name is required</strong>
+                          </mat-error>
+                        </mat-form-field>
+                    <mat-form-field class="col-12">
+                      <mat-label>Description</mat-label>
+                      <input matInput type="text" placeholder="Description" formControlName="description" />
+                      <mat-error *ngIf="menuGroup.controls['description'].touched && menuGroup.controls['description'].errors?.required">
+                        <strong>Description is required</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  </div>
+              </form>
+              <hr>
+              <div class="row">
+                <div><button mat-button (click)="close()"><label class="btn btn-label-danger">Close</label></button></div>
+                <div><button mat-button (click)="submit()"><label class="btn btn-label-success">Submit</label></button></div>
+              </div>
+        </kt-portlet-body>
+    </kt-portlet>
+</div>
+
 <div class="col-xl-12">
   <kt-portlet [class]="'kt-portlet--height-fluid'">
     <kt-portlet-body>
@@ -6,7 +39,7 @@
       </mat-form-field>
       <div class="row">
         <div class="col-6 d-flex justify-content-start">
-          <button class="btn btn-success btn-sm" type="button" (click)="addMenu()"><i
+          <button class="btn btn-success btn-sm" type="button" (click)="add()"><i
               class="flaticon flaticon-refresh mr-1"></i>Add Menu</button>
         </div>
         <div class="col-6 d-flex justify-content-end">
@@ -50,10 +83,10 @@
             <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
             <mat-cell *matCellDef="let data">
               <div class="justify-content-center">
-                <button mat-icon-button color="primary">
+                <button mat-icon-button color="primary" (click)="edit(data.id,data)">
                   <mat-icon matTooltip="Edit | Update ">edit</mat-icon>
                 </button>
-                <button mat-icon-button color="warn">
+                <button mat-icon-button color="warn" (click)="delete(data.id)">
                   <mat-icon matTooltip="Delete Menu">delete</mat-icon>
                 </button>
               </div>

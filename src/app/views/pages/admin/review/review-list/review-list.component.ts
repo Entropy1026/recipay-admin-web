@@ -20,6 +20,12 @@ export class ReviewListComponent implements OnInit {
   dataSource: MatTableDataSource<BaseModel>;
   deviceInfo = null;
   pages: any;
+  respond = false;
+  id = 0;
+  user ="";
+  comments = false;
+  reviewGroup: FormGroup;
+  review1Group: FormGroup;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(private reviewService: ReviewService, private modalService: NgbModal,
     private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,
@@ -32,8 +38,41 @@ export class ReviewListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.reviewGroup = this.fb.group({
+      message: ['Thankyou for making reviews on your purchased.', Validators.compose([
+        Validators.required
+      ])
+      ]
+    });
+    this.review1Group = this.fb.group({
+      comment: ['this comment is modified because it contains bad words.', Validators.compose([
+        Validators.required
+      ])
+      ]
+    });
+    // this.review1Group = this.fb.group({
+    //   comment: ['this comment contains bad words -modified- .', Validators.compose([
+    //     Validators.required
+    //   ])
+    //   ]
+    // });
     this.fetchdata();
   }
+  close(){
+    this.comments=false;
+    this.respond=false;
+  }
+  reply(id:any , user:any){
+    this.respond=true;
+    this.id = id;
+    this.user = user; 
+    this.comments=false;
+    }
+    edit(id:any){
+      this.comments=true;
+      this.respond=false;
+      this.id = id;
+      }
   fetchdata() {
     this.blockUI.start('Loading'); // Start blocking
     this.reviewService.fetchAll().subscribe(
@@ -51,5 +90,108 @@ export class ReviewListComponent implements OnInit {
       }
     );
   }
+  delete(id:any){
+    this.blockUI.start('Loading'); // Start blocking
+    this.reviewService.delete(id).subscribe(
+      review => {
+        this.toastr.info(review.message);
+      },
+      err => {
+        this.blockUI.stop();
+      },
+      () => {
+        this.reviewService.fetchAll().subscribe(
+          review => {
+            this.dataSource = new MatTableDataSource<BaseModel>(review.data);
+            // console.log(dispute.data);
+            this.dataSource.paginator = this.paginator;
+            // this.toastr.info(dispute.message);
+          },
+          err => {
+            this.blockUI.stop();
+          },
+          () => {
+            this.blockUI.stop();
+          }
+        );
+      }
+    );
+ }
+ update(){
+  const controls = this.review1Group.controls;
 
+  // check form
+  if (this.review1Group.invalid) {
+    Object.keys(controls).forEach(controlName =>
+      controls[controlName].markAsTouched()
+    );
+    return;
+  }
+  this.blockUI.start('Loading'); // Start blocking
+  this.reviewService.updateComment(this.id,controls).subscribe((response) => {
+  this.toastr.info(response.message);
+  },
+    err => {
+      this.blockUI.stop();
+    },
+    () => {
+      this.reviewService.fetchAll().subscribe(
+        rev => {
+          this.dataSource = new MatTableDataSource<BaseModel>(rev.data);
+          console.log(rev.data);
+          this.dataSource.paginator = this.paginator;
+
+        },
+        err => {
+          this.blockUI.stop();
+        },
+        () => {
+          // this.blockUI.stop();
+        }
+      );
+      this.blockUI.stop();
+      this.id = null;
+      this.comments = false;
+    }
+  );
+ }
+ submit(){
+  const controls = this.reviewGroup.controls;
+
+  // check form
+  if (this.reviewGroup.invalid) {
+    Object.keys(controls).forEach(controlName =>
+      controls[controlName].markAsTouched()
+    );
+    return;
+  }
+  this.blockUI.start('Loading'); // Start blocking
+  this.reviewService.sendresponse(this.id,this.user,controls).subscribe((response) => {
+  this.toastr.info(response.message);
+  },
+    err => {
+      this.blockUI.stop();
+    },
+    () => {
+      this.reviewService.fetchAll().subscribe(
+        ads => {
+          this.dataSource = new MatTableDataSource<BaseModel>(ads.data);
+          console.log(ads.data);
+          this.dataSource.paginator = this.paginator;
+
+        },
+        err => {
+          this.blockUI.stop();
+        },
+        () => {
+          // this.blockUI.stop();
+        }
+      );
+      this.blockUI.stop();
+      this.id = null;
+      this.user = null;
+      this.respond = false;
+    }
+  );
+ }
 }

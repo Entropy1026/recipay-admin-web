@@ -1,8 +1,36 @@
+
+<div *ngIf="respond">
+  <kt-portlet>
+    <kt-portlet-header [title]="'send response'"></kt-portlet-header>
+      <kt-portlet-body>
+          <form [formGroup]="disGroup">
+              <div class="row col-xl-12 col-md-12 col-s-12">
+                <div class=" col-lg-12 col-md-12 col-sm-12">
+                  <mat-form-field class="col-12">
+                    <mat-label>Message</mat-label>
+                    <input matInput type="text" placeholder="Message" formControlName="message" />
+                    <mat-error *ngIf="disGroup.controls['message'].touched && disGroup.controls['message'].errors?.required">
+                      <strong>Message is required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                </div>
+            </form>
+            <hr>
+            <div class="row">
+              <div><button mat-button (click)="close()"><label class="btn btn-label-danger">Close</label></button></div>
+              <div><button mat-button (click)="submit()"><label class="btn btn-label-success">Send</label></button></div>
+            </div>
+      </kt-portlet-body>
+  </kt-portlet>
+  
+
+</div>
 <div class="col-xl-12">
   <kt-portlet [class]="'kt-portlet--height-fluid'">
     <kt-portlet-body>
         <mat-form-field>
-            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Reviews here ..">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Dispute here ..">
       </mat-form-field>
       <div class="row">
         <!-- <div class="col-6 d-flex justify-content-start">
@@ -50,14 +78,10 @@
             <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
             <mat-cell *matCellDef="let data">
               <div class="justify-content-center">
-                <button mat-icon-button color="primary">
+                <button mat-icon-button color="primary" (click)="reply(data.id,data.from)">
                   <mat-icon matTooltip="Reply">send</mat-icon>
                 </button>
-              </div>
-            </mat-cell>
-            <mat-cell *matCellDef="let data">
-              <div class="justify-content-center">
-                <button mat-icon-button color="warn">
+                <button mat-icon-button color="warn" (click)="delete(data.id)">
                   <mat-icon matTooltip="Delete">delete</mat-icon>
                 </button>
               </div>

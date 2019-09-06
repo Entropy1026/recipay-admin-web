@@ -17,7 +17,22 @@ export class DisputeService {
     throwUp(value: boolean): Observable<boolean> {
         return throwError(new Error('COULD NOT UPDATE FAM!'));
     }
-
+    public delete(id:any) {
+        let params = {
+            id: id,
+        };
+        return this._api.post('admin/dispute/delete', params)
+            .pipe(catchError((err) => this._api.handleError(err)));
+    }
+    public sendresponse(id:any,user:any,controls:any) {
+        let params = {
+            id: id,
+            username:user ,
+            message:controls.message.value
+        };
+        return this._api.post('admin/dispute/disputeResponse', params)
+            .pipe(catchError((err) => this._api.handleError(err)));
+    }
     // public toggleBooking(companyid: string, status: boolean, field: string) {
     //     let params = {
     //         companyId: companyid,

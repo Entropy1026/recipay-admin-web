@@ -17,7 +17,22 @@ export class MenuService {
     throwUp(value: boolean): Observable<boolean> {
         return throwError(new Error('COULD NOT UPDATE FAM!'));
     }
-
+    public addupdate(id:any,controls:any) {
+        let params = {
+            id: id,
+            name:controls.name.value ,
+            desc:controls.description.value
+        };
+        return this._api.post('admin/product/category/addCategory', params)
+            .pipe(catchError((err) => this._api.handleError(err)));
+    }
+    public delete(id:any) {
+        let params = {
+            id: id,
+        };
+        return this._api.post('admin/product/category/deleteCategory', params)
+            .pipe(catchError((err) => this._api.handleError(err)));
+    }
     // public toggleBooking(companyid: string, status: boolean, field: string) {
     //     let params = {
     //         companyId: companyid,
