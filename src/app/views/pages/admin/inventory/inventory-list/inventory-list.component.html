@@ -1,3 +1,19 @@
+<div *ngIf="addrecipe">
+  <kt-portlet>
+    <kt-portlet-header [title]="'add/edit'"></kt-portlet-header>
+      <kt-portlet-body>
+        <div class="row">
+           <div>
+              <img id="product" [src]="image" *ngIf="image" alt="asdsadsad">
+              <h6 class="card-title">Select a file for product:</h6>
+              <input type="file" (change)="upload($event)" accept=".png,.jpg" />
+           </div>
+        </div>
+      </kt-portlet-body>
+  </kt-portlet>
+
+   
+</div>
 <div class="col-xl-12">
   <kt-portlet [class]="'kt-portlet--height-fluid'">
     <kt-portlet-body>
@@ -6,7 +22,7 @@
       </mat-form-field>
       <div class="row">
         <div class="col-6 d-flex justify-content-start">
-          <button class="btn btn-success btn-sm" type="button" (click)="addMenu()"><i
+          <button class="btn btn-success btn-sm" type="button" (click)="openRecipe()"><i
               class="flaticon flaticon-refresh mr-1"></i>Add Item</button>
         </div>
         <div class="col-6 d-flex justify-content-end">

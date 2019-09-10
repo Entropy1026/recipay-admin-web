@@ -12,6 +12,8 @@ import { CoreModule } from '../../../../core/core.module';
 import { PartialsModule } from '../../../partials/partials.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireStorageModule } from 'angularfire2/storage';
 
 const routes: Routes = [
   {
@@ -30,7 +32,14 @@ const routes: Routes = [
     PartialsModule,
     CoreModule,
     NgbModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    AngularFireModule.initializeApp({
+      apiKey: "AIzaSyBPVjsxZ_7zFEKrl4B4yh79-7TvkzpByac",
+      authDomain: "recipaymobile.firebaseapp.com",
+      storageBucket: "recipaymobile.appspot.com",
+      projectId: "recipaymobile",
+    }),
+    AngularFireStorageModule
   ],
   providers:[ToastrService,InventoryService,ConfirmDialogService,DeviceDetectorService]
 })
