@@ -22,6 +22,7 @@ export class DisputeListComponent implements OnInit {
     respond = false;
     id = 0;
     user ="";
+    selected = 'all';
     disGroup: FormGroup;
     pages: any;
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -44,9 +45,34 @@ export class DisputeListComponent implements OnInit {
       });
       this.fetchdata();
     }
+    changeselect(choice:any){
+      if(choice=="all"){
+        this.fetchdata();
+      }
+      else{
+      this.fetchselected(choice);
+      }
+    }
     fetchdata() {
       this.blockUI.start('Loading'); // Start blocking
       this.disService.fetchAll().subscribe(
+        dispute => {
+          this.dataSource = new MatTableDataSource<BaseModel>(dispute.data);
+          console.log(dispute.data);
+          this.dataSource.paginator = this.paginator;
+          this.toastr.info(dispute.message);
+        },
+        err => {
+          this.blockUI.stop();
+        },
+        () => {
+          this.blockUI.stop();
+        }
+      );
+    }
+    fetchselected(choice:any) {
+      this.blockUI.start('Loading'); // Start blocking
+      this.disService.fetchselected(choice).subscribe(
         dispute => {
           this.dataSource = new MatTableDataSource<BaseModel>(dispute.data);
           console.log(dispute.data);

@@ -1,52 +1,54 @@
 <div *ngIf="respond">
-    <kt-portlet>
-      <kt-portlet-header [title]="'send response'"></kt-portlet-header>
-        <kt-portlet-body>
-            <form [formGroup]="reviewGroup">
-                <div class="row col-xl-12 col-md-12 col-s-12">
-                  <div class=" col-lg-12 col-md-12 col-sm-12">
-                    <mat-form-field class="col-12">
-                      <mat-label>Message</mat-label>
-                      <input matInput type="text" placeholder="Message" formControlName="message" />
-                      <mat-error *ngIf="reviewGroup.controls['message'].touched && reviewGroup.controls['message'].errors?.required">
-                        <strong>Message is required</strong>
-                      </mat-error>
-                    </mat-form-field>
-                  </div>
-                  </div>
-              </form>
-              <hr>
-              <div class="row d-flex justify-content-end">
-                <div><button mat-button (click)="close()"><label class="btn btn-label-danger">Close</label></button></div>
-                <div><button mat-button (click)="submit()"><label class="btn btn-label-success">Send</label></button></div>
-              </div>
-        </kt-portlet-body>
-    </kt-portlet>
-  </div>
-  <div *ngIf="comments">
-      <kt-portlet>
-        <kt-portlet-header [title]="'update comment'"></kt-portlet-header>
-          <kt-portlet-body>
-              <form [formGroup]="review1Group">
-                  <div class="row col-xl-12 col-md-12 col-s-12">
-                    <div class=" col-lg-12 col-md-12 col-sm-12">
-                      <mat-form-field class="col-12">
-                        <mat-label>comment</mat-label>
-                        <input matInput type="text" placeholder="Comment" formControlName="comment" />
-                        <mat-error *ngIf="review1Group.controls['comment'].touched && review1Group.controls['comment'].errors?.required">
-                          <strong>comment is required</strong>
-                        </mat-error>
-                      </mat-form-field>
-                    </div>
-                    </div>
-                </form>
-                <hr>
-                <div class="row d-flex justify-content-end">
-                  <div><button mat-button (click)="close()"><label class="btn btn-label-danger">Close</label></button></div>
-                  <div><button mat-button (click)="update()"><label class="btn btn-label-success">Update</label></button></div>
-                </div>
-          </kt-portlet-body>
-      </kt-portlet>
+  <kt-portlet>
+    <kt-portlet-header [title]="'send response'"></kt-portlet-header>
+    <kt-portlet-body>
+      <form [formGroup]="reviewGroup">
+        <div class="row col-xl-12 col-md-12 col-s-12">
+          <div class=" col-lg-12 col-md-12 col-sm-12">
+            <mat-form-field class="col-12">
+              <mat-label>Message</mat-label>
+              <input matInput type="text" placeholder="Message" formControlName="message" />
+              <mat-error
+                *ngIf="reviewGroup.controls['message'].touched && reviewGroup.controls['message'].errors?.required">
+                <strong>Message is required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+      <hr>
+      <div class="row d-flex justify-content-end">
+        <div><button mat-button (click)="close()"><label class="btn btn-label-danger">Close</label></button></div>
+        <div><button mat-button (click)="submit()"><label class="btn btn-label-success">Send</label></button></div>
+      </div>
+    </kt-portlet-body>
+  </kt-portlet>
+</div>
+<div *ngIf="comments">
+  <kt-portlet>
+    <kt-portlet-header [title]="'update comment'"></kt-portlet-header>
+    <kt-portlet-body>
+      <form [formGroup]="review1Group">
+        <div class="row col-xl-12 col-md-12 col-s-12">
+          <div class=" col-lg-12 col-md-12 col-sm-12">
+            <mat-form-field class="col-12">
+              <mat-label>comment</mat-label>
+              <input matInput type="text" placeholder="Comment" formControlName="comment" />
+              <mat-error
+                *ngIf="review1Group.controls['comment'].touched && review1Group.controls['comment'].errors?.required">
+                <strong>comment is required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+      <hr>
+      <div class="row d-flex justify-content-end">
+        <div><button mat-button (click)="close()"><label class="btn btn-label-danger">Close</label></button></div>
+        <div><button mat-button (click)="update()"><label class="btn btn-label-success">Update</label></button></div>
+      </div>
+    </kt-portlet-body>
+  </kt-portlet>
 </div>
 <div class="col-xl-12">
   <kt-portlet [class]="'kt-portlet--height-fluid'">
@@ -54,11 +56,15 @@
       <mat-form-field>
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Reviews here ..">
       </mat-form-field>
-      <div class="row">
-        <!-- <div class="col-6 d-flex justify-content-start">
-            <button class="btn btn-success btn-sm" type="button" (click)="addMenu()"><i
-                class="flaticon flaticon-refresh mr-1"></i>Add Menu</button>
-          </div> -->
+      <div class="row resize">
+        <mat-form-field class="setsize" >
+          <mat-label>--select--</mat-label>
+          <mat-select [(value)]="selected" (selectionChange)="changeselect(selected)">
+            <mat-option value="all">All</mat-option>
+            <mat-option value="readed">Replied</mat-option>
+            <mat-option value="not readed">Unreplied</mat-option>
+          </mat-select>
+        </mat-form-field>
         <div class="col-6 d-flex justify-content-end">
           <!-- <button class="btn btn-success btn-sm" type="button" (click)="launchNew()"> <i class="fa fa-plus mr-1"></i>
               Profile</button> -->
@@ -112,12 +118,12 @@
             <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
             <mat-cell *matCellDef="let data">
               <div class="justify-content-center">
-                <button mat-icon-button color="primary" (click)="reply(data.id,data.user)">
+                <button mat-icon-button color="primary" *ngIf="data.status != 'readed'" (click)="reply(data.id,data.user)">
                   <mat-icon matTooltip="Reply">send</mat-icon>
                 </button>
                 <button mat-icon-button color="primary" (click)="edit(data.id)">
-                    <mat-icon matTooltip="Update | Edit">edit</mat-icon>
-                  </button>
+                  <mat-icon matTooltip="Update | Edit">edit</mat-icon>
+                </button>
                 <button mat-icon-button color="warn" (click)="delete(data.id)">
                   <mat-icon matTooltip="Delete Menu">delete</mat-icon>
                 </button>

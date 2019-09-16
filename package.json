@@ -56,6 +56,7 @@
     "ngx-perfect-scrollbar": "^7.2.1",
     "ngx-permissions": "^6.0.5",
     "ngx-toastr": "^10.0.4",
+    "node-sass": "^4.12.0",
     "object-path": "^0.11.4",
     "rxjs": "^6.3.3",
     "rxjs-compat": "^6.5.3",

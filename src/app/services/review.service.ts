@@ -13,7 +13,13 @@ export class ReviewService {
         return this._api.get('admin/products/fetchallRating')
             .pipe(catchError((err) => this._api.handleError(err)));
     }
-
+    public fetchselected(choice:any) {
+        let params = {
+            status: choice
+        };
+        return this._api.post('admin/products/selectedRating', params)
+            .pipe(catchError((err) => this._api.handleError(err)));
+    }
     throwUp(value: boolean): Observable<boolean> {
         return throwError(new Error('COULD NOT UPDATE FAM!'));
     }

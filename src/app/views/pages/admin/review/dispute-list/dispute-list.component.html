@@ -32,14 +32,18 @@
         <mat-form-field>
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Dispute here ..">
       </mat-form-field>
-      <div class="row">
-        <!-- <div class="col-6 d-flex justify-content-start">
-          <button class="btn btn-success btn-sm" type="button" (click)="addMenu()"><i
-              class="flaticon flaticon-refresh mr-1"></i>Add Menu</button>
-        </div> -->
+      <div class="row resize">
+        <mat-form-field class="setsize" >
+          <mat-label>--select--</mat-label>
+          <mat-select [(value)]="selected" (selectionChange)="changeselect(selected)">
+            <mat-option value="all">All</mat-option>
+            <mat-option value="readed">Replied</mat-option>
+            <mat-option value="not readed">Unreplied</mat-option>
+          </mat-select>
+        </mat-form-field>
         <div class="col-6 d-flex justify-content-end">
           <!-- <button class="btn btn-success btn-sm" type="button" (click)="launchNew()"> <i class="fa fa-plus mr-1"></i>
-            Profile</button> -->
+              Profile</button> -->
         </div>
       </div>
 
@@ -78,7 +82,7 @@
             <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
             <mat-cell *matCellDef="let data">
               <div class="justify-content-center">
-                <button mat-icon-button color="primary" (click)="reply(data.id,data.from)">
+                <button mat-icon-button color="primary" *ngIf="data.status != 'readed'"(click)="reply(data.id,data.from)">
                   <mat-icon matTooltip="Reply">send</mat-icon>
                 </button>
                 <button mat-icon-button color="warn" (click)="delete(data.id)">

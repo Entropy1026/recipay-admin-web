@@ -17,6 +17,13 @@ export class DisputeService {
     throwUp(value: boolean): Observable<boolean> {
         return throwError(new Error('COULD NOT UPDATE FAM!'));
     }
+    public fetchselected(choice:any) {
+        let params = {
+            status: choice
+        };
+        return this._api.post('admin/dispute/selectedDispute', params)
+            .pipe(catchError((err) => this._api.handleError(err)));
+    }
     public delete(id:any) {
         let params = {
             id: id,

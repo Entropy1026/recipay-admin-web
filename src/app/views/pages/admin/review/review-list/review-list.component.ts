@@ -16,27 +16,35 @@ import { ReviewService } from '../../../../../services/review.service';
 })
 export class ReviewListComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
-  displayedColumns: any = ['id','user','product','rating','comment','date','action'];
+  displayedColumns: any = ['id', 'user', 'product', 'rating', 'comment', 'date', 'action'];
+  selected = 'all';
   dataSource: MatTableDataSource<BaseModel>;
   deviceInfo = null;
   pages: any;
   respond = false;
   id = 0;
-  user ="";
+  user = "";
   comments = false;
   reviewGroup: FormGroup;
   review1Group: FormGroup;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(private reviewService: ReviewService, private modalService: NgbModal,
     private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,
-    private deviceService: DeviceDetectorService,private fb: FormBuilder) {
+    private deviceService: DeviceDetectorService, private fb: FormBuilder) {
 
   }
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-
+ changeselect(choice:any){
+   if(choice=="all"){
+     this.fetchdata();
+   }
+   else{
+   this.fetchselected(choice);
+   }
+ }
   ngOnInit() {
     this.reviewGroup = this.fb.group({
       message: ['Thankyou for making reviews on your purchased.', Validators.compose([
@@ -58,21 +66,23 @@ export class ReviewListComponent implements OnInit {
     // });
     this.fetchdata();
   }
-  close(){
-    this.comments=false;
-    this.respond=false;
+  close() {
+    this.comments = false;
+    this.respond = false;
   }
-  reply(id:any , user:any){
-    this.respond=true;
+  reply(id: any, user: any) {
+    this.respond = true;
     this.id = id;
-    this.user = user; 
-    this.comments=false;
-    }
-    edit(id:any){
-      this.comments=true;
-      this.respond=false;
-      this.id = id;
-      }
+    this.user = user;
+    this.comments = false;
+  }
+  edit(id: any) {
+    this.toastr.info(id);
+    this.comments = true;
+    this.respond = false;
+    this.id = id;
+
+  }
   fetchdata() {
     this.blockUI.start('Loading'); // Start blocking
     this.reviewService.fetchAll().subscribe(
@@ -90,7 +100,24 @@ export class ReviewListComponent implements OnInit {
       }
     );
   }
-  delete(id:any){
+  fetchselected(choice:any) {
+    this.blockUI.start('Loading'); // Start blocking
+    this.reviewService.fetchselected(choice).subscribe(
+      reviews => {
+        this.dataSource = new MatTableDataSource<BaseModel>(reviews.data);
+        console.log(reviews.data);
+        this.dataSource.paginator = this.paginator;
+        this.toastr.info(reviews.message);
+      },
+      err => {
+        this.blockUI.stop();
+      },
+      () => {
+        this.blockUI.stop();
+      }
+    );
+  }
+  delete(id: any) {
     this.blockUI.start('Loading'); // Start blocking
     this.reviewService.delete(id).subscribe(
       review => {
@@ -116,82 +143,82 @@ export class ReviewListComponent implements OnInit {
         );
       }
     );
- }
- update(){
-  const controls = this.review1Group.controls;
-
-  // check form
-  if (this.review1Group.invalid) {
-    Object.keys(controls).forEach(controlName =>
-      controls[controlName].markAsTouched()
-    );
-    return;
   }
-  this.blockUI.start('Loading'); // Start blocking
-  this.reviewService.updateComment(this.id,controls).subscribe((response) => {
-  this.toastr.info(response.message);
-  },
-    err => {
-      this.blockUI.stop();
-    },
-    () => {
-      this.reviewService.fetchAll().subscribe(
-        rev => {
-          this.dataSource = new MatTableDataSource<BaseModel>(rev.data);
-          console.log(rev.data);
-          this.dataSource.paginator = this.paginator;
+  update() {
+    const controls = this.review1Group.controls;
 
-        },
-        err => {
-          this.blockUI.stop();
-        },
-        () => {
-          // this.blockUI.stop();
-        }
+    // check form
+    if (this.review1Group.invalid) {
+      Object.keys(controls).forEach(controlName =>
+        controls[controlName].markAsTouched()
       );
-      this.blockUI.stop();
-      this.id = null;
-      this.comments = false;
+      return;
     }
-  );
- }
- submit(){
-  const controls = this.reviewGroup.controls;
+    this.blockUI.start('Loading'); // Start blocking
+    this.reviewService.updateComment(this.id, controls).subscribe((response) => {
+      this.toastr.info(response.message);
+    },
+      err => {
+        this.blockUI.stop();
+      },
+      () => {
+        this.reviewService.fetchAll().subscribe(
+          rev => {
+            this.dataSource = new MatTableDataSource<BaseModel>(rev.data);
+            console.log(rev.data);
+            this.dataSource.paginator = this.paginator;
 
-  // check form
-  if (this.reviewGroup.invalid) {
-    Object.keys(controls).forEach(controlName =>
-      controls[controlName].markAsTouched()
+          },
+          err => {
+            this.blockUI.stop();
+          },
+          () => {
+            // this.blockUI.stop();
+          }
+        );
+        this.blockUI.stop();
+        this.id = null;
+        this.comments = false;
+      }
     );
-    return;
   }
-  this.blockUI.start('Loading'); // Start blocking
-  this.reviewService.sendresponse(this.id,this.user,controls).subscribe((response) => {
-  this.toastr.info(response.message);
-  },
-    err => {
-      this.blockUI.stop();
-    },
-    () => {
-      this.reviewService.fetchAll().subscribe(
-        ads => {
-          this.dataSource = new MatTableDataSource<BaseModel>(ads.data);
-          console.log(ads.data);
-          this.dataSource.paginator = this.paginator;
+  submit() {
+    const controls = this.reviewGroup.controls;
 
-        },
-        err => {
-          this.blockUI.stop();
-        },
-        () => {
-          // this.blockUI.stop();
-        }
+    // check form
+    if (this.reviewGroup.invalid) {
+      Object.keys(controls).forEach(controlName =>
+        controls[controlName].markAsTouched()
       );
-      this.blockUI.stop();
-      this.id = null;
-      this.user = null;
-      this.respond = false;
+      return;
     }
-  );
- }
+    this.blockUI.start('Loading'); // Start blocking
+    this.reviewService.sendresponse(this.id, this.user, controls).subscribe((response) => {
+      this.toastr.info(response.message);
+    },
+      err => {
+        this.blockUI.stop();
+      },
+      () => {
+        this.reviewService.fetchAll().subscribe(
+          ads => {
+            this.dataSource = new MatTableDataSource<BaseModel>(ads.data);
+            console.log(ads.data);
+            this.dataSource.paginator = this.paginator;
+
+          },
+          err => {
+            this.blockUI.stop();
+          },
+          () => {
+            // this.blockUI.stop();
+          }
+        );
+        this.blockUI.stop();
+        this.id = null;
+        this.user = null;
+        this.respond = false;
+      }
+    );
+  }
 }
