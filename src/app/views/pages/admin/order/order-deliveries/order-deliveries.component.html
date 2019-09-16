@@ -44,21 +44,21 @@
             <ng-container matColumnDef="billingInfo">
               <mat-header-cell *matHeaderCellDef> BILLING-INFO </mat-header-cell>
               <mat-cell *matCellDef="let data">
-                {{data.billinginfo[0].Address}}
-                {{data.billinginfo[0].City}}
+                {{data.billinginfo.Address}}
+                {{data.billinginfo.City}}
                 <!-- {{data.payment_type}} -->
               </mat-cell>
             </ng-container>
             <ng-container matColumnDef="paymentType">
               <mat-header-cell *matHeaderCellDef> PAYMENT-TYPE </mat-header-cell>
               <mat-cell *matCellDef="let data">
-                {{data.payment[0].method}}
+                {{data.payment.method}}
               </mat-cell>
             </ng-container>
             <ng-container matColumnDef="amount">
               <mat-header-cell *matHeaderCellDef> AMOUNT </mat-header-cell>
               <mat-cell *matCellDef="let data">
-                {{data.payment[0].amount}}
+                {{data.payment.amount}}
               </mat-cell>
             </ng-container>
             <ng-container matColumnDef="deliveryDatetime">

@@ -18,14 +18,38 @@ export class InventoryService {
         return throwError(new Error('COULD NOT UPDATE FAM!'));
     }
 
-    // public toggleBooking(companyid: string, status: boolean, field: string) {
-    //     let params = {
-    //         companyId: companyid,
-    //         status: status,
-    //         field: field
-    //     };
-    //     return this._api.post('admin/company/updateBarkotaFlags', params)
-    //         .pipe(catchError((err) => this._api.handleError(err)));
-    // }
+    public delete(id:any) {
+        let params = {
+            id: id,
+        };
+        return this._api.post('admin/products/delete', params)
+            .pipe(catchError((err) => this._api.handleError(err)));
+    }
+    public deleteing(id:any) {
+        let params = {
+            id: id,
+        };
+        return this._api.post('admin/products/deleteIng', params)
+            .pipe(catchError((err) => this._api.handleError(err)));
+    }
+    public add(recipe:any,id:any,controls:any) {
+        let params = {
+            id: id,
+            recipe:recipe,
+            name: controls.name.value,
+            qty: controls.quantity.value,
+            unit: controls.unit.value,
+        };
+        return this._api.post('admin/products/addingredients', params)
+            .pipe(catchError((err) => this._api.handleError(err)));
+    }
+    public ingredients(id:any) {
+        let params = {
+            id: id,
+        };
+        return this._api.post('admin/products/getingredients', params)
+            .pipe(catchError((err) => this._api.handleError(err)));
+    }
+
 
 }

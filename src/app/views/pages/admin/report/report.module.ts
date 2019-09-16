@@ -11,6 +11,7 @@ import { PartialsModule } from '../../../partials/partials.module';
 import { CoreModule } from '../../../../core/core.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { ReportService } from '../../../../services/report.service';
 
 const routes: Routes = [
   {
@@ -32,6 +33,6 @@ const routes: Routes = [
     NgbModule,
     RouterModule.forChild(routes)
   ],
-  providers: [ToastrService ,DeviceDetectorService]
+  providers: [ToastrService ,DeviceDetectorService , ReportService]
 })
 export class ReportModule { }
