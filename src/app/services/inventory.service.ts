@@ -25,6 +25,13 @@ export class InventoryService {
         return this._api.post('admin/products/delete', params)
             .pipe(catchError((err) => this._api.handleError(err)));
     }
+    public replenish(id:any) {
+        let params = {
+            id: id,
+        };
+        return this._api.post('admin/products/replenishProduct', params)
+            .pipe(catchError((err) => this._api.handleError(err)));
+    }
     public deleteing(id:any) {
         let params = {
             id: id,

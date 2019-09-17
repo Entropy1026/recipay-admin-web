@@ -20,7 +20,7 @@ import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask 
 export class InventoryListComponent implements OnInit {
   
   @BlockUI() blockUI: NgBlockUI;
-  displayedColumns: any = ['id','name','pax','price','sold','totalamount','type','action'];
+  displayedColumns: any = ['id','name','pax','price','sold','totalamount','available','replenish','restock','action'];
   displayedColumns2: any = ['name','qty','unit','action'];
   dataSource: MatTableDataSource<BaseModel>;
   dataSource2: MatTableDataSource<BaseModel>;
@@ -30,6 +30,7 @@ export class InventoryListComponent implements OnInit {
   viewIngredients:boolean = false;
   pages: any;
   Unit = [
+    {value: ' ', viewValue: 'none'},
     {value: 'piece', viewValue: 'piece'},
     {value: 'pieces', viewValue: 'pieces'},
     {value: 'lbs', viewValue: 'lbs'},
@@ -44,7 +45,11 @@ export class InventoryListComponent implements OnInit {
   ];
   id=null;
   recipe=null;
+  imagePath:any;
+  imgURL: any;
+  message: string;
   Quantity = [
+    {value: '0.00', viewValue: '0'},
     {value: '1.00', viewValue: '1'},
     {value: '2.00', viewValue: '2'},
     {value: '3.00', viewValue: '3'},
@@ -66,10 +71,11 @@ export class InventoryListComponent implements OnInit {
     {value: '19.00', viewValue: '19'},
     {value: '20.00', viewValue: '20'}
   ];
-  image= "";
+  image:any;
   ref: AngularFireStorageReference;
   task: AngularFireUploadTask;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  inv2Group: FormGroup;
   constructor(private inventoryService: InventoryService, private modalService: NgbModal,
     private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,
     private deviceService: DeviceDetectorService,private fb: FormBuilder,
@@ -80,20 +86,33 @@ export class InventoryListComponent implements OnInit {
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  upload(event) {
-    // const id = Math.random().toString(36).substring(2);
-    // this.ref = this.afStorage.ref(id);
-    // this.task = this.ref.put(event.target.files[0]);
+  // upload(event) {
+  //   // const id = Math.random().toString(36).substring(2);
+  //   // this.ref = this.afStorage.ref(id);
+  //   // this.task = this.ref.put(event.target.files[0]);
+  //   var reader = new FileReader();
+  //   // this.image = event.files;
+  //   reader.readAsDataURL(event.target.files[0]); 
+  //   reader.onload = (_event) => { 
+  //     this.image = reader.result; 
+  //   }
+  // }
+  upload(files) {
+    if (files.length === 0)
+      return;
+ 
+    var mimeType = files[0].type;
+    if (mimeType.match(/image\/*/) == null) {
+      this.message = "Only images are supported.";
+      return;
+    }
+ 
     var reader = new FileReader();
-
-    reader.onload = function (e) {
-        $('#product')
-            .attr('src', event.target.result)
-            .width(150)
-            .height(200);
-    };
-
-    reader.readAsDataURL(event.target.files[0]);
+    this.imagePath = files;
+    reader.readAsDataURL(files[0]); 
+    reader.onload = (_event) => { 
+      this.imgURL = reader.result; 
+    }
   }
    openRecipe(){
    this.addrecipe = true;
@@ -128,6 +147,11 @@ export class InventoryListComponent implements OnInit {
       ],
       unit: [null]
     });
+      this.inv2Group = this.fb.group({
+        name: ['', Validators.compose([
+          Validators.required
+        ])]
+      });
     this.fetchdata();
   }
   ingredientopen(id:any){
@@ -257,6 +281,21 @@ export class InventoryListComponent implements OnInit {
         this.blockUI.stop();
       },
       () => {
+        this.blockUI.stop();
+      }
+    );
+  }
+  replenish(id:any){
+    this.blockUI.start('Loading'); // Start blocking
+    this.inventoryService.replenish(id).subscribe(
+      inv => {
+        this.toastr.info(inv.message);
+      },
+      err => {
+        this.blockUI.stop();
+      },
+      () => {
+        this.fetchdata();
         this.blockUI.stop();
       }
     );

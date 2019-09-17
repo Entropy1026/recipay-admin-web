@@ -1,4 +1,101 @@
 <mat-tab-group>
-  <mat-tab label="Summary"> Content 1 </mat-tab>
-  <mat-tab label="Sales Reports"> Content 2 </mat-tab>
+  <mat-tab label="Sales Reports">
+      <div *ngIf="openinfo">
+          <kt-portlet>
+            <kt-portlet-header [title]="'info'"></kt-portlet-header>
+            <kt-portlet-body>
+
+                <div class="row col-xl-12 col-md-12 col-s-12" #topElement>
+                  <div class=" col-lg-4 col-md-4 col-sm-4">
+        
+                    <b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                      Orders Item</b>
+                    <div *ngIf="dataItem" style="white-space: pre;min-height:50px;">
+                      {{items}}
+                    </div>
+        
+        
+                  </div>
+                  <div class=" col-lg-4 col-md-4 col-sm-4">
+                     <b>Payments & Billing</b><br>
+                     Method: {{method}} <br>
+                     Billing: {{billing}}
+                  </div>
+                  <div class=" col-lg-4 col-md-4 col-sm-4">
+                      <b>Carrier</b><br>
+                      Name: {{carrier}} <br>
+                      <!-- Delivered: {{delivered | date: MMMM-dd-yyyy}} -->
+                   </div>
+                </div>
+              <hr>
+              <div class="row d-flex justify-content-between">
+                <div class=""></div>
+                <div class="ml-5">
+                  <button mat-button (click)="close()"><label class="btn btn-label-danger">Close</label></button>
+              </div>
+              </div>
+            </kt-portlet-body>
+          </kt-portlet>
+        </div>        
+      <div perfectScrollbar [ngStyle]="{'position': 'relative'}"
+        class="mat-table__wrapper mat-table__wrapper--dashboard">
+        <mat-form-field>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Report here ..">
+       </mat-form-field>
+        <mat-table [dataSource]="dataSource" matSort>
+          <!-- Name Column -->
+          <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+              {{data.id}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> USER </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+             {{data.user}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="price">
+            <mat-header-cell *matHeaderCellDef> PRICE </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+                {{data.payment.amount}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="requested">
+            <mat-header-cell *matHeaderCellDef> REQUESTED </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+            {{data.delivery_datetime.date  | date: 'MMMM-dd-yyyy'}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="delivered">
+            <mat-header-cell *matHeaderCellDef> DELIVERED </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+                {{data.delivered.date  | date: 'MMMM-dd-yyyy'}}
+            </mat-cell>
+          </ng-container>
+          <!-- Action Column -->
+          <ng-container matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+               <div class="justify-content-center">
+                <button mat-icon-button color="primary" (click)="showdata(data)">
+                  <mat-icon matTooltip="Show Complete Information">more</mat-icon>
+                </button>
+              </div>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+
+      </div>
+
+  </mat-tab>
+  <mat-tab label="Summary"> 
+      <h5>Total Sales Count : {{sales_count}}</h5><br>
+      <h5>This Month Sales  : PHP {{monthly_sales}}</h5><br>
+      <h5>All Time Sales    : PHP {{total_sales}} </h5><br>
+     </mat-tab>
 </mat-tab-group>

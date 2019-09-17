@@ -3,10 +3,31 @@
     <kt-portlet-header [title]="'add/edit'"></kt-portlet-header>
     <kt-portlet-body>
       <div class="row">
-        <div>
-          <img id="product" [src]="image" *ngIf="image" alt="asdsadsad">
-          <h6 class="card-title">Select a file for product:</h6>
-          <input type="file" (change)="upload($event)" accept=".png,.jpg" />
+        <div class="row">
+          <div class="col-xl-4 col-lg-4 col-sm-4 col-md-4">
+            <img [src]="imgURL" height="100" width="100" *ngIf="imgURL">
+            <div style="padding-top:10px;">
+              <span style="color:red;" *ngIf="message">{{message}}</span>
+              <input #file type="file" accept='image/*' (change)="upload(file.files)" />
+            </div>
+          </div>
+          <div>
+            <form  [formGroup]="inv2Group">
+                <div class="row col-xl-12 col-md-12 col-s-12">
+                    <div class=" col-lg-12 col-md-12 col-sm-12">
+                      <mat-form-field class="col-12">
+                        <mat-label>Name</mat-label>
+                        <input matInput type="text" placeholder="Name" formControlName="name" />
+                        <mat-error *ngIf="adsGroup.controls['name'].touched && adsGroup.controls['name'].errors?.required">
+                          <strong>Name is required</strong>
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                </div>
+            </form>
+          </div>
+
+
         </div>
       </div>
     </kt-portlet-body>
@@ -84,7 +105,9 @@
         </div>
       </div>
       <div>
-        <div class="d-flex justify-content-center"><h6>Add/Edit Ingredient</h6></div>
+        <div class="d-flex justify-content-center">
+          <h6>Add/Edit Ingredient</h6>
+        </div>
         <form [formGroup]="invGroup">
           <div class="row col-xl-12 col-md-12 col-s-12">
 
@@ -99,34 +122,35 @@
             </div>
           </div>
           <div class=" col-lg-6 col-md-6 col-sm-6">
-              <mat-form-field>
-                <mat-select placeholder="Ingredient Quantity" formControlName="quantity">
-                  <mat-option *ngFor="let item of Quantity" [value]="item.value">
-                    {{item.viewValue}}
-                  </mat-option>
-                </mat-select>
-                <mat-error *ngIf="invGroup.controls['quantity'].touched && 
+            <mat-form-field>
+              <mat-select placeholder="Ingredient Quantity" formControlName="quantity">
+                <mat-option *ngFor="let item of Quantity" [value]="item.value">
+                  {{item.viewValue}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="invGroup.controls['quantity'].touched && 
                 invGroup.controls['quantity'].errors?.required">
-                  <strong> Quantity is required</strong></mat-error>
-              </mat-form-field>
-            </div>
-            <div class=" col-lg-6 col-md-6 col-sm-6">
-                <mat-form-field>
-                  <mat-select placeholder="Ingredient unit" formControlName="unit">
-                    <mat-option *ngFor="let item of Unit" [value]="item.value">
-                      {{item.viewValue}}
-                    </mat-option>
-                  </mat-select>
-                  <mat-error *ngIf="invGroup.controls['unit'].touched && 
+                <strong> Quantity is required</strong></mat-error>
+            </mat-form-field>
+          </div>
+          <div class=" col-lg-6 col-md-6 col-sm-6">
+            <mat-form-field>
+              <mat-select placeholder="Ingredient unit" formControlName="unit">
+                <mat-option *ngFor="let item of Unit" [value]="item.value">
+                  {{item.viewValue}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="invGroup.controls['unit'].touched && 
                   invGroup.controls['unit'].errors?.required">
-                    <strong> Unit is required</strong></mat-error>
-                </mat-form-field>
-              </div>
+                <strong> Unit is required</strong></mat-error>
+            </mat-form-field>
+          </div>
         </form>
         <div class="row d-flex justify-content-end" style="padding-top:20px;">
-            <div><button mat-button (click)="closeing()"><label class="btn btn-label-danger">Close</label></button></div>
-            <div><button mat-button (click)="submiting()"><label class="btn btn-label-success">Submit</label></button></div>
-       </div>
+          <div><button mat-button (click)="closeing()"><label class="btn btn-label-danger">Close</label></button></div>
+          <div><button mat-button (click)="submiting()"><label class="btn btn-label-success">Submit</label></button>
+          </div>
+        </div>
       </div>
     </div>
   </kt-portlet-body>
@@ -189,12 +213,25 @@
               {{data.sold*data.price}}
             </mat-cell>
           </ng-container>
-          <ng-container matColumnDef="type">
-            <mat-header-cell *matHeaderCellDef> TYPE </mat-header-cell>
+          <ng-container matColumnDef="available">
+            <mat-header-cell *matHeaderCellDef> AVAILABLE </mat-header-cell>
             <mat-cell *matCellDef="let data">
-              {{data.type}}
+              {{data.available}}
             </mat-cell>
           </ng-container>
+          <ng-container matColumnDef="restock">
+            <mat-header-cell *matHeaderCellDef> RESTOCK </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+              {{data.restock}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="replenish">
+            <mat-header-cell *matHeaderCellDef> REPLENISH </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+              {{data.replinesh}}
+            </mat-cell>
+          </ng-container>
+
 
           <!-- Action Column -->
           <ng-container matColumnDef="action">
@@ -204,8 +241,9 @@
                 <button mat-icon-button color="primary">
                   <mat-icon matTooltip="Edit | Update ">edit</mat-icon>
                 </button>
-                <button mat-icon-button color="primary" (click)="ingredientopen(data.id)">
-                  <mat-icon matTooltip="Add | View Ingredients">add</mat-icon>
+                <button mat-icon-button color="success" (click)="replenish(data.id)"
+                  *ngIf="data.restock >=data.available">
+                  <mat-icon matTooltip="Replenish Stocks">add</mat-icon>
                 </button>
                 <button mat-icon-button color="warn" (click)="delete(data.id)">
                   <mat-icon matTooltip="Delete Menu">delete</mat-icon>
