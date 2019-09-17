@@ -2,33 +2,131 @@
   <kt-portlet>
     <kt-portlet-header [title]="'add/edit'"></kt-portlet-header>
     <kt-portlet-body>
-      <div class="row">
+      <form [formGroup]="inv2Group">
         <div class="row">
-          <div class="col-xl-4 col-lg-4 col-sm-4 col-md-4">
-            <img [src]="imgURL" height="100" width="100" *ngIf="imgURL">
-            <div style="padding-top:10px;">
-              <span style="color:red;" *ngIf="message">{{message}}</span>
-              <input #file type="file" accept='image/*' (change)="upload(file.files)" />
+          <div class="row">
+            <div class="col-xl-3 col-lg-3 col-sm-4 col-md-3">
+              <img [src]="imgURL" height="70" width="70" *ngIf="imgURL">
+              <div style="padding-top:10px;">
+                <span style="color:red;" *ngIf="message">{{message}}</span>
+                <input #file type="file" accept='image/*' (change)="upload(file.files)" />
+              </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-sm-4 col-md-4">
+
+              <div class="row col-xl-12 col-md-12 col-s-12">
+                <div class=" col-lg-12 col-md-12 col-sm-12">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Name</mat-label>
+                    <input matInput type="text" placeholder="Name" formControlName="name" />
+                    <mat-error
+                      *ngIf="inv2Group.controls['name'].touched && inv2Group.controls['name'].errors?.required">
+                      <strong>Name is required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class=" col-lg-12 col-md-12 col-sm-12">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Video Url</mat-label>
+                    <input matInput type="text" placeholder="Video Url" formControlName="video" />
+                    <mat-error
+                      *ngIf="inv2Group.controls['video'].touched && inv2Group.controls['video'].errors?.required">
+                      <strong>Video is required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class=" col-lg-12 col-md-12 col-sm-12">
+                  <mat-form-field class="example-full-width">
+                    <mat-label>Price</mat-label>
+                    <input matInput type="text" placeholder="Price" formControlName="price" />
+                    <mat-error
+                      *ngIf="inv2Group.controls['price'].touched && inv2Group.controls['price'].errors?.required">
+                      <strong>Video is required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class=" col-lg-12 col-md-12 col-sm-12">
+                  <mat-form-field class="example-full-width">
+                    <mat-select placeholder="Category" formControlName="category">
+                      <mat-option *ngFor="let item of category" [value]="item.value">
+                        {{item.viewValue}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="inv2Group.controls['category'].touched && 
+                          inv2Group.controls['category'].errors?.required">
+                      <strong> Category is required</strong></mat-error>
+                  </mat-form-field>
+                </div>
+                <div class=" col-lg-12 col-md-12 col-sm-12">
+                  <mat-form-field class="example-full-width">
+                    <textarea matInput placeholder="Instruction" formControlName="Insctruction"></textarea>
+                    <mat-error
+                      *ngIf="inv2Group.controls['Insctruction'].touched && inv2Group.controls['Insctruction'].errors?.required">
+                      <strong>Insctruction is required</strong>
+                    </mat-error>
+
+                  </mat-form-field>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-xl-4 col-lg-4 col-sm-4 col-md-4">
+              <div class=" col-lg-12 col-md-12 col-sm-12">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Pax</mat-label>
+                  <input matInput type="text" placeholder="Pax" formControlName="pax" />
+                  <mat-error *ngIf="inv2Group.controls['pax'].touched && inv2Group.controls['pax'].errors?.required">
+                    <strong>Video is required</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class=" col-lg-12 col-md-12 col-sm-12">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Type</mat-label>
+                  <input matInput type="text" placeholder="type" formControlName="type" />
+                  <mat-error *ngIf="inv2Group.controls['type'].touched && inv2Group.controls['type'].errors?.required">
+                    <strong>Type is required</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class=" col-lg-12 col-md-12 col-sm-12">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Stock</mat-label>
+                  <input matInput type="text" placeholder="Stock" formControlName="stock" />
+                  <mat-error
+                    *ngIf="inv2Group.controls['stock'].touched && inv2Group.controls['stock'].errors?.required">
+                    <strong>Stack is required</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class=" col-lg-12 col-md-12 col-sm-12">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Restock</mat-label>
+                  <input matInput type="text" placeholder="Restock" formControlName="restock" />
+                  <mat-error
+                    *ngIf="inv2Group.controls['restock'].touched && inv2Group.controls['restock'].errors?.required">
+                    <strong>Restock is required</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class=" col-lg-12 col-md-12 col-sm-12">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Replenish</mat-label>
+                  <input matInput type="text" placeholder="Replenish" formControlName="replenish" />
+                  <mat-error
+                    *ngIf="inv2Group.controls['replenish'].touched && inv2Group.controls['replenish'].errors?.required">
+                    <strong>Replenish is required</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
             </div>
           </div>
-          <div>
-            <form  [formGroup]="inv2Group">
-                <div class="row col-xl-12 col-md-12 col-s-12">
-                    <div class=" col-lg-12 col-md-12 col-sm-12">
-                      <mat-form-field class="col-12">
-                        <mat-label>Name</mat-label>
-                        <input matInput type="text" placeholder="Name" formControlName="name" />
-                        <mat-error *ngIf="adsGroup.controls['name'].touched && adsGroup.controls['name'].errors?.required">
-                          <strong>Name is required</strong>
-                        </mat-error>
-                      </mat-form-field>
-                    </div>
-                </div>
-            </form>
-          </div>
-
-
         </div>
+      </form>
+      <hr>
+      <div class="row d-flex justify-content-end">
+        <div><button mat-button (click)="close2()"><label class="btn btn-label-danger">Close</label></button></div>
+        <div><button mat-button (click)="submit2()"><label class="btn btn-label-success">Submit</label></button></div>
       </div>
     </kt-portlet-body>
   </kt-portlet>

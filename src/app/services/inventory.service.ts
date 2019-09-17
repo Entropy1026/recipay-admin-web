@@ -13,6 +13,10 @@ export class InventoryService {
         return this._api.get('admin/products/findall')
             .pipe(catchError((err) => this._api.handleError(err)));
     }
+    public getcategory(): Observable<BaseModel> {
+        return this._api.get('admin/product/category/list')
+            .pipe(catchError((err) => this._api.handleError(err)));
+    }
 
     throwUp(value: boolean): Observable<boolean> {
         return throwError(new Error('COULD NOT UPDATE FAM!'));
@@ -25,6 +29,8 @@ export class InventoryService {
         return this._api.post('admin/products/delete', params)
             .pipe(catchError((err) => this._api.handleError(err)));
     }
+
+    
     public replenish(id:any) {
         let params = {
             id: id,

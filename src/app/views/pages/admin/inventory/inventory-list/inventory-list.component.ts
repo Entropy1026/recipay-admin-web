@@ -71,7 +71,9 @@ export class InventoryListComponent implements OnInit {
     {value: '19.00', viewValue: '19'},
     {value: '20.00', viewValue: '20'}
   ];
+  category = [];
   image:any;
+  invid = null;
   ref: AngularFireStorageReference;
   task: AngularFireUploadTask;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -150,9 +152,61 @@ export class InventoryListComponent implements OnInit {
       this.inv2Group = this.fb.group({
         name: ['', Validators.compose([
           Validators.required
+        ])],
+        Insctruction: ['', Validators.compose([
+          Validators.required
+        ])]
+        ,
+        video: ['', Validators.compose([
+          Validators.required
+        ])],
+        category: [null, Validators.compose([
+          Validators.required
+        ])],
+        price: ['', Validators.compose([
+          Validators.required
+        ])]
+        ,
+        pax: ['', Validators.compose([
+          Validators.required
+        ])]
+        ,
+        type: ['', Validators.compose([
+          Validators.required
+        ])]
+        ,
+        stock: ['', Validators.compose([
+          Validators.required
+        ])]
+        ,
+        restock: ['', Validators.compose([
+          Validators.required
+        ])]
+        ,
+        replenish: ['', Validators.compose([
+          Validators.required
         ])]
       });
     this.fetchdata();
+    this.fetchcategory();
+  }
+  fetchcategory(){
+    this.category = [];
+    this.blockUI.start('Loading'); // Start blocking
+    this.inventoryService.getcategory().subscribe(categories => {
+      categories.data.map((categor) => {
+          let data = { value: categor.name, viewValue: categor.name }
+          console.log
+          this.category.push(data);
+        });
+      },
+      err => {
+        this.blockUI.stop();
+      },
+      () => {
+        this.blockUI.stop();
+      }
+    );
   }
   ingredientopen(id:any){
     this.id = null;
@@ -207,6 +261,30 @@ export class InventoryListComponent implements OnInit {
         );
         this.blockUI.stop();
         this.recipe = null;
+      }
+    );
+  }
+  submit2() {
+    const controls = this.inv2Group.controls;
+    // check form
+    if (this.inv2Group.invalid) {
+      Object.keys(controls).forEach(controlName =>
+        controls[controlName].markAsTouched()
+      );
+      return;
+    }
+    this.blockUI.start('Loading'); // Start blocking
+    this.inventoryService.addRecipe(this.invid,controls).subscribe((response) => {
+    this.toastr.info(response.message);
+    },
+      err => {
+        this.blockUI.stop();
+      },
+      () => {
+       this.fetchdata();
+       this.blockUI.stop();
+       this.invid = null;
+       this.addrecipe = null;
       }
     );
   }
