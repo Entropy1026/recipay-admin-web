@@ -78,6 +78,7 @@ export class InventoryListComponent implements OnInit {
   task: AngularFireUploadTask;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   inv2Group: FormGroup;
+  imageurl: string;
   constructor(private inventoryService: InventoryService, private modalService: NgbModal,
     private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,
     private deviceService: DeviceDetectorService,private fb: FormBuilder,
@@ -115,6 +116,11 @@ export class InventoryListComponent implements OnInit {
     reader.onload = (_event) => { 
       this.imgURL = reader.result; 
     }
+    const id = Math.random().toString(36).substring(2);
+    this.ref = this.afStorage.ref(id);
+    this.task = this.ref.put(files[0]);
+    this.imageurl = "https://firebasestorage.googleapis.com/v0/b/recipaymobile.appspot.com/o/"+id+"?alt=media";
+    console.log(this.imageurl);
   }
    openRecipe(){
    this.addrecipe = true;
@@ -209,6 +215,7 @@ export class InventoryListComponent implements OnInit {
     );
   }
   ingredientopen(id:any){
+    this.addrecipe=null;
     this.id = null;
     this.id = id;
     this.viewIngredients = true;
@@ -264,6 +271,24 @@ export class InventoryListComponent implements OnInit {
       }
     );
   }
+  updateinfo(data:any){
+    this.invid = data.id;
+    const controls = this.inv2Group.controls;
+    this.addrecipe = true;
+    controls['name'].setValue(data.name);
+    controls['Insctruction'].setValue(data.text_instruction);
+    controls['video'].setValue(data.video);
+    controls['category'].setValue(data.category);
+    controls['pax'].setValue(data.pax);
+    controls['type'].setValue(data.type);
+    controls['stock'].setValue(data.available);
+    controls['restock'].setValue(data.name);
+    controls['replenish'].setValue(data.replinesh);
+    controls['price'].setValue(data.price);
+    this.imgURL =data.image;
+    this.imageurl = data.image;
+
+ }
   submit2() {
     const controls = this.inv2Group.controls;
     // check form
@@ -274,7 +299,7 @@ export class InventoryListComponent implements OnInit {
       return;
     }
     this.blockUI.start('Loading'); // Start blocking
-    this.inventoryService.addRecipe(this.invid,controls).subscribe((response) => {
+    this.inventoryService.addRecipe(this.invid,this.imageurl,controls).subscribe((response) => {
     this.toastr.info(response.message);
     },
       err => {

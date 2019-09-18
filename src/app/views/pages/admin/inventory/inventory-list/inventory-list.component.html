@@ -336,13 +336,16 @@
             <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
             <mat-cell *matCellDef="let data">
               <div class="justify-content-center">
-                <button mat-icon-button color="primary">
+                <button mat-icon-button color="primary" (click)="updateinfo(data)">
                   <mat-icon matTooltip="Edit | Update ">edit</mat-icon>
                 </button>
-                <button mat-icon-button color="success" (click)="replenish(data.id)"
+                <button mat-icon-button color="warn" (click)="replenish(data.id)"
                   *ngIf="data.restock >=data.available">
                   <mat-icon matTooltip="Replenish Stocks">add</mat-icon>
                 </button>
+                <button mat-icon-button color="primary" (click)="ingredientopen(data.id)">
+                <mat-icon matTooltip="Add Ingredients to this Recipe">add</mat-icon>
+              </button>
                 <button mat-icon-button color="warn" (click)="delete(data.id)">
                   <mat-icon matTooltip="Delete Menu">delete</mat-icon>
                 </button>

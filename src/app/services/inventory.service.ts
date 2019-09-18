@@ -29,6 +29,25 @@ export class InventoryService {
         return this._api.post('admin/products/delete', params)
             .pipe(catchError((err) => this._api.handleError(err)));
     }
+    
+    public addRecipe(id:any,imgurl:any,controls:any) {
+        let params = {
+            id: id,
+            name:controls.name.value,
+            image:imgurl,
+            text:controls.Insctruction.value,
+            video:controls.video.value,
+            category:controls.category.value,
+            baseprice:controls.price.value,
+            pax:controls.pax.value,
+            type:controls.type.value,
+            stock:controls.stock.value,
+            restock:controls.restock.value,
+            replenish:controls.replenish.value
+        };
+        return this._api.post('admin/products/addProduct', params)
+            .pipe(catchError((err) => this._api.handleError(err)));
+    }
 
     
     public replenish(id:any) {
