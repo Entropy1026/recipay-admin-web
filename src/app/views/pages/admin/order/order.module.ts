@@ -13,6 +13,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { OrderPreparationComponent } from './order-preparation/order-preparation.component';
 import { OrderDeliveriesComponent } from './order-deliveries/order-deliveries.component';
+import {NgxUiLoaderModule} from 'ngx-ui-loader';
 
 const routes: Routes = [
   {
@@ -35,7 +36,7 @@ const routes: Routes = [
   }
 ];
 @NgModule({
-  declarations: [OrderComponent, OrderlistComponent, OrderPreparationComponent, OrderDeliveriesComponent],
+  declarations: [OrderComponent, OrderlistComponent, OrderPreparationComponent, OrderDeliveriesComponent,],
   imports: [
     CommonModule,
     SharedModule,
@@ -44,7 +45,9 @@ const routes: Routes = [
     PartialsModule,
     CoreModule,
     NgbModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    NgxUiLoaderModule
+
   ],
   providers: [ OrderService , ToastrService ,DeviceDetectorService]
 })

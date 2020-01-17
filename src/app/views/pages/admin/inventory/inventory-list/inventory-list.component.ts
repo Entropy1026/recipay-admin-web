@@ -76,7 +76,7 @@ export class InventoryListComponent implements OnInit {
   invid = null;
   ref: AngularFireStorageReference;
   task: AngularFireUploadTask;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator , {static: true}) paginator: MatPaginator;
   inv2Group: FormGroup;
   imageurl: string;
   constructor(private inventoryService: InventoryService, private modalService: NgbModal,

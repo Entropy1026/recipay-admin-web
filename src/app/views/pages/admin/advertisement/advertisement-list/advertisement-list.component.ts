@@ -28,7 +28,7 @@ export class AdvertisementListComponent implements OnInit {
   constructor(private adService: AdvertisementService,private fb: FormBuilder, private modalService: NgbModal, private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,private deviceService: DeviceDetectorService) {
   }
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator , {static: true}) paginator: MatPaginator;
 
   ngOnInit() {
     this.adsGroup = this.fb.group({

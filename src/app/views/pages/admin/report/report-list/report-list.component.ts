@@ -35,7 +35,7 @@ export class ReportListComponent implements OnInit {
   monthly_sales= 0.00;
   id = null;
   pages: any;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator , {static: true}) paginator: MatPaginator;
   constructor(private reportService: ReportService, private modalService: NgbModal,
     private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,
     private deviceService: DeviceDetectorService, private fb: FormBuilder) {

@@ -9,6 +9,8 @@ import { ToastrService } from 'ngx-toastr';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ConfirmDialogService } from '../../../shared/confirm-dialog/confirm-dialog.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+
 @Component({
   selector: 'kt-orderlist',
   templateUrl: './orderlist.component.html',
@@ -21,10 +23,10 @@ export class OrderlistComponent implements OnInit {
   deviceInfo = null;
   pages:any;
   isMobile:boolean = this.deviceService.isMobile();
-  constructor(private orderService: OrderService, private modalService: NgbModal, private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,private deviceService: DeviceDetectorService) {
+  constructor(private orderService: OrderService,private ngxService: NgxUiLoaderService, private modalService: NgbModal, private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,private deviceService: DeviceDetectorService) {
   }
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator , {static: true}) paginator: MatPaginator;
   
   refresh(){
    this.fetchall();
@@ -39,7 +41,7 @@ export class OrderlistComponent implements OnInit {
     }
   }
   update(id:any){
-    this.blockUI.start('Loading'); // Start blocking
+    this.ngxService.startLoader('order'); // Start blocking
     this.orderService.updatetoprepair(id).subscribe(
       order => {
         this.toastr.info(order.message);
@@ -56,10 +58,10 @@ export class OrderlistComponent implements OnInit {
             // this.toastr.info(dispute.message);
           },
           err => {
-            this.blockUI.stop();
+            this.ngxService.stopLoader('order');
           },
           () => {
-            this.blockUI.stop();
+            this.ngxService.stopLoader('order');
           }
         );
       }
@@ -94,7 +96,7 @@ export class OrderlistComponent implements OnInit {
   );
 }
   fetchall(){
-    this.blockUI.start('Loading'); // Start blocking
+    this.ngxService.startLoader('order'); // Start blocking
     this.orderService.fetchAll().subscribe(
       order => {
         this.dataSource = new MatTableDataSource<BaseModel>(order.data);
@@ -103,10 +105,10 @@ export class OrderlistComponent implements OnInit {
         this.toastr.info(order.message);
       },
       err => {
-        this.blockUI.stop();
+        this.ngxService.startLoader('order');
       },
       () => {
-        this.blockUI.stop();
+        this.ngxService.startLoader('order');
       }
     );
   }

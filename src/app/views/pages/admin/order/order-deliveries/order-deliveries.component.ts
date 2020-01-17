@@ -28,7 +28,7 @@ export class OrderDeliveriesComponent implements OnInit {
   constructor(private fb : FormBuilder , private detectRef:ChangeDetectorRef, private orderService: OrderService, private modalService: NgbModal, private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,private deviceService: DeviceDetectorService) {
   }
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator , {static: true}) paginator: MatPaginator;
   refresh(){
     this.fetchall();
   }

@@ -55,6 +55,8 @@ import * as xml from 'highlight.js/lib/languages/xml';
 import * as json from 'highlight.js/lib/languages/json';
 import { ToastrModule } from 'ngx-toastr';
 import { BlockUIModule } from 'ng-block-ui';
+import {NgxUiLoaderModule} from 'ngx-ui-loader';
+
 
 
 // tslint:disable-next-line:class-name
@@ -112,7 +114,8 @@ export function hljsLanguages(): HighlightLanguage[] {
 			timeOut: 3500,
 			positionClass: 'toast-top-right',
 			preventDuplicates: true
-		})
+		}) , 
+		NgxUiLoaderModule
 	
      ],
 		
@@ -151,6 +154,7 @@ export function hljsLanguages(): HighlightLanguage[] {
 		HttpUtilsService,
 		TypesUtilsService,
 		LayoutUtilsService,
+		NgxUiLoaderModule
 	],
 	bootstrap: [AppComponent]
 })
