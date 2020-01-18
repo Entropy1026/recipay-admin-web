@@ -43,5 +43,14 @@ export class UserService {
         return this._api.post('open/users/addforAdmin', params)
             .pipe(catchError((err) => this._api.handleError(err)));
     }
+    public login(username:string,password:string) {
+        let params = {
+            username: username,
+            password: password ,
+        
+        };
+        return this._api.post('open/users/login', params)
+        .pipe(catchError((err) => this._api.handleError(err)));
+    }
 
 }

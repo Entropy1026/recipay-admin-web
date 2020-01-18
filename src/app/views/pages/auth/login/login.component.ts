@@ -12,19 +12,18 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../core/reducers';
 // Auth
 import { AuthNoticeService, AuthService, Login } from '../../../../core/auth';
+import { HttpHeaders } from '@angular/common/http';
+import { UserLogService } from '../../../../domain/user.service';
+import { UserService } from '../../../../services/user.service';
+import { environment} from '../../../../../environments/environment';
 
-/**
- * ! Just example => Should be removed in development
- */
-const DEMO_PARAMS = {
-	EMAIL: 'admin@demo.com',
-	PASSWORD: 'demo'
-};
+
 
 @Component({
 	selector: 'kt-login',
 	templateUrl: './login.component.html',
-	encapsulation: ViewEncapsulation.None
+	encapsulation: ViewEncapsulation.None , 
+	providers:[UserLogService , UserService]
 })
 export class LoginComponent implements OnInit, OnDestroy {
 	// Public params
@@ -34,19 +33,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 	errors: any = [];
 
 	private unsubscribe: Subject<any>; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
-
-	/**
-	 * Component constructor
-	 *
-	 * @param router: Router
-	 * @param auth: AuthService
-	 * @param authNoticeService: AuthNoticeService
-	 * @param translate: TranslateService
-	 * @param store: Store<AppState>
-	 * @param fb: FormBuilder
-	 * @param cdr
-	 */
 	constructor(
+		private userLogService:UserLogService ,
+		private userService:UserService ,
 		private router: Router,
 		private auth: AuthService,
 		private authNoticeService: AuthNoticeService,
@@ -79,28 +68,15 @@ export class LoginComponent implements OnInit, OnDestroy {
 		this.loading = false;
 	}
 
-	/**
-	 * Form initalization
-	 * Default params, validators
-	 */
 	initLoginForm() {
-		// demo message to show
-		// if (!this.authNoticeService.onNoticeChanged$.getValue()) {
-		// 	const initialNotice = `Use account
-		// 	<strong>${DEMO_PARAMS.EMAIL}</strong> and password
-		// 	<strong>${DEMO_PARAMS.PASSWORD}</strong> to continue.`;
-		// 	this.authNoticeService.setNotice(initialNotice, 'info');
-		// }
-
 		this.loginForm = this.fb.group({
-			email: [DEMO_PARAMS.EMAIL, Validators.compose([
+			username: [null, Validators.compose([
 				Validators.required,
-				Validators.email,
 				Validators.minLength(3),
 				Validators.maxLength(320) // https://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
 			])
 			],
-			password: [DEMO_PARAMS.PASSWORD, Validators.compose([
+			password: [null, Validators.compose([
 				Validators.required,
 				Validators.minLength(3),
 				Validators.maxLength(100)
@@ -123,29 +99,30 @@ export class LoginComponent implements OnInit, OnDestroy {
 		}
 
 		this.loading = true;
-
 		const authData = {
-			email: controls['email'].value,
+			email: controls['username'].value,
 			password: controls['password'].value
 		};
-		this.auth
-			.login(authData.email, authData.password)
-			.pipe(
-				tap(user => {
-					if (user) {
-						this.store.dispatch(new Login({authToken: user.accessToken}));
-						this.router.navigateByUrl('/'); // Main page
-					} else {
-						this.authNoticeService.setNotice(this.translate.instant('AUTH.VALIDATION.INVALID_LOGIN'), 'danger');
-					}
-				}),
-				takeUntil(this.unsubscribe),
-				finalize(() => {
-					this.loading = false;
-					this.cdr.detectChanges();
-				})
-			)
-			.subscribe();
+		this.userService.login(authData.email , authData.password)
+		.subscribe(
+			res => {
+			if(res.error === true){
+			this.authNoticeService.setNotice(res.message,'danger');	
+			}
+			else if(res.error === false){
+			console.log(res);
+			this.store.dispatch(new Login({authToken: environment.authTokenKey}));
+			this.router.navigateByUrl('/'); // Main page
+			}
+			},
+			err => {
+			
+			},
+			() => {
+			this.loading = false;
+			this.cdr.detectChanges();
+			}
+		  );
 	}
 
 	/**

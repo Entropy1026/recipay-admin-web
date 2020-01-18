@@ -193,6 +193,9 @@
                 <button mat-icon-button color="primary" (click)="action(data.id,'active')" *ngIf="data.status == 'suspended'">
                   <mat-icon matTooltip="Cancel this Suspension">panorama_fish_eye</mat-icon>
                 </button>
+                <button mat-icon-button color="primary" *ngIf="data.status !== 'suspended' && data.status !== 'active'">
+                  <mat-icon matTooltip="Action cannot be perform carrier in delivery">directions_bike</mat-icon>
+                </button>
                 <button mat-icon-button color="warn" (click)="action(data.id,'suspended')" *ngIf="data.status == 'active'">
                     <mat-icon matTooltip="Suspend this user">block</mat-icon>
                   </button>

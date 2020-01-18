@@ -56,6 +56,7 @@ import * as json from 'highlight.js/lib/languages/json';
 import { ToastrModule } from 'ngx-toastr';
 import { BlockUIModule } from 'ng-block-ui';
 import {NgxUiLoaderModule} from 'ngx-ui-loader';
+import { UserLogService } from './domain/user.service';
 
 
 
@@ -122,6 +123,7 @@ export function hljsLanguages(): HighlightLanguage[] {
 	exports: [],
 	providers: [
 		AuthService,
+		UserLogService,
 		LayoutConfigService,
 		LayoutRefService,
 		MenuConfigService,
