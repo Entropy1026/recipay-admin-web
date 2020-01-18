@@ -14,6 +14,7 @@ public mobile:any;
 
 
 public setUser(data:any){
+console.log(data);
 this.firstname = data.firstname;
 this.lastname = data.lastname;
 this.middlename = data.middlename ;
@@ -21,6 +22,10 @@ this.username = data.username;
 this.email =data.email;
 this.mobile = data.mobile;
 this.image= data.image;
+}
+public getUser(){
+console.log(this.firstname);
+return this.firstname;
 }
 
 }

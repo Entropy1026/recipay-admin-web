@@ -19,7 +19,7 @@
 			<div class="form-group" style="color: white;">
 				<mat-form-field>
 					<mat-label style="color: white;">Username</mat-label>
-					<input matInput type="text" placeholder="{{ 'AUTH.INPUT.EMAIL' | translate }}" formControlName="username" autocomplete="off"/>
+					<input matInput type="text"  formControlName="username" autocomplete="off"/>
 					<mat-error *ngIf="isControlHasError('username','username')">
 						<strong>{{ 'AUTH.VALIDATION.INVALID_FIELD' | translate }}</strong>
 					</mat-error>
@@ -34,7 +34,7 @@
 			<div class="form-group" style="color: white;">
 				<mat-form-field>
 					<mat-label style="color: white;">{{ 'AUTH.INPUT.PASSWORD' | translate }}</mat-label>
-					<input matInput type="password" placeholder="{{ 'AUTH.INPUT.PASSWORD' | translate }}" formControlName="password" autocomplete="off"/>
+					<input matInput type="password"  formControlName="password" autocomplete="off"/>
 					<mat-error *ngIf="isControlHasError('password','required')">
 						<strong>{{ 'AUTH.VALIDATION.REQUIRED_FIELD' | translate }}</strong>
 					</mat-error>

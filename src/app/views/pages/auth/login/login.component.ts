@@ -15,15 +15,15 @@ import { AuthNoticeService, AuthService, Login } from '../../../../core/auth';
 import { HttpHeaders } from '@angular/common/http';
 import { UserLogService } from '../../../../domain/user.service';
 import { UserService } from '../../../../services/user.service';
-import { environment} from '../../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 
 
 
 @Component({
 	selector: 'kt-login',
 	templateUrl: './login.component.html',
-	encapsulation: ViewEncapsulation.None , 
-	providers:[UserLogService , UserService]
+	encapsulation: ViewEncapsulation.None,
+	providers: [UserLogService, UserService]
 })
 export class LoginComponent implements OnInit, OnDestroy {
 	// Public params
@@ -34,8 +34,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 	private unsubscribe: Subject<any>; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
 	constructor(
-		private userLogService:UserLogService ,
-		private userService:UserService ,
+		private userLogService: UserLogService,
+		private userService: UserService,
 		private router: Router,
 		private auth: AuthService,
 		private authNoticeService: AuthNoticeService,
@@ -56,6 +56,13 @@ export class LoginComponent implements OnInit, OnDestroy {
 	 */
 	ngOnInit(): void {
 		this.initLoginForm();
+		localStorage.removeItem("firstname");
+		localStorage.removeItem("lastname");
+		localStorage.removeItem("middlename");
+		localStorage.removeItem("usertype");
+		localStorage.removeItem("email");
+		localStorage.removeItem("mobile");
+		localStorage.removeItem("image");
 	}
 
 	/**
@@ -103,26 +110,34 @@ export class LoginComponent implements OnInit, OnDestroy {
 			email: controls['username'].value,
 			password: controls['password'].value
 		};
-		this.userService.login(authData.email , authData.password)
-		.subscribe(
-			res => {
-			if(res.error === true){
-			this.authNoticeService.setNotice(res.message,'danger');	
-			}
-			else if(res.error === false){
-			console.log(res);
-			this.store.dispatch(new Login({authToken: environment.authTokenKey}));
-			this.router.navigateByUrl('/'); // Main page
-			}
-			},
-			err => {
-			
-			},
-			() => {
-			this.loading = false;
-			this.cdr.detectChanges();
-			}
-		  );
+		this.userService.login(authData.email, authData.password)
+			.subscribe(
+				res => {
+					if (res.error === true) {
+						this.authNoticeService.setNotice(res.message, 'danger');
+					}
+					else if (res.error === false) {
+						console.log(res);
+						this.userLogService.setUser(res.data);
+						this.store.dispatch(new Login({ authToken: environment.authTokenKey }));
+						localStorage.setItem("firstname", res.data.firstname);
+						localStorage.setItem("lastname", res.data.lastname);
+						localStorage.setItem("middlename", res.data.middlename);
+						localStorage.setItem("usertype", res.data.user_type);
+						localStorage.setItem("email", res.data.email);
+						localStorage.setItem("mobile", res.data.mobile);
+						localStorage.setItem("image", res.data.image);
+						this.router.navigateByUrl('/'); // Main page
+					}
+				},
+				err => {
+
+				},
+				() => {
+					this.loading = false;
+					this.cdr.detectChanges();
+				}
+			);
 	}
 
 	/**
