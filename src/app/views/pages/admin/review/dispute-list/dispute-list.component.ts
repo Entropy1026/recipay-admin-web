@@ -8,6 +8,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {  DisputeService } from '../../../../../services/dispute.service';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'kt-dispute-list',
@@ -28,7 +29,7 @@ export class DisputeListComponent implements OnInit {
     @ViewChild(MatPaginator , {static:true}) paginator: MatPaginator;
     constructor(private disService: DisputeService, private modalService: NgbModal,
       private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,
-      private deviceService: DeviceDetectorService,private fb: FormBuilder) {
+      private deviceService: DeviceDetectorService,private fb: FormBuilder , private ngxService:NgxUiLoaderService) {
   
     }
   
@@ -54,7 +55,7 @@ export class DisputeListComponent implements OnInit {
       }
     }
     fetchdata() {
-      this.blockUI.start('Loading'); // Start blocking
+      this.ngxService.startLoader("dispute"); // Start blocking
       this.disService.fetchAll().subscribe(
         dispute => {
           this.dataSource = new MatTableDataSource<BaseModel>(dispute.data);
@@ -63,15 +64,15 @@ export class DisputeListComponent implements OnInit {
           this.toastr.info(dispute.message);
         },
         err => {
-          this.blockUI.stop();
+          this.ngxService.stopLoader("dispute");
         },
         () => {
-          this.blockUI.stop();
+          this.ngxService.stopLoader("dispute");
         }
       );
     }
     fetchselected(choice:any) {
-      this.blockUI.start('Loading'); // Start blocking
+      this.ngxService.startLoader("dispute");// Start blocking
       this.disService.fetchselected(choice).subscribe(
         dispute => {
           this.dataSource = new MatTableDataSource<BaseModel>(dispute.data);
@@ -80,10 +81,10 @@ export class DisputeListComponent implements OnInit {
           this.toastr.info(dispute.message);
         },
         err => {
-          this.blockUI.stop();
+          this.ngxService.stopLoader("dispute");
         },
         () => {
-          this.blockUI.stop();
+          this.ngxService.stopLoader("dispute");
         }
       );
     }
@@ -95,13 +96,13 @@ export class DisputeListComponent implements OnInit {
   
   }
    delete(id:any){
-      this.blockUI.start('Loading'); // Start blocking
+      this.ngxService.startLoader("dispute");
       this.disService.delete(id).subscribe(
         dispute => {
           this.toastr.info(dispute.message);
         },
         err => {
-          this.blockUI.stop();
+          
         },
         () => {
           this.disService.fetchAll().subscribe(
@@ -112,10 +113,10 @@ export class DisputeListComponent implements OnInit {
               // this.toastr.info(dispute.message);
             },
             err => {
-              this.blockUI.stop();
+              this.ngxService.stopLoader("dispute");
             },
             () => {
-              this.blockUI.stop();
+              this.ngxService.stopLoader("dispute");
             }
           );
         }
@@ -131,14 +132,15 @@ export class DisputeListComponent implements OnInit {
       );
       return;
     }
-    this.blockUI.start('Loading'); // Start blocking
+    this.ngxService.startLoader("dispute-proc");
     this.disService.sendresponse(this.id,this.user,controls).subscribe((response) => {
     this.toastr.info(response.message);
     },
       err => {
-        this.blockUI.stop();
       },
       () => {
+        this.ngxService.stopLoader("dispute-proc");
+        this.ngxService.startLoader("dispute");
         this.disService.fetchAll().subscribe(
           ads => {
             this.dataSource = new MatTableDataSource<BaseModel>(ads.data);
@@ -147,13 +149,12 @@ export class DisputeListComponent implements OnInit {
   
           },
           err => {
-            this.blockUI.stop();
+            this.ngxService.stopLoader("dispute");
           },
           () => {
-            // this.blockUI.stop();
+            this.ngxService.stopLoader("dispute");
           }
         );
-        this.blockUI.stop();
         this.id = null;
         this.user = null;
         this.respond = false;

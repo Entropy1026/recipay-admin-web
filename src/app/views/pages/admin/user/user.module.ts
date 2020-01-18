@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PartialsModule } from '../../../partials/partials.module';
 import { CoreModule } from '../../../../core/core.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxUiLoaderModule } from 'ngx-ui-loader';
 
 const routes: Routes = [
   {
@@ -31,7 +32,8 @@ const routes: Routes = [
     PartialsModule,
     CoreModule,
     NgbModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes) , 
+    NgxUiLoaderModule
   ],
   entryComponents: [ConfirmDialogComponent],
   providers: [UserService,ToastrService,DeviceDetectorService,ConfirmDialogService]

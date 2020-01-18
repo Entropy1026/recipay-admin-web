@@ -8,6 +8,7 @@ import { UserService } from '../../../../../services/user.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 // import { isLoggedIn } from 'src/app/core/auth';
 
 @Component({
@@ -38,13 +39,13 @@ export class UserListComponent implements OnInit {
   email: any = ""; status: any = ""; user_type: any = ""; order_made: any = ""; product_favorite: any = "";
   joined: any; lastlogged: any;
   isMobile: boolean = this.deviceService.isMobile();
-  constructor(private userService: UserService, private modalService: NgbModal,
+  constructor(private ngxService: NgxUiLoaderService,private userService: UserService, private modalService: NgbModal,
     private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,
     private deviceService: DeviceDetectorService,private fb: FormBuilder) {
 
   }
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator , {static:true}) paginator: MatPaginator;
 
   ngOnInit() {
     this.userGroup = this.fb.group({
@@ -92,7 +93,7 @@ export class UserListComponent implements OnInit {
     }
   }
   fetchdata() {
-    this.blockUI.start('Loading'); // Start blocking
+    this.ngxService.startLoader("user");
     this.userService.fetchAll().subscribe(
       user => {
         this.dataSource = new MatTableDataSource<BaseModel>(user.data);
@@ -101,10 +102,10 @@ export class UserListComponent implements OnInit {
         this.toastr.info(user.message);
       },
       err => {
-        this.blockUI.stop();
+        this.ngxService.stopLoader("user");
       },
       () => {
-        this.blockUI.stop();
+        this.ngxService.stopLoader("user");
       }
     );
   }
@@ -132,12 +133,11 @@ export class UserListComponent implements OnInit {
     this.confirmDialogService.confirm('Confirmation', 'Are you sure', '?')
       .then((confirmed) => {
         if (confirmed == true) {
-          this.blockUI.start('Loading'); // Start blocking
+          this.ngxService.startLoader("user");
           this.userService.action(id, data).subscribe((response) => {
             this.toastr.info(response.message);
           },
             err => {
-              this.blockUI.stop();
             },
             () => {
               this.userService.fetchAll().subscribe(
@@ -148,13 +148,12 @@ export class UserListComponent implements OnInit {
 
                 },
                 err => {
-                  this.blockUI.stop();
+                  this.ngxService.stopLoader("user");
                 },
                 () => {
-                  // this.blockUI.stop();
+                  this.ngxService.stopLoader("user");
                 }
               );
-              this.blockUI.stop();
             }
           );
         }
@@ -185,14 +184,15 @@ export class UserListComponent implements OnInit {
 			);
 			return;
     }
-    this.blockUI.start('Loading'); // Start blocking
+    this.ngxService.startLoader('user-proc'); // Start blocking
     this.userService.addUser(controls,controls.username.value).subscribe((response) => {
     this.toastr.info(response.message);
     },
       err => {
-        this.blockUI.stop();
       },
       () => {
+        this.ngxService.stopLoader('user-proc'); 
+        this.ngxService.startLoader('user'); 
         this.userService.fetchAll().subscribe(
           user => {
             this.dataSource = new MatTableDataSource<BaseModel>(user.data);
@@ -202,13 +202,12 @@ export class UserListComponent implements OnInit {
 
           },
           err => {
-            this.blockUI.stop();
+            this.ngxService.stopLoader('user'); 
           },
           () => {
-            // this.blockUI.stop();
+            this.ngxService.stopLoader('user');
           }
         );
-        this.blockUI.stop();
   
       }
     );

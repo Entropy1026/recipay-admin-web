@@ -1,40 +1,45 @@
-
 <div *ngIf="respond">
   <kt-portlet>
     <kt-portlet-header [title]="'send response'"></kt-portlet-header>
-      <kt-portlet-body>
-          <form [formGroup]="disGroup">
-              <div class="row col-xl-12 col-md-12 col-s-12">
-                <div class=" col-lg-12 col-md-12 col-sm-12">
-                  <mat-form-field class="col-12">
-                    <mat-label>Message</mat-label>
-                    <input matInput type="text" placeholder="Message" formControlName="message" />
-                    <mat-error *ngIf="disGroup.controls['message'].touched && disGroup.controls['message'].errors?.required">
-                      <strong>Message is required</strong>
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                </div>
-            </form>
-            <hr>
-            <div class="row d-flex justify-content-end">
-              <div><button mat-button (click)="close()"><label class="btn btn-label-danger">Close</label></button></div>
-              <div><button mat-button (click)="submit()"><label class="btn btn-label-success">Send</label></button></div>
-            </div>
-      </kt-portlet-body>
+    <kt-portlet-body class="position-relative">
+      <ngx-ui-loader [loaderId]="'dispute-proc'" overlayColor="rgba(255, 255, 255, 0.87)" fgsType="three-bounce"
+        fgsSize="50">
+      </ngx-ui-loader>
+      <form [formGroup]="disGroup">
+        <div class="row col-xl-12 col-md-12 col-s-12">
+          <div class=" col-lg-12 col-md-12 col-sm-12">
+            <mat-form-field class="col-12">
+              <mat-label>Message</mat-label>
+              <input matInput type="text" placeholder="Message" formControlName="message" />
+              <mat-error *ngIf="disGroup.controls['message'].touched && disGroup.controls['message'].errors?.required">
+                <strong>Message is required</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+      <hr>
+      <div class="row d-flex justify-content-end">
+        <div><button mat-button (click)="close()"><label class="btn btn-label-danger">Close</label></button></div>
+        <div><button mat-button (click)="submit()"><label class="btn btn-label-success">Send</label></button></div>
+      </div>
+    </kt-portlet-body>
   </kt-portlet>
-  
+
 
 </div>
 <div class="col-xl-12">
   <kt-portlet [class]="'kt-portlet--height-fluid'">
-    <kt-portlet-body>
-        <mat-form-field>
-            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Dispute here ..">
+    <kt-portlet-body class="position-relative">
+      <ngx-ui-loader [loaderId]="'dispute'" overlayColor="rgba(255, 255, 255, 0.87)" fgsType="three-bounce"
+        fgsSize="50">
+      </ngx-ui-loader>
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Dispute here ..">
       </mat-form-field>
       <div class="row resize">
-        <mat-form-field class="setsize" >
-          <mat-label>--select--</mat-label>
+        <mat-form-field class="setsize">
+          <mat-label>Type</mat-label>
           <mat-select [(value)]="selected" (selectionChange)="changeselect(selected)">
             <mat-option value="all">All</mat-option>
             <mat-option value="readed">Replied</mat-option>
@@ -67,22 +72,23 @@
           <ng-container matColumnDef="message">
             <mat-header-cell *matHeaderCellDef> MESSAGE </mat-header-cell>
             <mat-cell *matCellDef="let data">
-              {{data.message}} 
+              {{data.message}}
             </mat-cell>
           </ng-container>
-            <ng-container matColumnDef="date">
-                <mat-header-cell *matHeaderCellDef> DATE </mat-header-cell>
-                <mat-cell *matCellDef="let data">
-                  {{data.date.date | date : 'MMMM-dd-yyyy'}}
-                </mat-cell>
-              </ng-container>
-          
+          <ng-container matColumnDef="date">
+            <mat-header-cell *matHeaderCellDef> DATE </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+              {{data.date.date | date : 'MMMM-dd-yyyy'}}
+            </mat-cell>
+          </ng-container>
+
           <!-- Action Column -->
           <ng-container matColumnDef="action">
             <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
             <mat-cell *matCellDef="let data">
               <div class="justify-content-center">
-                <button mat-icon-button color="primary" *ngIf="data.status != 'readed'"(click)="reply(data.id,data.from)">
+                <button mat-icon-button color="primary" *ngIf="data.status != 'readed'"
+                  (click)="reply(data.id,data.from)">
                   <mat-icon matTooltip="Reply">send</mat-icon>
                 </button>
                 <button mat-icon-button color="warn" (click)="delete(data.id)">
