@@ -1,7 +1,10 @@
 <div *ngIf="respond">
   <kt-portlet>
     <kt-portlet-header [title]="'send response'"></kt-portlet-header>
-    <kt-portlet-body>
+    <kt-portlet-body class="position-relative">
+      <ngx-ui-loader [loaderId]="'review-proc'" overlayColor="rgba(255, 255, 255, 0.87)"
+         fgsType="three-bounce" fgsSize="50">
+      </ngx-ui-loader>
       <form [formGroup]="reviewGroup">
         <div class="row col-xl-12 col-md-12 col-s-12">
           <div class=" col-lg-12 col-md-12 col-sm-12">
@@ -27,7 +30,10 @@
 <div *ngIf="comments">
   <kt-portlet>
     <kt-portlet-header [title]="'update comment'"></kt-portlet-header>
-    <kt-portlet-body>
+    <kt-portlet-body class="position-relative">
+      <ngx-ui-loader [loaderId]="'review-proc1'" overlayColor="rgba(255, 255, 255, 0.87)"
+         fgsType="three-bounce" fgsSize="50">
+      </ngx-ui-loader>
       <form [formGroup]="review1Group">
         <div class="row col-xl-12 col-md-12 col-s-12">
           <div class=" col-lg-12 col-md-12 col-sm-12">
@@ -52,7 +58,10 @@
 </div>
 <div class="col-xl-12">
   <kt-portlet [class]="'kt-portlet--height-fluid'">
-    <kt-portlet-body>
+    <kt-portlet-body class="position-relative">
+      <ngx-ui-loader [loaderId]="'review'" overlayColor="rgba(255, 255, 255, 0.87)"
+         fgsType="three-bounce" fgsSize="50">
+      </ngx-ui-loader>
       <mat-form-field>
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Reviews here ..">
       </mat-form-field>

@@ -8,6 +8,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ReviewService } from '../../../../../services/review.service';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'kt-review-list',
@@ -28,7 +29,7 @@ export class ReviewListComponent implements OnInit {
   reviewGroup: FormGroup;
   review1Group: FormGroup;
   @ViewChild(MatPaginator , {static:true}) paginator: MatPaginator;
-  constructor(private reviewService: ReviewService, private modalService: NgbModal,
+  constructor(private ngxService: NgxUiLoaderService,private reviewService: ReviewService, private modalService: NgbModal,
     private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,
     private deviceService: DeviceDetectorService, private fb: FormBuilder) {
 
@@ -75,16 +76,15 @@ export class ReviewListComponent implements OnInit {
     this.id = id;
     this.user = user;
     this.comments = false;
-  }
+  } 
   edit(id: any) {
-    this.toastr.info(id);
     this.comments = true;
     this.respond = false;
     this.id = id;
 
   }
   fetchdata() {
-    this.blockUI.start('Loading'); // Start blocking
+    this.ngxService.startLoader("review"); // Start blocking
     this.reviewService.fetchAll().subscribe(
       reviews => {
         this.dataSource = new MatTableDataSource<BaseModel>(reviews.data);
@@ -93,15 +93,15 @@ export class ReviewListComponent implements OnInit {
         this.toastr.info(reviews.message);
       },
       err => {
-        this.blockUI.stop();
+        this.ngxService.stopLoader("review");
       },
       () => {
-        this.blockUI.stop();
+        this.ngxService.stopLoader("review");
       }
     );
   }
   fetchselected(choice:any) {
-    this.blockUI.start('Loading'); // Start blocking
+    this.ngxService.startLoader("review");  // Start blocking
     this.reviewService.fetchselected(choice).subscribe(
       reviews => {
         this.dataSource = new MatTableDataSource<BaseModel>(reviews.data);
@@ -110,21 +110,20 @@ export class ReviewListComponent implements OnInit {
         this.toastr.info(reviews.message);
       },
       err => {
-        this.blockUI.stop();
+        this.ngxService.stopLoader("review"); 
       },
       () => {
-        this.blockUI.stop();
+        this.ngxService.stopLoader("review"); 
       }
     );
   }
   delete(id: any) {
-    this.blockUI.start('Loading'); // Start blocking
+    this.ngxService.startLoader("review"); 
     this.reviewService.delete(id).subscribe(
       review => {
         this.toastr.info(review.message);
       },
       err => {
-        this.blockUI.stop();
       },
       () => {
         this.reviewService.fetchAll().subscribe(
@@ -135,10 +134,10 @@ export class ReviewListComponent implements OnInit {
             // this.toastr.info(dispute.message);
           },
           err => {
-            this.blockUI.stop();
+             this.ngxService.stopLoader("review"); 
           },
           () => {
-            this.blockUI.stop();
+            this.ngxService.stopLoader("review"); 
           }
         );
       }
@@ -154,14 +153,15 @@ export class ReviewListComponent implements OnInit {
       );
       return;
     }
-    this.blockUI.start('Loading'); // Start blocking
+    this.ngxService.startLoader("review-proc1"); 
     this.reviewService.updateComment(this.id, controls).subscribe((response) => {
-      
+
     },
       err => {
-        this.blockUI.stop();
       },
       () => {
+        this.ngxService.stopLoader("review-proc1"); 
+        this.ngxService.startLoader("review"); 
         this.reviewService.fetchAll().subscribe(
           rev => {
             this.dataSource = new MatTableDataSource<BaseModel>(rev.data);
@@ -170,13 +170,12 @@ export class ReviewListComponent implements OnInit {
 
           },
           err => {
-            this.blockUI.stop();
+            this.ngxService.stopLoader("review"); 
           },
           () => {
-            // this.blockUI.stop();
+            this.ngxService.stopLoader("review"); 
           }
         );
-        this.blockUI.stop();
         this.id = null;
         this.comments = false;
       }
@@ -192,14 +191,16 @@ export class ReviewListComponent implements OnInit {
       );
       return;
     }
-    this.blockUI.start('Loading'); // Start blocking
+    this.ngxService.startLoader("review-proc"); 
     this.reviewService.sendresponse(this.id, this.user, controls).subscribe((response) => {
-      this.toastr.info(response.message);
+     this.toastr.info(response.message);
     },
       err => {
-        this.blockUI.stop();
+
       },
       () => {
+        this.ngxService.stopLoader("review-proc"); 
+        this.ngxService.startLoader("review"); 
         this.reviewService.fetchAll().subscribe(
           ads => {
             this.dataSource = new MatTableDataSource<BaseModel>(ads.data);
@@ -208,13 +209,12 @@ export class ReviewListComponent implements OnInit {
 
           },
           err => {
-            this.blockUI.stop();
+            this.ngxService.stopLoader("review"); 
           },
           () => {
-            // this.blockUI.stop();
+            this.ngxService.stopLoader("review"); 
           }
         );
-        this.blockUI.stop();
         this.id = null;
         this.user = null;
         this.respond = false;

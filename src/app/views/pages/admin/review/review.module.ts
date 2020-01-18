@@ -14,6 +14,9 @@ import { SharedModule } from '../../shared/shared.module';
 import { ReviewComponent } from './review.component';
 import { DisputeListComponent } from './dispute-list/dispute-list.component';
 import { DisputeService } from '../../../../services/dispute.service';
+import { NgxUiLoaderModule } from 'ngx-ui-loader';
+
+
 const routes: Routes = [
   {
     path: '', component: ReviewListComponent, children: [{
@@ -37,7 +40,8 @@ const routes: Routes = [
     PartialsModule,
     CoreModule,
     NgbModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes), 
+    NgxUiLoaderModule
   ],
   providers:[ToastrService,ReviewService,DisputeService,ConfirmDialogService,DeviceDetectorService]
 })
