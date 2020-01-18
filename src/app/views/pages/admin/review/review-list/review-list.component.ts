@@ -27,7 +27,7 @@ export class ReviewListComponent implements OnInit {
   comments = false;
   reviewGroup: FormGroup;
   review1Group: FormGroup;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator , {static:true}) paginator: MatPaginator;
   constructor(private reviewService: ReviewService, private modalService: NgbModal,
     private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,
     private deviceService: DeviceDetectorService, private fb: FormBuilder) {
@@ -156,7 +156,7 @@ export class ReviewListComponent implements OnInit {
     }
     this.blockUI.start('Loading'); // Start blocking
     this.reviewService.updateComment(this.id, controls).subscribe((response) => {
-      this.toastr.info(response.message);
+      
     },
       err => {
         this.blockUI.stop();

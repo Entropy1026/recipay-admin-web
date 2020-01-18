@@ -11,6 +11,7 @@ import { CoreModule } from '../../../../core/core.module';
 import { PartialsModule } from '../../../partials/partials.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
+import {NgxUiLoaderModule} from 'ngx-ui-loader';
 
 const routes: Routes = [
   {
@@ -29,7 +30,8 @@ const routes: Routes = [
     PartialsModule,
     CoreModule,
     NgbModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    NgxUiLoaderModule
   ],
   providers: [ AdvertisementService , ToastrService ,DeviceDetectorService]
 })

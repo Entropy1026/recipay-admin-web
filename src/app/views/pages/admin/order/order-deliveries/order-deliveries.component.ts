@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ConfirmDialogService } from '../../../shared/confirm-dialog/confirm-dialog.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'kt-order-deliveries',
@@ -25,7 +26,7 @@ export class OrderDeliveriesComponent implements OnInit {
   pages:any;
   
   isMobile:boolean = this.deviceService.isMobile();
-  constructor(private fb : FormBuilder , private detectRef:ChangeDetectorRef, private orderService: OrderService, private modalService: NgbModal, private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,private deviceService: DeviceDetectorService) {
+  constructor(private ngxService: NgxUiLoaderService,private fb : FormBuilder , private detectRef:ChangeDetectorRef, private orderService: OrderService, private modalService: NgbModal, private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,private deviceService: DeviceDetectorService) {
   }
 
   @ViewChild(MatPaginator , {static: true}) paginator: MatPaginator;
@@ -43,7 +44,7 @@ export class OrderDeliveriesComponent implements OnInit {
   }
   
   fetchall(){
-    this.blockUI.start('Loading'); // Start blocking
+    this.ngxService.startLoader('order-dev');
     this.orderService.fetchAll3().subscribe(
       order => {
         this.dataSource = new MatTableDataSource<BaseModel>(order.data);
@@ -52,10 +53,10 @@ export class OrderDeliveriesComponent implements OnInit {
         this.toastr.info(order.message);
       },
       err => {
-        this.blockUI.stop();
+        this.ngxService.stopLoader('order-dev');
       },
       () => {
-        this.blockUI.stop();
+        this.ngxService.stopLoader('order-dev');
       }
     );
   }

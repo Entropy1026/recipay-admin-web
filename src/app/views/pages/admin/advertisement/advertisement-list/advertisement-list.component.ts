@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ConfirmDialogService } from '../../../shared/confirm-dialog/confirm-dialog.service';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'kt-advertisement-list',
@@ -25,7 +26,7 @@ export class AdvertisementListComponent implements OnInit {
   pages:any;
   addAds = false;
   isMobile:boolean = this.deviceService.isMobile();
-  constructor(private adService: AdvertisementService,private fb: FormBuilder, private modalService: NgbModal, private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,private deviceService: DeviceDetectorService) {
+  constructor(private ngxService: NgxUiLoaderService,private adService: AdvertisementService,private fb: FormBuilder, private modalService: NgbModal, private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,private deviceService: DeviceDetectorService) {
   }
 
   @ViewChild(MatPaginator , {static: true}) paginator: MatPaginator;
@@ -45,7 +46,7 @@ export class AdvertisementListComponent implements OnInit {
 			])
       ]
     });
-    this.blockUI.start('Loading'); // Start blocking
+    this.ngxService.startLoader('ads'); // Start blocking
     this.adService.fetchAll().subscribe(
       ads => {
         this.dataSource = new MatTableDataSource<BaseModel>(ads.data);
@@ -54,10 +55,10 @@ export class AdvertisementListComponent implements OnInit {
         this.toastr.info(ads.message);
       },
       err => {
-        this.blockUI.stop();
+        this.ngxService.stopLoader('ads');
       },
       () => {
-        this.blockUI.stop();
+        this.ngxService.stopLoader('ads');
       }
     );
     if(this.isMobile){
@@ -83,14 +84,17 @@ export class AdvertisementListComponent implements OnInit {
     );
     return;
   }
-  this.blockUI.start('Loading'); // Start blocking
+  this.ngxService.startLoader('ads-proc');
   this.adService.addAdvertisement(this.advertisementID,controls).subscribe((response) => {
   this.toastr.info(response.message);
+  this.addAds = false;
   },
     err => {
-      this.blockUI.stop();
+
     },
     () => {
+      this.ngxService.stopLoader('ads-proc');
+      this.ngxService.startLoader('ads');
       this.adService.fetchAll().subscribe(
         ads => {
           this.dataSource = new MatTableDataSource<BaseModel>(ads.data);
@@ -99,13 +103,13 @@ export class AdvertisementListComponent implements OnInit {
 
         },
         err => {
-          this.blockUI.stop();
+          this.ngxService.stopLoader('ads');
         },
         () => {
-          // this.blockUI.stop();
+          this.ngxService.stopLoader('ads');
         }
       );
-      this.blockUI.stop();
+     
       this.advertisementID = null;
     }
   );
@@ -119,12 +123,12 @@ updateInfo(data:any){
    controls['fileurl'].setValue(data.fileurl);
 }
 delete(id:any){
-  this.blockUI.start('Loading'); // Start blocking
+  this.ngxService.startLoader('ads');
   this.adService.delete(id).subscribe((response) => {
   this.toastr.info(response.message);
   },
     err => {
-      this.blockUI.stop();
+      this.ngxService.stopLoader('ads');
     },
     () => {
       this.adService.fetchAll().subscribe(
@@ -135,23 +139,23 @@ delete(id:any){
 
         },
         err => {
-          this.blockUI.stop();
+          this.ngxService.stopLoader('ads');
         },
         () => {
           // this.blockUI.stop();
+          this.ngxService.stopLoader('ads');
         }
       );
-      this.blockUI.stop();
+     
     }
   );
 }
 status(id:any,status:any){
-  this.blockUI.start('Loading'); // Start blocking
+  this.ngxService.startLoader('ads'); // Start blocking
   this.adService.status(id,status).subscribe((response) => {
   this.toastr.info(response.message);
   },
     err => {
-      this.blockUI.stop();
     },
     () => {
       this.adService.fetchAll().subscribe(
@@ -162,13 +166,14 @@ status(id:any,status:any){
 
         },
         err => {
-          this.blockUI.stop();
+          this.ngxService.stopLoader('ads');
         },
         () => {
           // this.blockUI.stop();
+          this.ngxService.stopLoader('ads');
         }
       );
-      this.blockUI.stop();
+      
     }
   );
 }

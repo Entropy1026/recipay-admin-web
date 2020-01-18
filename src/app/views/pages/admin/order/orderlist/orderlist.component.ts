@@ -29,6 +29,7 @@ export class OrderlistComponent implements OnInit {
   @ViewChild(MatPaginator , {static: true}) paginator: MatPaginator;
   
   refresh(){
+  this.ngxService.startLoader('order');
    this.fetchall();
   }
   ngOnInit() {
@@ -47,56 +48,29 @@ export class OrderlistComponent implements OnInit {
         this.toastr.info(order.message);
       },
       err => {
-        this.blockUI.stop();
+
       },
       () => {
-        this.orderService.fetchAll().subscribe(
-          order => {
-            this.dataSource = new MatTableDataSource<BaseModel>(order.data);
-            // console.log(dispute.data);
-            this.dataSource.paginator = this.paginator;
-            // this.toastr.info(dispute.message);
-          },
-          err => {
-            this.ngxService.stopLoader('order');
-          },
-          () => {
-            this.ngxService.stopLoader('order');
-          }
-        );
+        this.fetchall();
       }
     );
  }
 
  cancel(id:any){
-  this.blockUI.start('Loading'); // Start blocking
+  this.ngxService.startLoader('order'); 
   this.orderService.cancelorder(id).subscribe(
     order => {
       this.toastr.info(order.message);
     },
     err => {
-      this.blockUI.stop();
     },
     () => {
-      this.orderService.fetchAll().subscribe(
-        order => {
-          this.dataSource = new MatTableDataSource<BaseModel>(order.data);
-          // console.log(dispute.data);
-          this.dataSource.paginator = this.paginator;
-          // this.toastr.info(dispute.message);
-        },
-        err => {
-          this.blockUI.stop();
-        },
-        () => {
-          this.blockUI.stop();
-        }
-      );
+     this.fetchall();
     }
   );
 }
   fetchall(){
-    this.ngxService.startLoader('order'); // Start blocking
+     // Start blocking
     this.orderService.fetchAll().subscribe(
       order => {
         this.dataSource = new MatTableDataSource<BaseModel>(order.data);
@@ -105,10 +79,10 @@ export class OrderlistComponent implements OnInit {
         this.toastr.info(order.message);
       },
       err => {
-        this.ngxService.startLoader('order');
+        this.ngxService.stopLoader('order');
       },
       () => {
-        this.ngxService.startLoader('order');
+        this.ngxService.stopLoader('order');
       }
     );
   }

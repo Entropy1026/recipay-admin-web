@@ -40,7 +40,8 @@
 </div>
 <div class="col-xl-12">
   <kt-portlet [class]="'kt-portlet--height-fluid'">
-    <kt-portlet-body>
+    <kt-portlet-body class="position-relative">
+
       <div class="row">
         <div class="col-6 d-flex justify-content-start">
           <button class="btn btn-success btn-sm" type="button" (click)="refresh()"><i
@@ -51,7 +52,9 @@
               Profile</button> -->
         </div>
       </div>
-
+      <ngx-ui-loader [loaderId]="'order-prep'" overlayColor="rgba(255, 255, 255, 0.87)"
+        fgsType="three-bounce" fgsSize="50">
+          </ngx-ui-loader>
       <div perfectScrollbar [ngStyle]="{'position': 'relative'}"
         class="mat-table__wrapper mat-table__wrapper--dashboard">
 

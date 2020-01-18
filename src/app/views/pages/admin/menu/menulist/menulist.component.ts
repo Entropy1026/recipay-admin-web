@@ -24,7 +24,7 @@ export class MenulistComponent implements OnInit {
   menuGroup : FormGroup;
   id = null;
   pages: any;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator , {static:true}) paginator: MatPaginator;
   constructor(private menuService: MenuService, private modalService: NgbModal,
     private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,
     private deviceService: DeviceDetectorService,private fb: FormBuilder) {

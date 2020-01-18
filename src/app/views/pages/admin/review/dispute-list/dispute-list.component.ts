@@ -25,7 +25,7 @@ export class DisputeListComponent implements OnInit {
     selected = 'all';
     disGroup: FormGroup;
     pages: any;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatPaginator , {static:true}) paginator: MatPaginator;
     constructor(private disService: DisputeService, private modalService: NgbModal,
       private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,
       private deviceService: DeviceDetectorService,private fb: FormBuilder) {
