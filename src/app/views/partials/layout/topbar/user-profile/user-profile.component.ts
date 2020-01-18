@@ -54,6 +54,9 @@ export class UserProfileComponent implements OnInit {
 	/**
 	 * Log out
 	 */
+	editProfile(){
+		
+	}
 	logout() {
 		this.store.dispatch(new Logout());
 	}
