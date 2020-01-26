@@ -16,7 +16,7 @@ export class SplashScreenComponent implements OnInit {
 	loaderType: string;
 	loaderMessage: string;
 
-	@ViewChild('splashScreen') splashScreen: ElementRef;
+	@ViewChild('splashScreen' , {static:true}) splashScreen: ElementRef;
 
 	/**
 	 * Component constructor

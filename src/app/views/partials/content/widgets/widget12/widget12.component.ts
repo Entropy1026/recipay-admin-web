@@ -16,7 +16,7 @@ export class Widget12Component implements OnInit {
 	// Public properties
 	@Input() data: { labels: string[], datasets: any[] };
 	@Input() type: string = 'line';
-	@ViewChild('chart') chart: ElementRef;
+	@ViewChild('chart' , {static:true}) chart: ElementRef;
 
 	/**
 	 * Component constructor

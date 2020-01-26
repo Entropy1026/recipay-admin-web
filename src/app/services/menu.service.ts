@@ -33,6 +33,11 @@ export class MenuService {
         return this._api.post('admin/product/category/deleteCategory', params)
             .pipe(catchError((err) => this._api.handleError(err)));
     }
+
+    public getAllMenu(): Observable<any> {
+        return this._api.get('admin/product/category/menuList')
+        .pipe(catchError((err) => this._api.handleError(err)));
+    }
     // public toggleBooking(companyid: string, status: boolean, field: string) {
     //     let params = {
     //         companyId: companyid,

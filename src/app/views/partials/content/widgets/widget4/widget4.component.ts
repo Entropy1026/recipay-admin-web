@@ -23,7 +23,7 @@ export class Widget4Component implements OnInit {
 	// Public properties
 	@Input() data: Widget4Data[];
 
-	@ContentChild('actionTemplate') actionTemplate: TemplateRef<any>;
+	@ContentChild('actionTemplate' , {static:true}) actionTemplate: TemplateRef<any>;
 
 	/**
 	 * Component constructor

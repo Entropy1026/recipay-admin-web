@@ -24,6 +24,7 @@ export class MenulistComponent implements OnInit {
   menuGroup : FormGroup;
   id = null;
   pages: any;
+  public menus = [];
   @ViewChild(MatPaginator , {static:true}) paginator: MatPaginator;
   constructor(private menuService: MenuService, private modalService: NgbModal,
     private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,
@@ -39,7 +40,13 @@ export class MenulistComponent implements OnInit {
     this.menuGroup = this.fb.group({
       name: ['', Validators.compose([
 				Validators.required
-			])
+      ])
+      
+      ],
+      type: [null, Validators.compose([
+				Validators.required
+      ])
+      
 			],
       description: ['', Validators.compose([
 				Validators.required
@@ -52,8 +59,9 @@ export class MenulistComponent implements OnInit {
     this.addMenu = false;
   }
   add(){
-    this.addMenu=true;
+   this.addMenu=true;
    const controls = this.menuGroup.controls;
+   controls['type'].setValue(null);
    controls['name'].setValue(" ");
    controls['description'].setValue(" ");
   }
@@ -61,6 +69,7 @@ export class MenulistComponent implements OnInit {
    this.addMenu=true;
    this.id = id;
    const controls = this.menuGroup.controls;
+   controls['type'].setValue(data.type);
    controls['name'].setValue(data.name);
    controls['description'].setValue(data.description);
   }
@@ -110,6 +119,16 @@ export class MenulistComponent implements OnInit {
   }
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+  getMenuList(){
+    this.menuService.getAllMenu().subscribe(
+       res=>{
+           this.menus = res.data;
+           console.log(res);
+       }
+      ,err => {}
+      , ()=>
+     {});
   }
   submit() {
     const controls = this.menuGroup.controls;
