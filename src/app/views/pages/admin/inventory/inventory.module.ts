@@ -14,6 +14,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireStorageModule } from 'angularfire2/storage';
+import {NgxUiLoaderModule} from 'ngx-ui-loader';
+
 
 const routes: Routes = [
   {
@@ -39,7 +41,8 @@ const routes: Routes = [
       storageBucket: "recipaymobile.appspot.com",
       projectId: "recipaymobile",
     }),
-    AngularFireStorageModule
+    AngularFireStorageModule ,
+    NgxUiLoaderModule
   ],
   providers:[ToastrService,InventoryService,ConfirmDialogService,DeviceDetectorService]
 })

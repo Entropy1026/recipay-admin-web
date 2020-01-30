@@ -1,7 +1,10 @@
 <div *ngIf="addrecipe">
   <kt-portlet>
     <kt-portlet-header [title]="'add/edit'"></kt-portlet-header>
-    <kt-portlet-body>
+    <kt-portlet-body class="position-relative">
+      <ngx-ui-loader [loaderId]="'inventory-fetch-ing'" overlayColor="rgba(255, 255, 255, 0.87)"
+      fgsType="three-bounce" fgsSize="50">
+     </ngx-ui-loader>
       <form [formGroup]="inv2Group">
         <div class="row">
           <div class="row">
@@ -132,7 +135,10 @@
   </kt-portlet>
 </div>
 <kt-portlet *ngIf="viewIngredients">
-  <kt-portlet-body>
+  <kt-portlet-body class="position-relative">
+    <ngx-ui-loader [loaderId]="'inventory-fetch'" overlayColor="rgba(255, 255, 255, 0.87)"
+    fgsType="three-bounce" fgsSize="50">
+   </ngx-ui-loader>
     <div class="row">
       <div class="col-xl-8 col-lg-8 col-sm-8 col-md-8">
         <div perfectScrollbar [ngStyle]="{'position': 'relative'}"

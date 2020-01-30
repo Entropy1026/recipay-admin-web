@@ -12,7 +12,7 @@ import { CoreModule } from '../../../../core/core.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ReportService } from '../../../../services/report.service';
-
+import {NgxUiLoaderModule} from 'ngx-ui-loader';
 const routes: Routes = [
   {
     path: '', component: ReportComponent, children: [{
@@ -31,7 +31,8 @@ const routes: Routes = [
     PartialsModule,
     CoreModule,
     NgbModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    NgxUiLoaderModule
   ],
   providers: [ToastrService ,DeviceDetectorService , ReportService]
 })

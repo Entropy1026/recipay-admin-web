@@ -47,21 +47,21 @@ export class ApiService {
         if (error.error instanceof ErrorEvent) {
             // A client-side or network error occurred. Handle it accordingly.
             errorMsg = `An error occurred: ${error.error.message}`;
-            // console.log({ errorMsg });
-            this.toastr.error("An Error Occured Please Contact Your Administrator");
+            console.log({ errorMsg });
+            // this.toastr.error("An Error Occured Please Contact Your Administrator");
 
 
         } else if (error instanceof HttpErrorResponse) {
             // A client-side or network error occurred. Handle it accordingly.
             errorMsg = `An error occurred: ${error.message}`;
-            // console.log({ errorMsg });
+            console.log({ errorMsg });
             this.toastr.error("Error: Something Went Wrong");
         } else {
             // The backend returned an unsuccessful response code.
             // The response body may contain clues as to what went wrong,
             Object.getOwnPropertyNames(error).forEach((prop) => {
                 errorMsg = `[${prop}]: ${error[prop]}`;
-                // console.log({ errorMsg });
+                console.log({ errorMsg });
 
             });
 
@@ -72,14 +72,11 @@ export class ApiService {
                 error.error.message) {
 
                 errorMsg = error.error.message;
-                // console.log({ errorMsg });
-
-                this.toastr.error(errorMsg);
+                console.log({ errorMsg });
             }
         }
         // return an ErrorObservable with a user-facing error message
         if (errorMsg) {
-            this.toastr.error(errorMsg);
             // return throwError(errorMsg);
             return "";
         } else {

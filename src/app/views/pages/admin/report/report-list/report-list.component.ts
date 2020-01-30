@@ -8,6 +8,7 @@ import { ReportService } from '../../../../../services/report.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'kt-report-list',
@@ -27,6 +28,7 @@ export class ReportListComponent implements OnInit {
   dataItem = [];
   method = "";
   billing = "";
+  contact = "";
   items = "";
   carrier = "";
   delivered = "";
@@ -38,7 +40,7 @@ export class ReportListComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   constructor(private reportService: ReportService, private modalService: NgbModal,
     private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,
-    private deviceService: DeviceDetectorService, private fb: FormBuilder) {
+    private deviceService: DeviceDetectorService, private fb: FormBuilder, private ngxService: NgxUiLoaderService) {
 
   }
   // addClick(){
@@ -57,6 +59,7 @@ export class ReportListComponent implements OnInit {
     this.billing = "";
     this.carrier = '';
     this.delivered = "";
+    this.contact = "";
     // data1 = data;
     // this.dataItem = data.item;
     data.items.forEach(element => {
@@ -66,6 +69,7 @@ export class ReportListComponent implements OnInit {
     this.carrier = data.carrier;
     this.method = data.payment.method;
     this.billing = data.billinginfo.Address + " " + data.billinginfo.City;
+    this.contact = data.billinginfo.Contact;
     // this.detectRef.detectChanges();
   }
   close() {
@@ -73,34 +77,34 @@ export class ReportListComponent implements OnInit {
   }
 
   fetchdata() {
-    this.blockUI.start('Loading'); // Start blocking
+  this.ngxService.startLoader('report');
     const d = new Date();
     this.reportService.fetchAll().subscribe(
       menu => {
         console.log(menu);
-        // if (menu) {
-        //   menu.data.map((menus) => {
-        //     const d1 = new Date(menus.date.date);
-        //     this.total_sales += menus.payment.amount;
-        //     if (d1.getMonth() == d.getMonth() && d1.getFullYear() == d.getFullYear()) {
-        //       this.monthly_sales += menus.payment.amount;
-        //     }
+        if (menu) {
+          menu.data.map((menus) => {
+            const d1 = new Date(menus.date.date);
+            this.total_sales += menus.payment.amount;
+            if (d1.getMonth() == d.getMonth() && d1.getFullYear() == d.getFullYear()) {
+              this.monthly_sales += menus.payment.amount;
+            }
 
-        //   });
-        //   this.sales_count = menu.data.length;
-        //   this.dataSource = new MatTableDataSource<BaseModel>(menu.data);
-        //   console.log(menu.data);
-        //   this.dataSource.paginator = this.paginator;
-        //   this.toastr.info(menu.message);
-        // }
+          });
+          this.sales_count = menu.data.length;
+          this.dataSource = new MatTableDataSource<BaseModel>(menu.data);
+          console.log(menu.data);
+          this.dataSource.paginator = this.paginator;
+          this.toastr.info(menu.message);
+        }
 
 
       },
       err => {
-        this.blockUI.stop();
+        this.ngxService.stopLoader('report');
       },
       () => {
-        this.blockUI.stop();
+        this.ngxService.stopLoader('report');
       }
     );
   }

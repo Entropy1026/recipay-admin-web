@@ -12,6 +12,7 @@ import { InventoryService } from '../../../../../services/inventory.service';
 declare var $: any;
 declare var jQuery: any;
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from 'angularfire2/storage';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 @Component({
   selector: 'kt-inventory-list',
   templateUrl: './inventory-list.component.html',
@@ -79,7 +80,9 @@ export class InventoryListComponent implements OnInit {
   @ViewChild(MatPaginator , {static: true}) paginator: MatPaginator;
   inv2Group: FormGroup;
   imageurl: string;
-  constructor(private inventoryService: InventoryService, private modalService: NgbModal,
+  constructor(
+    private ngxService: NgxUiLoaderService,
+    private inventoryService: InventoryService, private modalService: NgbModal,
     private confirmDialogService: ConfirmDialogService, private toastr: ToastrService,
     private deviceService: DeviceDetectorService,private fb: FormBuilder,
     private afStorage: AngularFireStorage) {
@@ -128,6 +131,9 @@ export class InventoryListComponent implements OnInit {
    controls.name.setValue("");
    controls.quantity.setValue(null);
    controls.unit.setValue(null);
+  }
+  close2(){
+    this.addrecipe = false;
   }
   closeing(){
     this.viewIngredients=false;
@@ -197,8 +203,8 @@ export class InventoryListComponent implements OnInit {
     this.fetchcategory();
   }
   fetchcategory(){
+    // fetch category
     this.category = [];
-    this.blockUI.start('Loading'); // Start blocking
     this.inventoryService.getcategory().subscribe(categories => {
       categories.data.map((categor) => {
           let data = { value: categor.name, viewValue: categor.name }
@@ -207,19 +213,18 @@ export class InventoryListComponent implements OnInit {
         });
       },
       err => {
-        this.blockUI.stop();
       },
       () => {
-        this.blockUI.stop();
       }
     );
   }
   ingredientopen(id:any){
+    //get ingredients
     this.addrecipe=null;
     this.id = null;
     this.id = id;
     this.viewIngredients = true;
-    this.blockUI.start('Loading Ingredients'); // Start blocking
+    this.ngxService.startLoader('inventory-fetch-ing');
     this.inventoryService.ingredients(id).subscribe(
       inv => {
         this.dataSource2 = new MatTableDataSource<BaseModel>(inv.data);
@@ -228,14 +233,15 @@ export class InventoryListComponent implements OnInit {
         // this.toastr.info(inv.message);
       },
       err => {
-        this.blockUI.stop();
+        this.ngxService.stopLoader('inventory-fetch-ing');
       },
       () => {
-        this.blockUI.stop();
+        this.ngxService.stopLoader('inventory-fetch-ing');
       }
     );
   }
   submiting() {
+    //add ingredients
     const controls = this.invGroup.controls;
     // check form
     if (this.invGroup.invalid) {
@@ -244,12 +250,11 @@ export class InventoryListComponent implements OnInit {
       );
       return;
     }
-    this.blockUI.start('Loading'); // Start blocking
+    this.ngxService.startLoader('inventory-fetch-ing');
     this.inventoryService.add(this.id,this.recipe,controls).subscribe((response) => {
     this.toastr.info(response.message);
     },
       err => {
-        this.blockUI.stop();
       },
       () => {
         this.inventoryService.ingredients(this.id).subscribe(
@@ -260,13 +265,12 @@ export class InventoryListComponent implements OnInit {
   
           },
           err => {
-            this.blockUI.stop();
+            this.ngxService.stopLoader('inventory-fetch-ing');
           },
           () => {
-            // this.blockUI.stop();
+            this.ngxService.stopLoader('inventory-fetch-ing');
           }
         );
-        this.blockUI.stop();
         this.recipe = null;
       }
     );
@@ -282,7 +286,7 @@ export class InventoryListComponent implements OnInit {
     controls['pax'].setValue(data.pax);
     controls['type'].setValue(data.type);
     controls['stock'].setValue(data.available);
-    controls['restock'].setValue(data.name);
+    controls['restock'].setValue(data.restock);
     controls['replenish'].setValue(data.replinesh);
     controls['price'].setValue(data.price);
     this.imgURL =data.image;
@@ -292,67 +296,79 @@ export class InventoryListComponent implements OnInit {
   submit2() {
     const controls = this.inv2Group.controls;
     // check form
+    //Add Product
     if (this.inv2Group.invalid) {
       Object.keys(controls).forEach(controlName =>
         controls[controlName].markAsTouched()
       );
       return;
     }
-    this.blockUI.start('Loading'); // Start blocking
+    this.ngxService.startLoader('inventory-fetch');
     this.inventoryService.addRecipe(this.invid,this.imageurl,controls).subscribe((response) => {
     this.toastr.info(response.message);
     },
       err => {
-        this.blockUI.stop();
+        this.ngxService.stopLoader('inventory-fetch');
       },
       () => {
        this.fetchdata();
-       this.blockUI.stop();
+       this.ngxService.stopLoader('inventory-fetch');
        this.invid = null;
        this.addrecipe = null;
       }
     );
   }
   deleteing(id:any){
-    this.blockUI.start('Loading'); // Start blocking
+    // delete ingredients
+    this.ngxService.startLoader('inventory-fetch-ing');
     this.inventoryService.deleteing(id).subscribe(
       inv => {
         this.toastr.info(inv.message);
       },
       err => {
-        this.blockUI.stop();
       },
       () => {
-        this.blockUI.start('Loading'); // Start blocking
-    this.inventoryService.ingredients(this.recipe).subscribe(
+          this.inventoryService.ingredients(this.recipe).subscribe(
           inv => {
             this.dataSource2 = new MatTableDataSource<BaseModel>(inv.data);
             console.log(inv.data);
             this.dataSource2.paginator = this.paginator;
             // this.toastr.info(inv.message);
+            this.inventoryService.ingredients(this.id).subscribe(
+              ads => {
+                this.dataSource2 = new MatTableDataSource<BaseModel>(ads.data);
+                console.log(ads.data);
+                this.dataSource2.paginator = this.paginator;
+      
+              },
+              err => {
+                this.ngxService.stopLoader('inventory-fetch-ing');
+              },
+              () => {
+                this.ngxService.stopLoader('inventory-fetch-ing');
+              }
+            );
           },
           err => {
-            this.blockUI.stop();
+            this.ngxService.stopLoader('inventory-fetch-ing');
           },
           () => {
-            this.blockUI.stop();
+            this.ngxService.stopLoader('inventory-fetch-ing');
           }
         );
-        this.blockUI.stop();
       }
     );
   }
   delete(id:any){
-    this.blockUI.start('Loading'); // Start blocking
+    //delete inventory
+    this.ngxService.startLoader('inventory-fetch');
     this.inventoryService.delete(id).subscribe(
       inv => {
         this.toastr.info(inv.message);
       },
       err => {
-        this.blockUI.stop();
       },
       () => {
-        this.blockUI.start('Loading'); // Start blocking
         this.inventoryService.fetchAll().subscribe(
           inv => {
             this.dataSource = new MatTableDataSource<BaseModel>(inv.data);
@@ -361,18 +377,17 @@ export class InventoryListComponent implements OnInit {
             // this.toastr.info(inv.message);
           },
           err => {
-            this.blockUI.stop();
+            this.ngxService.stopLoader('inventory-fetch');
           },
           () => {
-            this.blockUI.stop();
+            this.ngxService.stopLoader('inventory-fetch');
           }
         );
-        this.blockUI.stop();
       }
     );
   }
   fetchdata() {
-    this.blockUI.start('Loading'); // Start blocking
+    this.ngxService.startLoader('inventory-fetch');
     this.inventoryService.fetchAll().subscribe(
       inv => {
         this.dataSource = new MatTableDataSource<BaseModel>(inv.data);
@@ -381,25 +396,25 @@ export class InventoryListComponent implements OnInit {
         this.toastr.info(inv.message);
       },
       err => {
-        this.blockUI.stop();
+        this.ngxService.stopLoader('inventory-fetch');
       },
       () => {
-        this.blockUI.stop();
+        this.ngxService.stopLoader('inventory-fetch');
       }
     );
   }
   replenish(id:any){
-    this.blockUI.start('Loading'); // Start blocking
+    this.ngxService.startLoader('inventory-fetch');
     this.inventoryService.replenish(id).subscribe(
       inv => {
         this.toastr.info(inv.message);
       },
       err => {
-        this.blockUI.stop();
+        this.ngxService.stopLoader('inventory-fetch');
       },
       () => {
         this.fetchdata();
-        this.blockUI.stop();
+        this.ngxService.stopLoader('inventory-fetch');
       }
     );
   }

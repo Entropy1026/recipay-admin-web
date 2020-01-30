@@ -131,7 +131,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 					}
 				},
 				err => {
-
+					this.authNoticeService.setNotice('Something Went Wrong', 'danger');
 				},
 				() => {
 					this.loading = false;

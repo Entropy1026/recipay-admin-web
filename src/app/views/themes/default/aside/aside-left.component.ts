@@ -14,7 +14,7 @@ import { HtmlClassService } from '../html-class.service';
 })
 export class AsideLeftComponent implements OnInit, AfterViewInit {
 
-	@ViewChild('asideMenu') asideMenu: ElementRef;
+	@ViewChild('asideMenu',{static:true}) asideMenu: ElementRef;
 
 	currentRouteUrl: string = '';
 	insideTm: any;

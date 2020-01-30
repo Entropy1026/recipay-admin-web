@@ -19,7 +19,7 @@ import { HtmlClassService } from '../html-class.service';
 export class HeaderComponent implements OnInit, AfterViewInit {
 	// Public properties
 	menuHeaderDisplay: boolean;
-	@ViewChild('ktHeader') ktHeader: ElementRef;
+	@ViewChild('ktHeader',{static:true}) ktHeader: ElementRef;
 
 	/**
 	 * Component constructor

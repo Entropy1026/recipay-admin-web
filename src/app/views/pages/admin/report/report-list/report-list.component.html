@@ -2,7 +2,7 @@
   <mat-tab label="Sales Reports">
       <div *ngIf="openinfo">
           <kt-portlet>
-            <kt-portlet-header [title]="'info'"></kt-portlet-header>
+            <kt-portlet-header [title]="'Info'"></kt-portlet-header>
             <kt-portlet-body>
 
                 <div class="row col-xl-12 col-md-12 col-s-12" #topElement>
@@ -19,7 +19,9 @@
                   <div class=" col-lg-4 col-md-4 col-sm-4">
                      <b>Payments & Billing</b><br>
                      Method: {{method}} <br>
-                     Billing: {{billing}}
+                     Billing: {{billing}} <br>
+                     Contact: {{contact}}
+
                   </div>
                   <div class=" col-lg-4 col-md-4 col-sm-4">
                       <b>Carrier</b><br>
@@ -42,7 +44,11 @@
         <mat-form-field>
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Report here ..">
        </mat-form-field>
-        <mat-table [dataSource]="dataSource" matSort>
+       <ngx-ui-loader [loaderId]="'report'" overlayColor="rgba(255, 255, 255, 0.87)"
+       fgsType="three-bounce" fgsSize="50">
+       </ngx-ui-loader>
+        <mat-table [dataSource]="dataSource" matSort class="position-relative">
+     
           <!-- Name Column -->
           <ng-container matColumnDef="id">
             <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>

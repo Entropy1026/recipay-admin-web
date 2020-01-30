@@ -14,7 +14,7 @@ export class SearchDefaultComponent implements OnInit {
 	// Set true to icon as SVG or false as icon class
 	@Input() useSVG: boolean;
 
-	@ViewChild('searchInput') searchInput: ElementRef;
+	@ViewChild('searchInput',{static:true}) searchInput: ElementRef;
 
 	data: any[];
 	result: any[];
