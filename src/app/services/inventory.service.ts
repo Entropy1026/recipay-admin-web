@@ -13,11 +13,14 @@ export class InventoryService {
         return this._api.get('admin/products/findall')
             .pipe(catchError((err) => this._api.handleError(err)));
     }
-    public getcategory(): Observable<BaseModel> {
-        return this._api.get('admin/product/category/list')
+    public getcategory(menu:any): Observable<BaseModel> {
+        return this._api.post('admin/product/category/listByType',{type: menu})
             .pipe(catchError((err) => this._api.handleError(err)));
     }
-
+    public getMenu(): Observable<BaseModel> {
+        return this._api.get('admin/product/category/menuList')
+            .pipe(catchError((err) => this._api.handleError(err)));
+    }
     throwUp(value: boolean): Observable<boolean> {
         return throwError(new Error('COULD NOT UPDATE FAM!'));
     }
@@ -29,7 +32,7 @@ export class InventoryService {
         return this._api.post('admin/products/delete', params)
             .pipe(catchError((err) => this._api.handleError(err)));
     }
-    
+
     public addRecipe(id:any,imgurl:any,controls:any) {
         let params = {
             id: id,
@@ -49,7 +52,7 @@ export class InventoryService {
             .pipe(catchError((err) => this._api.handleError(err)));
     }
 
-    
+
     public replenish(id:any) {
         let params = {
             id: id,

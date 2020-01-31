@@ -21,16 +21,34 @@ export class MenuService {
         let params = {
             id: id,
             name:controls.name.value ,
-            desc:controls.description.value
+			desc:controls.description.value,
+			image:controls.image.value ,
+			type:controls.type.value
         };
         return this._api.post('admin/product/category/addCategory', params)
             .pipe(catchError((err) => this._api.handleError(err)));
-    }
+	}
+	public addupdateMenu(id:any,controls:any){
+		let params = {
+            id: id,
+            name:controls.name.value ,
+			image:controls.image.value ,
+        };
+        return this._api.post('admin/product/category/addMenu', params)
+            .pipe(catchError((err) => this._api.handleError(err)));
+	}
     public delete(id:any) {
         let params = {
             id: id,
         };
         return this._api.post('admin/product/category/deleteCategory', params)
+            .pipe(catchError((err) => this._api.handleError(err)));
+	}
+	public deleteMenu(id: any) {
+        let params = {
+            id: id,
+        };
+        return this._api.post('admin/product/category/deleteMenu', params)
             .pipe(catchError((err) => this._api.handleError(err)));
     }
 

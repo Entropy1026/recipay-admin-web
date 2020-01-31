@@ -12,24 +12,24 @@
 			<!--begin: Head -->
 			<div class="kt-head kt-head--skin-{{skin}} kt-head--fit-x kt-head--fit-b" [ngStyle]="{'background-image': 'url('+bgImage+')'}">
 				<h3 class="kt-head__title">
-					User Notifications&nbsp;<span class="btn btn-success btn-sm btn-bold btn-font-md">23 new</span>
+					User Notifications&nbsp;<span class="btn btn-success btn-sm btn-bold btn-font-md">0</span>
 				</h3>
 				<ul ktTabClickEvent class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-success kt-notification-item-padding-x" role="tablist">
 					<li class="nav-item">
-						<a (click)="tab.select('tab-id-1')" class="nav-link active show" data-toggle="tab" href="javascript:;" role="tab" aria-selected="true">Alerts</a>
+						<a (click)="tab.select('tab-id-1')" class="nav-link active show" data-toggle="tab" href="javascript:;" role="tab" aria-selected="true">Order</a>
 					</li>
 					<li class="nav-item">
-						<a (click)="tab.select('tab-id-2')" class="nav-link" data-toggle="tab" href="javascript:;" role="tab" aria-selected="false">Events</a>
+						<a (click)="tab.select('tab-id-2')" class="nav-link" data-toggle="tab" href="javascript:;" role="tab" aria-selected="false">Dispute</a>
 					</li>
 					<li class="nav-item">
-						<a (click)="tab.select('tab-id-3')" class="nav-link" data-toggle="tab" href="javascript:;" role="tab" aria-selected="false">Logs</a>
+						<a (click)="tab.select('tab-id-3')" class="nav-link" data-toggle="tab" href="javascript:;" role="tab" aria-selected="false">Feedback</a>
 					</li>
 				</ul>
 			</div>
 			<!--end: Head -->
 
 			<ngb-tabset #tab="ngbTabset">
-				<ngb-tab id="tab-id-1">
+				<!-- <ngb-tab id="tab-id-1">
 					<ng-template ngbTabContent>
 						<div [perfectScrollbar]="{wheelPropagation: false}" [ngStyle]="{'max-height': '40vh', 'position': 'relative'}" class="kt-notification kt-margin-t-10 kt-margin-b-10">
 							<a href="javascript:;" class="kt-notification__item">
@@ -402,7 +402,7 @@
 							</div>
 						</div>
 					</ng-template>
-				</ngb-tab>
+				</ngb-tab>  -->
 			</ngb-tabset>
 		</form>
 	</div>

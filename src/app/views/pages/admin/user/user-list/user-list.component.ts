@@ -20,7 +20,7 @@ export class UserListComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
   userGroup: FormGroup;
   userType = [
-    {value: 'stockman', viewValue: 'Stockman'},
+    {value: 'admin', viewValue: 'admin'},
     {value: 'carrier', viewValue: 'Carrier'}
   ];
   userStatus = [
@@ -75,12 +75,12 @@ export class UserListComponent implements OnInit {
       ],
       user_type: [null, Validators.compose([
 				Validators.required
-			
+
 			])
       ],
       user_status: [null, Validators.compose([
 				Validators.required
-				
+
 			])
 			],
     });
@@ -191,8 +191,8 @@ export class UserListComponent implements OnInit {
       err => {
       },
       () => {
-        this.ngxService.stopLoader('user-proc'); 
-        this.ngxService.startLoader('user'); 
+        this.ngxService.stopLoader('user-proc');
+        this.ngxService.startLoader('user');
         this.userService.fetchAll().subscribe(
           user => {
             this.dataSource = new MatTableDataSource<BaseModel>(user.data);
@@ -202,13 +202,13 @@ export class UserListComponent implements OnInit {
 
           },
           err => {
-            this.ngxService.stopLoader('user'); 
+            this.ngxService.stopLoader('user');
           },
           () => {
             this.ngxService.stopLoader('user');
           }
         );
-  
+
       }
     );
   }

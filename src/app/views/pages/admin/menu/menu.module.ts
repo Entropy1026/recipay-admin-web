@@ -13,21 +13,30 @@ import { ConfirmDialogService } from '../../shared/confirm-dialog/confirm-dialog
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireStorageModule } from 'angularfire2/storage';
+import {NgxUiLoaderModule} from 'ngx-ui-loader';
+import { CategoryListComponent } from './category-list/category-list.component';
 
 const routes: Routes = [
   {
     path: '', component: MenuComponent, children: [{
       path: 'list', component: MenulistComponent,
-    }],  
+    }],
   },
   {
     path: '', component: MenuActionComponent, children: [{
       path: 'list/action', component: MenuActionComponent,
     }]
+  },
+  {
+    path: 'menu', component: CategoryListComponent, children: [{
+      path: 'menu/action', component: CategoryListComponent,
+    }]
   }
 ];
 @NgModule({
-  declarations: [MenuComponent, MenulistComponent, MenuActionComponent] ,
+  declarations: [MenuComponent, MenulistComponent, MenuActionComponent, CategoryListComponent] ,
   imports: [
     CommonModule,
     SharedModule,
@@ -36,7 +45,15 @@ const routes: Routes = [
     PartialsModule,
     CoreModule,
     NgbModule,
-    RouterModule.forChild(routes)
+	RouterModule.forChild(routes),
+	AngularFireModule.initializeApp({
+		apiKey: "AIzaSyBPVjsxZ_7zFEKrl4B4yh79-7TvkzpByac",
+		authDomain: "recipaymobile.firebaseapp.com",
+		storageBucket: "recipaymobile.appspot.com",
+		projectId: "recipaymobile",
+	  }),
+	  AngularFireStorageModule ,
+	  NgxUiLoaderModule
   ],
   providers:[ToastrService,MenuService,ConfirmDialogService,DeviceDetectorService]
 })

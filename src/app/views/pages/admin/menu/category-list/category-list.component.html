@@ -1,0 +1,181 @@
+<div *ngIf="isOpen">
+	<kt-portlet>
+		<kt-portlet-header [title]="'Add / Edit Menu'"></kt-portlet-header>
+		<kt-portlet-body class="position-relative">
+			<ngx-ui-loader
+				[loaderId]="'menu-fetch'"
+				overlayColor="rgba(255, 255, 255, 0.87)"
+				fgsType="three-bounce"
+				fgsSize="50"
+			>
+			</ngx-ui-loader>
+			<form [formGroup]="menuGroup">
+				<div class="row col-xl-12 col-md-12 col-s-12">
+					<div class=" col-lg-12 col-md-12 col-sm-12">
+						<div class="col-xl-3 col-lg-3 col-sm-4 col-md-3 mb-1">
+							<img
+								[src]="imgURL"
+								height="70"
+								width="70"
+								*ngIf="imgURL"
+							/>
+							<div style="padding-top:10px;">
+								<span style="color:red;" *ngIf="message">{{
+									message
+								}}</span>
+								<input
+									#file
+									type="file"
+									accept="image/*"
+									(change)="upload(file.files)"
+								/>
+							</div>
+						</div>
+						<mat-form-field class="col-12">
+							<mat-label>Name</mat-label>
+							<input
+								matInput
+								type="text"
+								placeholder="Name"
+								formControlName="name"
+							/>
+							<mat-error
+								*ngIf="
+									menuGroup.controls['name'].touched &&
+									menuGroup.controls['name'].errors?.required
+								"
+							>
+								<strong>Name is required</strong>
+							</mat-error>
+						</mat-form-field>
+					</div>
+				</div>
+			</form>
+			<hr />
+			<div class="row d-flex justify-content-between">
+				<div></div>
+				<div class="ml-5">
+					<button mat-button (click)="close()">
+						<label class="btn btn-label-danger">Close</label>
+					</button>
+					<button mat-button (click)="submit()">
+						<label class="btn btn-label-success">Submit</label>
+					</button>
+				</div>
+			</div>
+		</kt-portlet-body>
+	</kt-portlet>
+</div>
+
+<div class="col-xl-12">
+	<kt-portlet [class]="'kt-portlet--height-fluid'">
+		<kt-portlet-body>
+			<mat-form-field>
+				<input
+					matInput
+					(keyup)="applyFilter($event.target.value)"
+					placeholder="Search Menu here .."
+				/>
+			</mat-form-field>
+			<div class="row">
+				<div class="col-6 d-flex justify-content-start">
+					<button
+						class="btn btn-success btn-sm"
+						type="button"
+						(click)="add()"
+					>
+						<i class="flaticon flaticon-refresh mr-1"></i>Add
+						Menu
+					</button>
+				</div>
+				<div class="col-6 d-flex justify-content-end">
+					<!-- <button class="btn btn-success btn-sm" type="button" (click)="launchNew()"> <i class="fa fa-plus mr-1"></i>
+			  Profile</button> -->
+				</div>
+			</div>
+
+			<div
+				perfectScrollbar
+				[ngStyle]="{ position: 'relative' }"
+				class="mat-table__wrapper mat-table__wrapper--dashboard"
+			>
+				<ngx-ui-loader
+					[loaderId]="'menu-fetch-2'"
+					overlayColor="rgba(255, 255, 255, 0.87)"
+					fgsType="three-bounce"
+					fgsSize="50"
+				>
+				</ngx-ui-loader>
+				<mat-table [dataSource]="dataSource" matSort>
+					<!-- Name Column -->
+					<ng-container matColumnDef="id">
+						<mat-header-cell *matHeaderCellDef>
+							ID
+						</mat-header-cell>
+						<mat-cell *matCellDef="let data">
+							{{ data.id }}
+						</mat-cell>
+					</ng-container>
+					<ng-container matColumnDef="name">
+						<mat-header-cell *matHeaderCellDef>
+							NAME
+						</mat-header-cell>
+						<mat-cell *matCellDef="let data">
+							{{ data.name }}
+						</mat-cell>
+					</ng-container>
+
+					<!-- Action Column -->
+					<ng-container matColumnDef="action">
+						<mat-header-cell *matHeaderCellDef>
+							Actions
+						</mat-header-cell>
+						<mat-cell *matCellDef="let data">
+							<div class="justify-content-center">
+								<button
+									mat-icon-button
+									color="primary"
+									(click)="edit(data.id, data)"
+								>
+									<mat-icon matTooltip="Edit | Update "
+										>edit</mat-icon
+									>
+								</button>
+								<button
+									mat-icon-button
+									color="warn"
+									(click)="delete(data.id)"
+								>
+									<mat-icon matTooltip="Delete Menu"
+										>delete</mat-icon
+									>
+								</button>
+							</div>
+						</mat-cell>
+					</ng-container>
+
+					<mat-header-row
+						*matHeaderRowDef="displayedColumns"
+					></mat-header-row>
+					<mat-row
+						*matRowDef="let row; columns: displayedColumns"
+					></mat-row>
+				</mat-table>
+			</div>
+			<div
+				*ngIf="!dataSource"
+				class="row col-xl-12 justify-content-center mt-3"
+			>
+				No records found
+			</div>
+			<div class="mat-table__bottom mat-table__bottom--padding">
+				<mat-paginator
+					[pageSize]="pages"
+					[pageSizeOptions]="[5, 10, 25, 100]"
+					showFirstLastButtons
+				>
+				</mat-paginator>
+			</div>
+		</kt-portlet-body>
+	</kt-portlet>
+</div>

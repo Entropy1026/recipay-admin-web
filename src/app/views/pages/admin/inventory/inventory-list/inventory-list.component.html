@@ -47,7 +47,19 @@
                       <strong>Video is required</strong>
                     </mat-error>
                   </mat-form-field>
-                </div>
+				</div>
+				<div class=" col-lg-12 col-md-12 col-sm-12">
+					<mat-form-field class="example-full-width">
+					  <mat-select placeholder="Menu" formControlName="type" (selectionChange)="fetchcategory($event.value)">
+						<mat-option *ngFor="let item of menu" [value]="item.value">
+						  {{item.viewValue}}
+						</mat-option>
+					  </mat-select>
+					  <mat-error *ngIf="inv2Group.controls['type'].touched &&
+							inv2Group.controls['type'].errors?.required">
+						<strong> Menu is required</strong></mat-error>
+					</mat-form-field>
+				  </div>
                 <div class=" col-lg-12 col-md-12 col-sm-12">
                   <mat-form-field class="example-full-width">
                     <mat-select placeholder="Category" formControlName="category">
@@ -55,7 +67,7 @@
                         {{item.viewValue}}
                       </mat-option>
                     </mat-select>
-                    <mat-error *ngIf="inv2Group.controls['category'].touched && 
+                    <mat-error *ngIf="inv2Group.controls['category'].touched &&
                           inv2Group.controls['category'].errors?.required">
                       <strong> Category is required</strong></mat-error>
                   </mat-form-field>
@@ -83,7 +95,7 @@
                   </mat-error>
                 </mat-form-field>
               </div>
-              <div class=" col-lg-12 col-md-12 col-sm-12">
+              <!-- <div class=" col-lg-12 col-md-12 col-sm-12">
                 <mat-form-field class="example-full-width">
                   <mat-label>Type</mat-label>
                   <input matInput type="text" placeholder="type" formControlName="type" />
@@ -91,7 +103,7 @@
                     <strong>Type is required</strong>
                   </mat-error>
                 </mat-form-field>
-              </div>
+              </div> -->
               <div class=" col-lg-12 col-md-12 col-sm-12">
                 <mat-form-field class="example-full-width">
                   <mat-label>Stock</mat-label>
@@ -232,7 +244,7 @@
                   {{item.viewValue}}
                 </mat-option>
               </mat-select>
-              <mat-error *ngIf="invGroup.controls['quantity'].touched && 
+              <mat-error *ngIf="invGroup.controls['quantity'].touched &&
                 invGroup.controls['quantity'].errors?.required">
                 <strong> Quantity is required</strong></mat-error>
             </mat-form-field>
@@ -244,7 +256,7 @@
                   {{item.viewValue}}
                 </mat-option>
               </mat-select>
-              <mat-error *ngIf="invGroup.controls['unit'].touched && 
+              <mat-error *ngIf="invGroup.controls['unit'].touched &&
                   invGroup.controls['unit'].errors?.required">
                 <strong> Unit is required</strong></mat-error>
             </mat-form-field>

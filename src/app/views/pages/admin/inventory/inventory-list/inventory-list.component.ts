@@ -19,7 +19,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
   styleUrls: ['./inventory-list.component.scss']
 })
 export class InventoryListComponent implements OnInit {
-  
+
   @BlockUI() blockUI: NgBlockUI;
   displayedColumns: any = ['id','name','pax','price','sold','totalamount','available','replenish','restock','action'];
   displayedColumns2: any = ['name','qty','unit','action'];
@@ -42,7 +42,7 @@ export class InventoryListComponent implements OnInit {
     {value: 'lt', viewValue: 'lt'},
     {value: 'cloves', viewValue: 'gloves'},
     {value: 'small-cubed', viewValue: 'cubed'},
-    
+
   ];
   id=null;
   recipe=null;
@@ -73,6 +73,7 @@ export class InventoryListComponent implements OnInit {
     {value: '20.00', viewValue: '20'}
   ];
   category = [];
+  menu = [];
   image:any;
   invid = null;
   ref: AngularFireStorageReference;
@@ -88,7 +89,7 @@ export class InventoryListComponent implements OnInit {
     private afStorage: AngularFireStorage) {
 
   }
-  
+
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
@@ -98,26 +99,26 @@ export class InventoryListComponent implements OnInit {
   //   // this.task = this.ref.put(event.target.files[0]);
   //   var reader = new FileReader();
   //   // this.image = event.files;
-  //   reader.readAsDataURL(event.target.files[0]); 
-  //   reader.onload = (_event) => { 
-  //     this.image = reader.result; 
+  //   reader.readAsDataURL(event.target.files[0]);
+  //   reader.onload = (_event) => {
+  //     this.image = reader.result;
   //   }
   // }
   upload(files) {
     if (files.length === 0)
       return;
- 
+
     var mimeType = files[0].type;
     if (mimeType.match(/image\/*/) == null) {
       this.message = "Only images are supported.";
       return;
     }
- 
+
     var reader = new FileReader();
     this.imagePath = files;
-    reader.readAsDataURL(files[0]); 
-    reader.onload = (_event) => { 
-      this.imgURL = reader.result; 
+    reader.readAsDataURL(files[0]);
+    reader.onload = (_event) => {
+      this.imgURL = reader.result;
     }
     const id = Math.random().toString(36).substring(2);
     this.ref = this.afStorage.ref(id);
@@ -169,10 +170,8 @@ export class InventoryListComponent implements OnInit {
           Validators.required
         ])]
         ,
-        video: ['', Validators.compose([
-          Validators.required
-        ])],
-        category: [null, Validators.compose([
+        video: [''],
+        category: ['', Validators.compose([
           Validators.required
         ])],
         price: ['', Validators.compose([
@@ -200,17 +199,33 @@ export class InventoryListComponent implements OnInit {
         ])]
       });
     this.fetchdata();
-    this.fetchcategory();
+	this.fetchMenu();
   }
-  fetchcategory(){
+  fetchcategory(name:any){
     // fetch category
-    this.category = [];
-    this.inventoryService.getcategory().subscribe(categories => {
+	this.category = [];
+    this.inventoryService.getcategory(name).subscribe(categories => {
       categories.data.map((categor) => {
-          let data = { value: categor.name, viewValue: categor.name }
-          console.log
+          let data = { value: categor.id, viewValue: categor.name }
           this.category.push(data);
         });
+      },
+      err => {
+      },
+      () => {
+      }
+    );
+  }
+  fetchMenu(){
+    // fetch category
+    this.menu = [];
+    this.inventoryService.getMenu().subscribe(menu => {
+      menu.data.map((menu) => {
+          let data = { value: menu.name, viewValue: menu.name }
+          this.menu.push(data);
+		});
+		this.fetchcategory(this.menu[0].value);
+		// this.inv2Group.controls.type.setValue(this.menu[0]);
       },
       err => {
       },
@@ -262,7 +277,7 @@ export class InventoryListComponent implements OnInit {
             this.dataSource2 = new MatTableDataSource<BaseModel>(ads.data);
             console.log(ads.data);
             this.dataSource2.paginator = this.paginator;
-  
+
           },
           err => {
             this.ngxService.stopLoader('inventory-fetch-ing');
@@ -281,16 +296,26 @@ export class InventoryListComponent implements OnInit {
     this.addrecipe = true;
     controls['name'].setValue(data.name);
     controls['Insctruction'].setValue(data.text_instruction);
-    controls['video'].setValue(data.video);
-    controls['category'].setValue(data.category);
+	controls['video'].setValue(data.video);
     controls['pax'].setValue(data.pax);
     controls['type'].setValue(data.type);
     controls['stock'].setValue(data.available);
     controls['restock'].setValue(data.restock);
     controls['replenish'].setValue(data.replinesh);
-    controls['price'].setValue(data.price);
+	controls['price'].setValue(data.price);
+	this.fetchcategory(data.type);
+	console.log(this.menu);
+	console.log(data.category);
+	console.log(this.category);
+	this.category.forEach(cat => {
+	console.log(cat);
+	}
+    );
+	// console.log(this.category[index]);
+	// controls['category'].setValue(this.category[index]);
     this.imgURL =data.image;
-    this.imageurl = data.image;
+	this.imageurl = data.image;
+
 
  }
   submit2() {
@@ -339,7 +364,7 @@ export class InventoryListComponent implements OnInit {
                 this.dataSource2 = new MatTableDataSource<BaseModel>(ads.data);
                 console.log(ads.data);
                 this.dataSource2.paginator = this.paginator;
-      
+
               },
               err => {
                 this.ngxService.stopLoader('inventory-fetch-ing');

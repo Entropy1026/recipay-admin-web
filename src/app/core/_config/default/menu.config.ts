@@ -61,7 +61,7 @@ export class MenuConfig {
 							page: 'order/on-deliveries'
 						}
 
-					] 
+					]
 				},
 				{
 					title: 'Menu',
@@ -70,10 +70,14 @@ export class MenuConfig {
 					icon: 'la la-shopping-cart',
 					submenu: [
 						{
-							title: 'List',
+							title: 'Menu',
+							page: 'menu/menu'
+						},
+						{
+							title: 'Category',
 							page: 'menu/list'
 						}
-					] 
+					]
 				},
 				{
 					title: 'Inventory',
@@ -85,7 +89,7 @@ export class MenuConfig {
 							title: 'List',
 							page: 'inventory/list'
 						}
-					] 
+					]
 				},
 				{
 					title: 'Report',
@@ -97,7 +101,7 @@ export class MenuConfig {
 							title: 'List',
 							page: 'report/list'
 						}
-					] 
+					]
 				},
 				{
 					title: 'User',
@@ -109,7 +113,7 @@ export class MenuConfig {
 							title: 'List',
 							page: 'user/list'
 						}
-					] 
+					]
 				},
 				{
 					title: 'Review',
@@ -125,7 +129,7 @@ export class MenuConfig {
 							title: 'Dispute',
 							page: 'review/dispute'
 						}
-					] 
+					]
 				},
 				{
 					title: 'Advertisement',
@@ -137,7 +141,7 @@ export class MenuConfig {
 							title: 'List',
 							page: 'advertisement/list'
 						}
-					] 
+					]
 				},
 				// {
 				// 	title: 'Layout Builder',
