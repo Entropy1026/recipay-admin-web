@@ -27,9 +27,9 @@ export class UserService {
         return this._api.post('open/users/adminUpdateStatus', params)
             .pipe(catchError((err) => this._api.handleError(err)));
     }
-    
+
     public addUser(data:any,username:string) {
-        
+
         let params = {
             username: username,
             firstname: data.firstname.value ,
@@ -47,9 +47,17 @@ export class UserService {
         let params = {
             username: username,
             password: password ,
-        
+
         };
         return this._api.post('open/users/login', params)
+        .pipe(catchError((err) => this._api.handleError(err)));
+	}
+	public updateImage(image:any,id:any) {
+        let params = {
+			image: image,
+			id: id
+        };
+        return this._api.post('open/users/updateImageInfo', params)
         .pipe(catchError((err) => this._api.handleError(err)));
     }
 

@@ -24,7 +24,7 @@ import {
 	MatTableModule,
 	MatTabsModule,
 	MatTooltipModule,
-    
+
 } from '@angular/material';
 // NgBootstrap
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -64,6 +64,10 @@ import { WidgetModule } from './content/widgets/widget.module';
 // SVG inline
 import { InlineSVGModule } from 'ng-inline-svg';
 import { CartComponent } from './layout/topbar/cart/cart.component';
+import { ChangeDetailsComponent } from './layout/topbar/user-profile/change-details/change-details.component';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireStorageModule } from 'angularfire2/storage';
+import {NgxUiLoaderModule} from 'ngx-ui-loader';
 
 @NgModule({
 	declarations: [
@@ -96,6 +100,8 @@ import { CartComponent } from './layout/topbar/cart/cart.component';
 		CartComponent,
 
 		ErrorComponent,
+
+		ChangeDetailsComponent,
 	],
 	exports: [
 		WidgetModule,
@@ -162,6 +168,14 @@ import { CartComponent } from './layout/topbar/cart/cart.component';
 		MatTabsModule,
 		MatTooltipModule,
 		MatDialogModule,
+		AngularFireModule.initializeApp({
+			apiKey: "AIzaSyBPVjsxZ_7zFEKrl4B4yh79-7TvkzpByac",
+			authDomain: "recipaymobile.firebaseapp.com",
+			storageBucket: "recipaymobile.appspot.com",
+			projectId: "recipaymobile",
+		  }),
+		  AngularFireStorageModule ,
+		  NgxUiLoaderModule
 	]
 })
 export class PartialsModule {

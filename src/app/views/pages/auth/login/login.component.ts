@@ -63,6 +63,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 		localStorage.removeItem("email");
 		localStorage.removeItem("mobile");
 		localStorage.removeItem("image");
+
+		localStorage.removeItem("id");
+		localStorage.removeItem("password");
 	}
 
 	/**
@@ -127,6 +130,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 						localStorage.setItem("email", res.data.email);
 						localStorage.setItem("mobile", res.data.mobile);
 						localStorage.setItem("image", res.data.image);
+						localStorage.setItem("id", res.data.id);
+						localStorage.setItem("password", res.data.password);
+						localStorage.setItem("username", res.data.username);
 						this.router.navigateByUrl('/'); // Main page
 					}
 				},

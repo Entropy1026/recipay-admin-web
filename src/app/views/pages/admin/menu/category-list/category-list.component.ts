@@ -8,7 +8,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from 'angularfire2/storage';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
-import { BaseModel } from 'src/app/core/_base/crud';
+import { BaseModel } from '../../../../../../app/core/_base/crud';
 
 @Component({
 	selector: 'kt-category-list',

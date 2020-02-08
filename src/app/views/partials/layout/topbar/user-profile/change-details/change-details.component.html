@@ -1,0 +1,184 @@
+<div *ngIf="dialogData[0].action === 'image'">
+	<kt-portlet>
+		<kt-portlet-header [title]="'Update Profile'"></kt-portlet-header>
+		<kt-portlet-body class="position-relative">
+			<!-- <ngx-ui-loader
+				[loaderId]="'menu-fetch'"
+				overlayColor="rgba(255, 255, 255, 0.87)"
+				fgsType="three-bounce"
+				fgsSize="50">
+			</ngx-ui-loader> -->
+			<div class="row col-xl-12 col-md-12 col-s-12 d-flex justify-content-center">
+				<div class=" col-lg-12 col-md-12 col-sm-12">
+					<div class="col-xl-3 col-lg-3 col-sm-4 col-md-3 mb-1">
+						<img
+							[src]="imgURL"
+							height="70"
+							width="70"
+							*ngIf="imgURL"
+						/>
+						<div style="padding-top:10px;">
+							<span style="color:red;" *ngIf="message">{{
+								message
+							}}</span>
+							<input
+								#file
+								type="file"
+								accept="image/*"
+								(change)="upload(file.files)"
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<hr />
+		</kt-portlet-body>
+		<kt-portlet-footer>
+			<div class="row d-flex justify-content-end">
+				<div class="ml-5">
+					<button mat-button (click)="close()">
+						<label class="btn btn-label-danger">Close</label>
+					</button>
+					<button mat-button (click)="submiPicture()">
+						<label class="btn btn-label-success">Confirm</label>
+					</button>
+				</div>
+			</div></kt-portlet-footer
+		>
+	</kt-portlet>
+</div>
+
+
+<div *ngIf="dialogData[0].action === 'key'">
+	<kt-portlet>
+		<kt-portlet-header [title]="'Update Profile'"></kt-portlet-header>
+		<kt-portlet-body class="position-relative">
+			<!-- <ngx-ui-loader
+				[loaderId]="'menu-fetch'"
+				overlayColor="rgba(255, 255, 255, 0.87)"
+				fgsType="three-bounce"
+				fgsSize="50">
+			</ngx-ui-loader> -->
+			<div class="row col-xl-12 col-md-12 col-s-12 d-flex justify-content-center">
+				<div class=" col-lg-12 col-md-12 col-sm-12">
+
+				</div>
+			</div>
+			<hr />
+		</kt-portlet-body>
+		<kt-portlet-footer>
+			<div class="row d-flex justify-content-end">
+				<div class="ml-5">
+					<button mat-button (click)="close()">
+						<label class="btn btn-label-danger">Close</label>
+					</button>
+					<button mat-button (click)="submitPassword()">
+						<label class="btn btn-label-success">Confirm</label>
+					</button>
+				</div>
+			</div></kt-portlet-footer
+		>
+	</kt-portlet>
+</div>
+
+<div *ngIf="dialogData[0].action === 'email'">
+	<kt-portlet>
+		<kt-portlet-header [title]="'Update Profile'"></kt-portlet-header>
+		<kt-portlet-body class="position-relative">
+			<!-- <ngx-ui-loader
+				[loaderId]="'menu-fetch'"
+				overlayColor="rgba(255, 255, 255, 0.87)"
+				fgsType="three-bounce"
+				fgsSize="50">
+			</ngx-ui-loader> -->
+			<div class="row col-xl-12 col-md-12 col-s-12 d-flex justify-content-center">
+				<div class=" col-lg-12 col-md-12 col-sm-12">
+
+				</div>
+			</div>
+			<hr />
+		</kt-portlet-body>
+		<kt-portlet-footer>
+			<div class="row d-flex justify-content-end">
+				<div class="ml-5">
+					<button mat-button (click)="close()">
+						<label class="btn btn-label-danger">Close</label>
+					</button>
+					<button mat-button (click)="submitEmail()">
+						<label class="btn btn-label-success">Confirm</label>
+					</button>
+				</div>
+			</div></kt-portlet-footer
+		>
+	</kt-portlet>
+</div>
+
+<div *ngIf="dialogData[0].action === 'personal'">
+	<kt-portlet>
+		<kt-portlet-header [title]="'Update Profile'"></kt-portlet-header>
+		<kt-portlet-body class="position-relative">
+			<!-- <ngx-ui-loader
+				[loaderId]="'menu-fetch'"
+				overlayColor="rgba(255, 255, 255, 0.87)"
+				fgsType="three-bounce"
+				fgsSize="50">
+			</ngx-ui-loader> -->
+			<div class="row col-xl-12 col-md-12 col-s-12 d-flex justify-content-center">
+				<div class=" col-lg-12 col-md-12 col-sm-12">
+                    <form [formGroup]="personalGroup">
+						<mat-form-field class="col-12">
+							<mat-label>Username</mat-label>
+							<input matInput type="text" placeholder="Username" formControlName="username" />
+							<mat-error *ngIf="personalGroup.controls['username'].touched && personalGroup.controls['username'].errors?.required">
+							  <strong>Username is required</strong>
+							</mat-error>
+						  </mat-form-field>
+						  <mat-form-field class="col-12">
+							<mat-label>Name</mat-label>
+							<input matInput type="text" placeholder="Name" formControlName="name" />
+							<mat-error *ngIf="personalGroup.controls['name'].touched && personalGroup.controls['name'].errors?.required">
+							  <strong>Name is required</strong>
+							</mat-error>
+						  </mat-form-field>
+						  <mat-form-field class="col-12">
+							<mat-label>Lastname</mat-label>
+							<input matInput type="text" placeholder="Lastname" formControlName="lastname" />
+							<mat-error *ngIf="personalGroup.controls['lastname'].touched && personalGroup.controls['lastname'].errors?.required">
+							  <strong>Lastname is required</strong>
+							</mat-error>
+						  </mat-form-field>
+						  <mat-form-field class="col-12">
+							<mat-label>Middle</mat-label>
+							<input matInput type="text" placeholder="middlename" formControlName="middlename" />
+							<mat-error *ngIf="personalGroup.controls['middlename'].touched && personalGroup.controls['middlename'].errors?.required">
+							  <strong>Middlename is required</strong>
+							</mat-error>
+						  </mat-form-field>
+						  <mat-form-field class="col-12">
+							<mat-label>Mobile</mat-label>
+							<input matInput type="number" placeholder="Mobile" formControlName="mobile" />
+							<mat-error *ngIf="personalGroup.controls['mobile'].touched && personalGroup.controls['mobile'].errors?.required">
+							  <strong>Mobile is required</strong>
+							</mat-error>
+						  </mat-form-field>
+
+
+					</form>
+				</div>
+			</div>
+			<hr />
+		</kt-portlet-body>
+		<kt-portlet-footer>
+			<div class="row d-flex justify-content-end">
+				<div class="ml-5">
+					<button mat-button (click)="close()">
+						<label class="btn btn-label-danger">Close</label>
+					</button>
+					<button mat-button (click)="submitPersonal()">
+						<label class="btn btn-label-success">Confirm</label>
+					</button>
+				</div>
+			</div></kt-portlet-footer
+		>
+	</kt-portlet>
+</div>
