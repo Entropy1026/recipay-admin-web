@@ -2,18 +2,18 @@
   <kt-portlet [class]="'kt-portlet--height-fluid'">
     <kt-portlet-body>
         <mat-form-field>
-            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Menu here ..">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Cuisine here ..">
       </mat-form-field>
       <div class="row">
         <div class="col-6 d-flex justify-content-start">
           <button class="btn btn-success btn-sm" type="button" (click)="create(null)"><i
-              class="flaticon flaticon-add mr-1"></i>New Menu</button>
+              class="flaticon flaticon-add mr-1"></i>New Cuisine</button>
         </div>
       </div>
 
       <div perfectScrollbar [ngStyle]="{'position': 'relative'}"
         class="mat-table__wrapper mat-table__wrapper--dashboard">
-		<ngx-ui-loader [loaderId]="'menu-list'" overlayColor="rgba(255, 255, 255, 0.87)"
+		<ngx-ui-loader [loaderId]="'cuisine-list'" overlayColor="rgba(255, 255, 255, 0.87)"
 		fgsType="three-bounce" fgsSize="50">
       </ngx-ui-loader>
         <mat-table [dataSource]="dataSource" matSort>
@@ -35,16 +35,10 @@
               {{data.description}}
             </mat-cell>
           </ng-container>
-          <ng-container matColumnDef="cuisine">
-            <mat-header-cell *matHeaderCellDef>Cuisine </mat-header-cell>
-            <mat-cell *matCellDef="let data">
-               {{data.cuisine?.name}}
-            </mat-cell>
-          </ng-container>
           <ng-container matColumnDef="image">
             <mat-header-cell *matHeaderCellDef>IMAGE </mat-header-cell>
             <mat-cell *matCellDef="let data">
-              <img id="myImg" [src]="data.img" width="20" heigth="20">
+              <img id="myImg" [src]="data.image" width="20" heigth="20">
             </mat-cell>
           </ng-container>
           <ng-container matColumnDef="action">
@@ -76,4 +70,25 @@
 
     </kt-portlet-body>
   </kt-portlet>
+</div>
+
+<!-- Modal Set Default Settings Form -->
+<div class="kt-section">
+  <div class="kt-section__content">
+    <ng-template #setDefaultSettings let-c="close" let-d="dismiss">
+      <div class="modal-header">
+        <h4 class="modal-title">Confirmation</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to proceed?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" type="button" (click)="c('Close click')">Yes</button>
+        <button class="btn btn-secondary" type="button" (click)="c('Close click')">No</button>
+      </div>
+    </ng-template>
+  </div>
 </div>

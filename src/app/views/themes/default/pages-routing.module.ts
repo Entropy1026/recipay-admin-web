@@ -22,7 +22,7 @@ const routes: Routes = [
 				loadChildren: 'app/views/themes/default/content/builder/builder.module#BuilderModule'
 			},
 			{
-				path: 'menu',
+				path: 'merchandise',
 				loadChildren: 'app/views/pages/admin/menu/menu.module#MenuModule'
 			},
 			{

@@ -2,18 +2,18 @@
   <kt-portlet [class]="'kt-portlet--height-fluid'">
     <kt-portlet-body>
         <mat-form-field>
-            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Menu here ..">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search Ingredient here ..">
       </mat-form-field>
       <div class="row">
         <div class="col-6 d-flex justify-content-start">
           <button class="btn btn-success btn-sm" type="button" (click)="create(null)"><i
-              class="flaticon flaticon-add mr-1"></i>New Menu</button>
+              class="flaticon flaticon-add mr-1"></i>New Ingredient</button>
         </div>
       </div>
 
       <div perfectScrollbar [ngStyle]="{'position': 'relative'}"
         class="mat-table__wrapper mat-table__wrapper--dashboard">
-		<ngx-ui-loader [loaderId]="'menu-list'" overlayColor="rgba(255, 255, 255, 0.87)"
+		<ngx-ui-loader [loaderId]="'ingredients-list'" overlayColor="rgba(255, 255, 255, 0.87)"
 		fgsType="three-bounce" fgsSize="50">
       </ngx-ui-loader>
         <mat-table [dataSource]="dataSource" matSort>
@@ -35,16 +35,40 @@
               {{data.description}}
             </mat-cell>
           </ng-container>
-          <ng-container matColumnDef="cuisine">
-            <mat-header-cell *matHeaderCellDef>Cuisine </mat-header-cell>
-            <mat-cell *matCellDef="let data">
-               {{data.cuisine?.name}}
-            </mat-cell>
-          </ng-container>
           <ng-container matColumnDef="image">
             <mat-header-cell *matHeaderCellDef>IMAGE </mat-header-cell>
             <mat-cell *matCellDef="let data">
-              <img id="myImg" [src]="data.img" width="20" heigth="20">
+              <img id="myImg" [src]="data.image" width="20" heigth="20">
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="date">
+            <mat-header-cell *matHeaderCellDef>DATE ADDED </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+              {{data.date?.date | date:'M/d/yy'}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="shelf">
+            <mat-header-cell *matHeaderCellDef>SHELF LIFE </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+              {{data.life}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="quantity">
+            <mat-header-cell *matHeaderCellDef>QUANTITY </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+              {{data.quantity}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="available">
+            <mat-header-cell *matHeaderCellDef>AVAILABLE </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+              {{data.available}}
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="unit">
+            <mat-header-cell *matHeaderCellDef>UNIT </mat-header-cell>
+            <mat-cell *matCellDef="let data">
+              {{data.unit}}
             </mat-cell>
           </ng-container>
           <ng-container matColumnDef="action">

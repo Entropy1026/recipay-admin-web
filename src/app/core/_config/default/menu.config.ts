@@ -64,19 +64,32 @@ export class MenuConfig {
 					]
 				},
 				{
-					title: 'Menu',
+					title: 'Merchandise',
 					root: true,
 					bullet: 'dot',
 					icon: 'la la-shopping-cart',
 					submenu: [
 						{
+							title: 'Cuisine',
+							page: 'merchandise/cuisine'
+						},
+						{
 							title: 'Menu',
-							page: 'menu/menu'
+							page: 'merchandise/menu'
 						},
 						{
 							title: 'Category',
-							page: 'menu/list'
+							page: 'merchandise/category'
+						},
+						{
+							title: 'Ingredients',
+							page: 'merchandise/ingredients'
+						},
+						{
+							title: 'Product',
+							page: 'merchandise/product'
 						}
+
 					]
 				},
 				{

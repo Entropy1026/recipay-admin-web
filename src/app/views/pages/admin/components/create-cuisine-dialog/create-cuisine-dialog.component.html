@@ -1,0 +1,48 @@
+
+<div>
+  <div class="d-flex justify-content-between body">
+     <div class="col-6" ><h4 style="font-weight: bold;color:#0abb87">Create Cuisine</h4></div>
+     <div class="col-6 d-flex justify-content-end"> <span (click)="close()" class="close">Close</span></div>
+  </div>
+  <div class="divider div-transparent"></div>
+<div class="position-relative">
+  <ngx-ui-loader [loaderId]="'create-cuisine'"
+          overlayColor="rgba(255, 255, 255, 0.87)"
+          pbColor="#673ab7"
+          fgsColor="#673ab7"
+          fgsSize="25"
+          fgsPosition="center-center"
+          [hasProgressBar]="false">
+  </ngx-ui-loader>
+<div ngxUiLoaderBlurred blur="5" loaderId="create-cuisine">
+  <div [formGroup]="cuisineForm">
+    <div class="mt-2 ml-2">
+      <img [src]="imgURL" height="70" width="70" *ngIf="imgURL"><br>
+      <div style="padding-top:10px;" class="ml-1">
+        <span style="color:red;" *ngIf="message">{{message}}</span>
+        <input #file type="file" accept='image/*' (change)="upload(file.files)" />
+      </div>
+    </div>
+    <mat-form-field class="col-12 mt-2" appearance="fill">
+      <mat-label>Name</mat-label>
+      <input matInput type="text" placeholder="Name" formControlName="name" autocomplete="off" />
+      <mat-error *ngIf="cuisineForm.controls['name'].touched && cuisineForm.controls['name'].errors?.required">
+        <strong>Name is required</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="col-12" appearance="fill">
+      <mat-label>Description</mat-label>
+      <textarea matInput placeholder="Description" formControlName="description" autocomplete="off"></textarea>
+      <mat-error *ngIf="cuisineForm.controls['description'].touched && cuisineForm.controls['description'].errors?.required">
+        <strong>Description is required</strong>
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <!-- <div class="divider div-transparent mt-1"></div> -->
+  <div class="d-flex justify-content-end">
+    <button class="btn btn-success btn-sm mt-1" type="button" [disabled]="cuisineForm.invalid" (click)="create()"><i
+      class="flaticon flaticon-check mr-1"></i>Save</button>
+    </div>
+</div>
+  </div>
+</div>
